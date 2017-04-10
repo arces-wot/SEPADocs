@@ -62,7 +62,11 @@
 	The Semantic Application Profile (SAP) is a document
 	containing the full description of a Web of Thing application
 	for the Semantic Event Processing Architecture (SEPA)
-	platform. The semantic application profile, in order to fully
+	platform.
+      </p>
+      
+      <p>	
+	The semantic application profile, in order to fully
 	describe an application, MUST contain the connection
 	parameters needed by an application to interact with a SEPA
 	instance. Since a WoT application is made up of producers,
@@ -71,6 +75,11 @@
 	performed by every application component. A SAP file MAY
 	contain a list of prefixes to be appended to SPARQL
 	updates/queries/subscriptions.
+      </p>
+
+      <p>
+	A SAP file MUST be a JSON document compliant with RFC 7159
+	[[!RFC7159]].
       </p>
 
 
@@ -127,8 +136,13 @@
     "updatePort":8000,
     "subscribeSecurePort":9443, 
     "subscribePort":9000	    
-}<pre>
+}</pre>
       </p>
+
+      <p>
+	A SAP file SHOULD contain all of the above-mentioned keys.
+      </p>
+      
     </section>
 
     <section>
