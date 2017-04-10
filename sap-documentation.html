@@ -4,7 +4,6 @@
     <title>Semantic Application Profile (SAP)</title>
 
     <!-- RESPEC CONFIGURATION -->
-
     <script src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js" class="remove"></script>
     <script class='remove'>
       var respecConfig = {
@@ -28,14 +27,6 @@
         // WG
         wg:           "Web of Things working group of the ARCES laboratory",
         wgURI:        "http://wot.arces.unibo.it/",
-localBiblio: {
-    "WEREWOLF": {
-      title: "Tremble Puny Villagers",
-      href: "http://w3.org/werewolf",
-      status: "RSCND",
-      publisher: "W3C",
-    }
-  }
       };
     </script>
 
@@ -75,31 +66,74 @@ localBiblio: {
       <p>
 	In order to connect to the HTTP interface of a SEPA the host,
 	the ports (one for a secure connection, the other for an
-	insecure one) and the path to be appended must be known. Then
+	unsecure one) and the path to be appended must be known. Then
 	the JSON object passed to the <code>parameters</code> key
 	contains the keys <code>host</code> (without the
 	leading <code>http://</code> or <code>https://</code>), the
 	keys <code>updatePort</code> and <code>updateSecurePort</code>
 	and <code>path</code>. Values of <code>updatePort</code>
-	and <code>updateSecurePort</code> are numbers [[RFC7159]]
-
+	and <code>updateSecurePort</code> are numbers as defined in
+	RFC7159 [[!RFC7159]].
       </p>	
 
+      <p>
+	Subscriptions play a crucial role in real-time
+	applications. SEPA platform supports using the SPARQL Query
+	[[rdf-sparql-query]] language to subscribe to
+	events. Subscriptions use the websocket interface of SEPA
+	platform. In order to configure access to websocket interface
+	the ports for unsecure and secure connection must be specified
+	as numbers to the keys <code>subscribePort</code>
+	and <code>subscribeSecurePort</code>.
+      </p>
+
+      <p>
+	An example of this configuration section is reported below:
+
+	<pre class="example">"parameters" : { 
+    "host":"my.sepa.host.com",
+    "path":"sparql",
+    "updateSecurePort":8443, 
+    "updatePort":8000,
+    "subscribeSecurePort":9443, 
+    "subscribePort":9000	    
+}<pre>
+      </p>
     </section>
 
     <section>
-      <h2>Namespaces</h2>
-      Test
+      <h2>Namespaces</h2>       
+
+      <p>
+	In a SAP file namespaces can be defined. Client-side APIs will
+	take the namespaces and prepend them to a SPARQL
+	update/query/subscription. In a SAP file namespaces are
+	specified as a JSON object assigned to the
+	key <code>namespaces</code>. In this object every key
+	represents a prefix, while the value is the relative
+	namespace.
+      </p>
+
+      <p>
+	In the following example the well known <code>rdf</code>
+	and <code>rdfs</code> prefixes are defined in the SAP file:
+
+	<pre class="example">"namespaces" : {
+    "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs":"http://www.w3.org/2000/01/rdf-schema#"
+}</pre>
+      </p>
+      
     </section>
 
     <section>
       <h2>Updates</h2>
-      tTsa
+      TBW
     </section>
       
     <section>
       <h2>Subscriptions</h2>
-      asd
+      TBW
     </section>
 
     <!-- APPENDIX -->
