@@ -172,7 +172,39 @@
 
     <section>
       <h2>Updates</h2>
-      TBW
+      
+      <p>
+	A SAP file includes a list of the SPARQL updates (see
+	[[RDF-SPARQL-UPDATE]]) performed by the application. The
+	updates MUST be specified as a JSON object passed to
+	the <code>updates</code> key. In this object every key
+	represent the friendly name of the SPARQL update. The value is
+	a JSON object in which the main key is
+	named <code>sparql</code> and contains the SPARQL code.
+      </p>
+
+      <p>
+	The following example shows the definition of a very basic SPARQL update named "INSERT_PERSON":
+	
+	<pre class="example">
+"updates" : {
+  "INSERT_PERSON" : { "sparql":"INSERT DATA { <http://ns#Person1> rdf:type foaf:Person }" }
+}
+	</pre>
+	
+      </p>
+
+      <p>
+	The usefulness of a SAP profile consists in the ability to
+	create a template for SPARQL updates that can be fetched by
+	the application and modified at run-time to fit the actual
+	need. For example a producer that updates the value of a
+	temperature sensor will only need to fill a field in the
+	template. Here is where the definition of forced bindings
+	comes in help.
+      </p>
+      
+
     </section>
       
     <section>
