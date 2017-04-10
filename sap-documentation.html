@@ -1,0 +1,119 @@
+<html>
+  
+  <head>
+    <title>Semantic Application Profile (SAP)</title>
+
+    <!-- RESPEC CONFIGURATION -->
+
+    <script src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js" class="remove"></script>
+    <script class='remove'>
+      var respecConfig = {
+      
+        // document info
+        specStatus:           "ED",
+        shortName:            "sap",      
+        copyrightStart:       "2017",
+        edDraftURI:           "http://github.com/desmovalvo/sap-documentation",
+        extraCSS:             ["css/respec.css"],
+      
+        // editors
+        editors:  [{ 
+          name: "Fabio Viola", 
+          url: "http://wot.arces.unibo.it",
+          mailto: "fabio.viola@unibo.it",
+          company: "ARCES", 
+          companyURL: "http://wot.arces.unibo.it" 
+        }],
+      
+        // WG
+        wg:           "Web of Things working group of the ARCES laboratory",
+        wgURI:        "http://wot.arces.unibo.it/",
+localBiblio: {
+    "WEREWOLF": {
+      title: "Tremble Puny Villagers",
+      href: "http://w3.org/werewolf",
+      status: "RSCND",
+      publisher: "W3C",
+    }
+  }
+      };
+    </script>
+
+  </head>
+
+  <body>
+
+    <!-- ABSTRACT -->
+    <section id="abstract">
+      This document describes the Semantic Application Profile (SAP)
+      needed to describe a semantic application for the Web of
+      Things. It uses JSON as the default encoding system.
+    </section>
+
+    <!-- STATUS OF THIS DOCUMENT -->
+    <section id="sotd">
+      This is a first draft.
+    </section>
+
+    <!-- CORE OF THE DOCUMENT -->
+    <section>
+
+      <h2>Connection Parameters</h2>     
+      
+      <p>
+	The section named <code>parameters</code> defines all the
+	parameters needed to interact with an instance of the Semantic
+	Event Processing Architecture (SEPA). In this section are
+	defined parameters for the interaction with the HTTP interface
+	(destined to SPARQL updates and SPARQL queries) and for the
+	Websocket interface (needed for the SPARQL subscriptions).
+	The value for the key <code>parameters</code> is a JSON
+	object: its keys and values are specified in the next
+	subsections.
+      </p>
+      
+      <p>
+	In order to connect to the HTTP interface of a SEPA the host,
+	the ports (one for a secure connection, the other for an
+	insecure one) and the path to be appended must be known. Then
+	the JSON object passed to the <code>parameters</code> key
+	contains the keys <code>host</code> (without the
+	leading <code>http://</code> or <code>https://</code>), the
+	keys <code>updatePort</code> and <code>updateSecurePort</code>
+	and <code>path</code>. Values of <code>updatePort</code>
+	and <code>updateSecurePort</code> are numbers [[RFC7159]]
+
+      </p>	
+
+    </section>
+
+    <section>
+      <h2>Namespaces</h2>
+      Test
+    </section>
+
+    <section>
+      <h2>Updates</h2>
+      tTsa
+    </section>
+      
+    <section>
+      <h2>Subscriptions</h2>
+      asd
+    </section>
+
+    <!-- APPENDIX -->
+    <section class="appendix">
+
+      <!-- ACKNOWLEDGEMENTS -->
+      <h2>Acknowledgements</h2>
+      <p>
+	Authors would like to thanks the Advanced Research Center on Electronic Systems (ARCES) of the University of Bologna.
+      </p>
+
+    </section>
+
+
+  </body>
+
+</html>
