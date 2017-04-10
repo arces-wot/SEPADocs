@@ -131,7 +131,7 @@
 
 	<pre class="example">"parameters" : { 
     "host":"my.sepa.host.com",
-    "path":"sparql",
+    "path":"/sparql",
     "updateSecurePort":8443, 
     "updatePort":8000,
     "subscribeSecurePort":9443, 
@@ -184,26 +184,48 @@
       </p>
 
       <p>
-	The following example shows the definition of a very basic SPARQL update named "INSERT_PERSON":
+	The following example shows the definition of a very basic
+	SPARQL update named <code>INSERT_PERSON</code>:
 	
 	<pre class="example">
 "updates" : {
-  "INSERT_PERSON" : { "sparql":"INSERT DATA { <http://ns#Person1> rdf:type foaf:Person }" }
+  "INSERT_PERSON" : { "sparql":"INSERT DATA { &lt;http://ns#Person1&gt; rdf:type foaf:Person }" }
 }
 	</pre>
+
+	In a SPARQL update containing literals, quotes MUST be
+	escaped.
 	
       </p>
 
       <p>
 	The usefulness of a SAP profile consists in the ability to
-	create a template for SPARQL updates that can be fetched by
-	the application and modified at run-time to fit the actual
+	create templates for SPARQL updates that can be fetched by the
+	application and modified at run-time to fit the actual
 	need. For example a producer that updates the value of a
 	temperature sensor will only need to fill a field in the
 	template. Here is where the definition of forced bindings
-	comes in help.
+	comes in help. A forced binding enables the developer to
+	substitute a variable in a template with a custom value. The
+	variable is a key in the JSON object of the update. Its value
+	is a JSON object containing the keys <code>type</code>
+	and <code>value</code>. <code>type</code> MUST be one
+	of <code>uri</code>, <code>bnode</code>, <code>literal</code>.
       </p>
-      
+
+      <p>
+	Now that forced bindings have been defined, we can write an
+	example of SPARQL update template. In the following example 
+      <pre class="example">
+"ADD_PERSON":{
+"sparql":"INSERT DATA { ?person rdf:type iot:Person . ?person iot:hasName ?name }",
+    "forcedBindings": {
+        "person" : {"type":"uri", "value":""},
+        "name" : {"type":"literal", "value":""}
+    }
+}
+      </pre>
+      </p>      
 
     </section>
       
