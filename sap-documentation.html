@@ -91,13 +91,13 @@
       <h2>Connection Parameters</h2>     
       
       <p>
-	The section named <code>parameters</code> defines all the
+	The section named <code>"parameters"</code> defines all the
 	parameters needed to interact with an instance of the Semantic
 	Event Processing Architecture (SEPA). In this section are
 	defined parameters for the interaction with the HTTP interface
 	(destined to SPARQL updates and SPARQL queries) and for the
 	Websocket interface (needed for the SPARQL subscriptions).
-	The value for the key <code>parameters</code> is a JSON
+	The value for the key <code>"parameters"</code> is a JSON
 	object: its keys and values are specified in the next
 	subsections.
       </p>
@@ -106,12 +106,12 @@
 	In order to connect to the HTTP interface of a SEPA the host,
 	the ports (one for a secure connection, the other for an
 	unsecure one) and the path to be appended must be known. Then
-	the JSON object passed to the <code>parameters</code> key
-	contains the keys <code>host</code> (without the
+	the JSON object passed to the <code>"parameters"</code> key
+	contains the keys <code>"host"</code> (without the
 	leading <code>http://</code> or <code>https://</code>), the
-	keys <code>updatePort</code> and <code>updateSecurePort</code>
-	and <code>path</code>. Values of <code>updatePort</code>
-	and <code>updateSecurePort</code> are numbers as defined in
+	keys <code>"updatePort"</code> and <code>"updateSecurePort"</code>
+	and <code>"path"</code>. Values of <code>"updatePort"</code>
+	and <code>"updateSecurePort"</code> are numbers as defined in
 	RFC7159 [[!RFC7159]].
       </p>	
 
@@ -122,8 +122,8 @@
 	events. Subscriptions use the websocket interface of SEPA
 	platform. In order to configure access to websocket interface
 	the ports for unsecure and secure connection must be specified
-	as numbers to the keys <code>subscribePort</code>
-	and <code>subscribeSecurePort</code>.
+	as numbers to the keys <code>"subscribePort"</code>
+	and <code>"subscribeSecurePort"</code>.
       </p>
 
       <p>
@@ -153,7 +153,7 @@
 	take the namespaces and prepend them to a SPARQL
 	update/query/subscription. In a SAP file namespaces are
 	specified as a JSON object assigned to the
-	key <code>namespaces</code>. In this object every key
+	key <code>"namespaces"</code>. In this object every key
 	represents a prefix, while the value is the relative
 	namespace.
       </p>
@@ -177,10 +177,10 @@
 	A SAP file includes a list of the SPARQL updates (see
 	[[RDF-SPARQL-UPDATE]]) performed by the application. The
 	updates MUST be specified as a JSON object passed to
-	the <code>updates</code> key. In this object every key
+	the <code>"updates"</code> key. In this object every key
 	represent the friendly name of the SPARQL update. The value is
 	a JSON object in which the main key is
-	named <code>sparql</code> and contains the SPARQL code.
+	named <code>"sparql"</code> and contains the SPARQL code.
       </p>
 
       <p>
@@ -198,6 +198,9 @@
 	
       </p>
 
+      <section>
+	<h3>Forced Bindings</h3>
+      
       <p>
 	The usefulness of a SAP profile consists in the ability to
 	create templates for SPARQL updates that can be fetched by the
@@ -206,11 +209,14 @@
 	temperature sensor will only need to fill a field in the
 	template. Here is where the definition of forced bindings
 	comes in help. A forced binding enables the developer to
-	substitute a variable in a template with a custom value. The
-	variable is a key in the JSON object of the update. Its value
-	is a JSON object containing the keys <code>type</code>
-	and <code>value</code>. <code>type</code> MUST be one
-	of <code>uri</code>, <code>bnode</code>, <code>literal</code>.
+	substitute a variable in a template with a custom value. To
+	define forced bindings for a SPARQL update, the
+	key <code>"forcedBindings"</code> MUST be used. The value is a
+	JSON object. The variable of a forced binding is a key in that
+	JSON object. Its value is again a JSON object containing the
+	keys <code>"type"</code>
+	and <code>"value"</code>. <code>"type"</code> MUST be one
+	of <code>"uri"</code>, <code>"bnode"</code>, <code>"literal"</code>.
       </p>
 
       <p>
@@ -226,12 +232,69 @@
 }
       </pre>
       </p>      
-
+      </section>
+      
     </section>
       
     <section>
       <h2>Subscriptions</h2>
-      TBW
+
+      <p>
+	Queries and persistent queries, named subscriptions, MUST be
+	defined in accord to SPARQL Query Language
+	[[rdf-sparql-query]]. While a SPARQL query MUST be sent over
+	HTTP (or HTTPS), a SPARQL subscription MUST be issued over
+	Websocket (secure or unsecure). Both queries and
+	subscriptio-ns are defined using the <code>"subscribes"</code>
+	key of the main JSON object. As for SPARQL updates, each
+	query/subscription has a friendly name, which is a key in the
+	JSON object assigned to the key <code>"subscribes"</code>.
+	The JSON object describing a query/subscription MUST contain
+	the <code>"sparql"</code> key.
+      </p>
+
+      <p>
+	In the following example a very
+	simple <code>"subscribe"</code> section is presented. Only a
+	SPARQL query/subscription related to the whole knowledge-base
+	is present. No forced bindings are defined.
+	
+	<pre class="example">
+"subscribes" : {
+    "EVERYTHING" : {	
+        "sparql" : "SELECT ?s ?p ?o WHERE  { ?s ?p ?o }"
+    }
+}
+	</pre>
+	
+      </p>
+
+      <section>
+	<h3>Forced Bindings</h3>
+	
+	<p>
+	  The JSON object of a SPARQL query/subscription MAY contain the
+	  keys <code>"forcedBindings"</code>. In that case the value
+	  of <code>"forcedBindings"</code> is a JSON object that MUST
+	  contain the keys <code>"type"</code> and <code>"value"</code>.
+	  
+	  The following example shows a template for a SPARQL
+	  query/subscription containing forced bindings.
+
+	  <pre class="example">
+"subscribes" : {
+    "tempSensor" : {	
+        "sparql" : "SELECT ?temp WHERE  { ?tempSens rdf:type iot:TempSensor . ?tempSens iot:hasValue ?temp }",
+        "forcedBindings" : {
+            "temp": {"type":"uri", "value":""}
+        }
+    }
+}	    
+	  </pre>
+	  
+	</p>
+      </section>
+      
     </section>
 
     <!-- APPENDIX -->
