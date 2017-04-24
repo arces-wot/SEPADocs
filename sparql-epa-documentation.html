@@ -1,0 +1,342 @@
+<html>
+  
+  <head>
+    <title>SPARQL Event Processing Architecture (SEPA)</title>
+
+    <!-- RESPEC CONFIGURATION -->
+    <script src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js" class="remove"></script>
+    <script class='remove'>
+      var respecConfig = {
+      
+        // document info
+        specStatus:           "ED",
+        shortName:            "sparql-epa",      
+        copyrightStart:       "2017",
+        edDraftURI:           "http://github.com/vaimee/sparql-epa-documentation",
+        extraCSS:             ["css/respec.css"],
+      
+        // editors
+        editors:  [{ 
+          name: "Luca Roffia", 
+          url: "http://wot.arces.unibo.it",
+          mailto: "luca.roffia@unibo.it",
+          company: "ARCES", 
+          companyURL: "http:/wot.arces.unibo.it" 
+        },
+        { 
+          name: "Fabio Viola", 
+          url: "http://wot.arces.unibo.it",
+          mailto: "fabio.viola@unibo.it",
+          company: "ARCES", 
+          companyURL: "http://wot.arces.unibo.it" 
+        }
+        ],
+      
+        // WG
+        wg:           "Web of Things working group of the ARCES laboratory",
+        wgURI:        "http://wot.arces.unibo.it/",
+      };
+    </script>
+
+  </head>
+
+  <body>
+
+    <!-- ABSTRACT -->
+    <section id="abstract">
+      This document describes the <b>SPARQL Event Processing Architecture (SEPA)</b>. The SEPA consists
+      of the following components: the SPARQL Secure Event Protocol (SSEP) Service, the SPARQL 1.1 Secure Event (SE) Protocol and
+      the SPARQL Subscription Language. The SEPA is intended to be used in dynamic contexts where detecting events is critical.
+	  In such contexts, the use of SPARQL queries MAY be inefficient and MAY not guarantee to detect all the events
+	  because of their asynchronous nature. Moreover, the SEPA is built around a security layer (e.g.,TLS [[!RFC5246]]) in order
+	  to be applied in all the contexts where the security MUST be supported (e.g., the <b>Internet of Things</b>).
+    </section>
+
+    <!-- STATUS OF THIS DOCUMENT -->
+    <section id="sotd">
+      This is a first draft.
+    </section>   
+
+    <!-- INTRODUCTION -->
+    <section id="intro"><h2>Introduction</h2> 
+
+      <p>
+      The proposed architecture implementing a content based publish-subscribe mechanism over SPARQL is named SEPA (SPARQL Event Processing Architecture).
+      The core component of SEPA is the SPARQL SE Protocol Service (also know as: SEPA Engine). The SEPA Engine implements the subscription mechanisms and algorithms.
+      The SEPA is intended to be used in dynamic contexts where detecting events is critical.
+	  In such contexts, the use of SPARQL queries MAY be inefficient and MAY not guarantee to detect all the events
+	  because of their asynchronous nature. The SEPA is framed within W3C Recommendations as shown in the following figure.
+      </p>
+
+	<img src="sepa.jpg">
+    <center>Fig. 1 - The SPARQL Event Processing Architecture (SEPA)</center>
+
+      <p>A SPARQL SE Protocol Service MUST implement the SPARQL 1.1 SE Protocol. The SPARQL 1.1 SE Protocol is proposed as an extension of the SPARQL 1.1 Protocol [[sparql11-protocol]] and, 
+      as shown in Fig. 1, it wraps the SPARQL 1.1 Protocol [[sparql11-protocol]] to support the subscription primitives (i.e., subscribe, unsubscribe).
+      The SPARQL 1.1 SE protocol is built around a security layer (e.g.,TLS [[!RFC5246]]) and it allows 
+      a SEPA client to be authenticated by means of a JSON Web Token [[!RFC7519]]. The SEPA also include an Application Design Pattern [[sepa-pattern]]. 
+	  The SEPA Engine is built on top of a SPARQL Protocol Service [[sparql11-protocol]]. The subscription mechanism implemented by the SEPA Engine, the SPARQL 1.1 Secure Event (SE) Protocol and
+      the SPARQL Subscription Language are all described in this document.     
+      </p>
+      
+      <section id="conventions"><h3>Document conventions</h3>
+      When this document uses the words must, must not, should, should not, may and recommended, and the words appear as emphasized text, they must be interpreted as described in RFC 2119 [[!RFC2119]].
+      </section>
+	
+	  <section id="terms"><h3>Terminology</h3>
+      		<p><b>SEPA</b><br>The SPARQL Event Processing Architecture defined in this document</p>
+      	</section>
+      	
+    </section>
+
+    <!-- CORE OF THE DOCUMENT -->
+    <section id ="SPARQLSEProtocolService"><h2>SPARQL SE Protocol Service</h2>
+      <p>The SEPA Engine implements a content based publish-subscribe mechanism where the content of events is expressed using the SPARQL 1.1 Query Language [[sparql11-query]].
+      A SPARQL subscription acts as a persistent query: on every SPARQL update [[sparql11-update]], the query is evaluated and the results returned. Instead of returning all the results,
+      a SEPA Engine MUST return only changes in the results (i.e., added and removed bindings results). This allows to save network traffic (e.g., a relevant aspect in
+      low rates network typical of IoT systems) and at the same time it reduces the processing cost on the client side (i.e., no need to compare previous results with the current
+      ones to understand what changed). Considering the previous results as the query results before the update and the current results as the query results after the update,
+      the content of a notification includes the added and removed results as shown in the following figure:</p>
+      
+      <center><img src="addedremoved.jpg" title="The content of notifications: added and removed results"></center><br>
+     <center>Fig. 2 - The content of notifications: added and removed results</center>
+    
+    <p>The publish-subscribe mechanism implemented by a SEPA Engine acts as follows:
+    <ul>
+    	<li>On receiving a subscribe request:
+    	<ol>
+  			<li> It registers the subscription and returns to the subscriber the subscription URI (named SPUID, Subscription Processing Unit ID)</li>
+  			<li> It performs the SPARQL 1.1 Query [[sparql11-query]] specified in the subscription request and notifies the subscriber of the results (if any) </li>
+		</ol>
+    	</li>
+    	<li>On receiving an update request:
+    	<ol>
+  			<li> It checks all the active subscriptions for results to be notified (added, removed or both)</li>
+  			<li> It sends notifications (if any) to the subscribers</li>
+		</ol>
+    	</li>	
+    </ul>
+    Interested developers can refer to [[sepa-guidelines]] for guidelines on how to implement a SEPA Engine.
+	</p>
+    </section>
+    
+    <section id ="SPARQL11SubscriptionLanguage"><h2>SPARQL 1.1 Subscription Language</h2>
+    <p>The SPARQL 1.1 Subscription Language consists of two primitives and the notification content.
+      Every SEPA implementation MUST provide a JSON serialization [[!RFC7159]]. Other kinds of serialization
+      formats MAY be provided. This document refers to the REQUIRED JSON serialization.</p> 
+         
+      <section id ="SubscribeRequest"><h3>Subscribe request</h3>
+		A subscribe primitive is expressed as follows:
+		<pre class="example" title="Subscribe request">
+{"subscribe" : "select * where {?s ?p ?o}",
+"authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ",
+"alias" : "All"}</pre>
+		
+		<p>The value of the <code>subscribe</code> member MUST be a SPARQL 1.1 Query [[sparql11-query]], 
+		the value of the <code>authorization</code> member MUST be a JSON Web Token [[!RFC7519]] and 
+		the value of the <code>alias</code> member is a string  representing a friendly name of the subscription. 
+		The first two members are REQUIRED. The <code>alias</code> member MAY not be present. If present,
+		it will be provided in every notification fired by that subscription. 
+		The use of the <code>alias</code> member is RECOMMENDED if the SEPA client sends multiple subscribe requests.
+		If needed, the SEPA client MAY store the subscription alias and link it with the subscription URI ([[!RFC3986]])
+		contained in the subscribe response message.</p>
+	</section>
+	
+	<section id ="SubscribeResponse"><h3>Subscribe response</h3>
+		<p>Every SEPA implementation MUST respond to a subscription request with the following message:</p>
+		<pre class="example" title="Subscribe response">
+{"subscribed" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6","alias":"All"}</pre>
+		<p>The value of the <code>subscribed</code> member is an URI ([[!RFC3986]]). It is used to identify the corresponding notifications.
+		The <code>alias</code> member has the same value of the subscribe request <code>alias</code> member value (if present). </p>
+	</section>
+	
+	<section id ="UnsubscribeRequest"><h3>Unsubscribe request</h3>
+		<p>A client MAY require to remove a specific subscription. This can be done by sending a the following message:<p>
+		<pre class="example" title="Unsubscribe request">
+{"unsubscribe" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6",
+"authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ",}</pre>
+		<p>The <code>unsubscribe</code> member value is the subscription URI ([[!RFC3986]]) provided by the subscribe response message.
+		The value of the <code>authorization</code> member MUST be a JSON Web Token [[!RFC7519]].
+		Both members are REQUIRED.</p>
+	</section>
+	
+	<section id="UnsubscribeResponse"><h3>Unsubscribe response</h3>	
+		<p>A SEPA Engine implementation MUST reply to a unsubscribe request with the following message:</p>
+		<pre class="example" title="Unsubscribe response">
+{"unsubscribed" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6"}</pre>
+	</section>
+	
+	<section id="Notification"><h3>Notification</h3>
+		<p>The content of a notification follows:</p>
+		<pre class="example" title="Notification"> {"spuid" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6","sequence" : 0, 
+"results" : {
+	"head":
+		{ "vars" : [ ... ] ,"link" : [ ... ] },
+	"addedresults": 
+		{"bindings" : [
+			{"a" : { ... } ,"b" : { ... }} ,
+			{"a" : { ... } ,"b" : { ... }}]} ,
+	"removedresults":
+		{"bindings" : []}}}</pre>
+		
+		<p>The value of <code>spuid</code> member is the URI ([[!RFC3986]]) of the subscription who generates the notification, the value of the <code>sequence</code> member is
+		a number (incremented by one at every new notification of the same SPUID) and the value of the <code>results</code> member is an object with three keys: <code>head</code>, <code>addedresults</code> and <code>removedresults</code>. 
+		With reference to the SPARQL 1.1 Query Results JSON format ([[sparql11-results-json]]), the <code>head</code> key corresponds to the 
+		<a href="https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/#select-head">head member in SPARQL 1.1 JSON format</a> 
+		while both the <code>addedresults</code> and <code>removedresults</code> keys correspond to 
+		the <a href="https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/#select-results">results member in SPARQL 1.1 JSON format</a>.</p>
+
+	</section>
+    </section>
+    
+    <section id="SPARQL11SEProtocol"><h2>SPARQL 1.1 SE Protocol</h2>     
+
+	<p>The SPARQL 1.1 Security Event Protocol has been with the following aims:</p>
+	<ul>
+		<li>
+		Extending the SPARQL 1.1 Protocol [[sparql11-protocol]] to support SPARQL subscriptions
+    	</li>
+    	<li>
+		Providing clients authentication based on OAuth 2.0 [[!RFC6749]]
+    	</li>
+    	<li>
+		Providing data encryption, server authentication and message integrity 
+    	</li>
+	</ul>
+    
+    <section id="Implementation"><h3>Implementation</h3>
+
+<p>On one hand, every SPARQL 1.1 SE Protocol implementation MUST transparently support the HTTP methods provided by the [[sparql11-protocol]] to
+implement the query and update primitives. On the other hand, subscriptions need a two-way communication between subscribers 
+and the SEPA Engine. It is RECOMMENDED that a SEPA Engine provides this kind of communication using Websockets [[!RFC6455]]. </p>
+	</section>
+	
+	<section id="Security"><h3>Security</h3>
+<p>Data encryption, server authentication and message integrity SHOULD by provided by [[!RFC5246]]. HTTPS [[!RFC2818]] and WSS [[!RFC6455]] 
+protocols MUST be supported by any SEPA Engine implementation. The SEPA security mechanism conforms with the 
+<a href="http://w3c.github.io/wot/current-practices/wot-practices.html#security-mechanisms">security mechanisms proposed by the Web of Things interest group</a>.</p>
+ 
+	<section id="Registration"><h4>Registration</h4>
+<p>Registration allows a client to obtain the credentials to be used to request (or renew) a JSON Web Token [[!RFC7519]]. Every SEPA implementation
+MUST support the <a href="https://tools.ietf.org/html/rfc6749#section-1.3.4 client credentials">client credentials</a> authorization grant.
+Other authorization grants MAY be supported. To obtain the credentials, a client need a application specific <code>client_identity</code>. In
+general the <code>client_identity</code> MAY correspond to the device serial number, the MAC address, the Electronic Product Code or
+any other sort of identifier defined by the application. For the scope of this document, registration can be done once. Multiple registration
+requests are not allowed. Application specific registration mechanisms MAY be implemented. An example of a client registration request follows:</p>
+
+<pre class="example" title="Registration request">
+<b>Request</b> 
+POST /oauth/register HTTPS/1.1
+
+<b>Request headers</b> 
+Content-Type: application/json 
+Accept: application/json
+
+<b>Request body</b>
+{ 
+"client_identity": "<code>68:a8:6d:1a:9c:04</code>", 
+"grant_types": ["client_credentials"] 
+}
+</pre>
+
+<p>A SEPA Engine response example follows:</p>
+
+<pre class="example" title="Registration response">
+{"authorized": true,
+"client_id":"<code>5b60a155-bada-4499-bc6f-26b4d37bc1ef</code>",
+"client_secret":"<code>40e18d77-421c-48ce-a44a-14da1238e923</code>",
+"signature":
+	{"kty":"RSA",
+	"e":"AQAB",
+	"x5t":"...",
+	"kid":"sepacertificate",
+	"x5c":["..."],
+	"n":"..."}}
+</pre>	
+
+<p>All SEPA implementation MUST support this JSON response. The <code>authorized</code> key is	a boolean (true or false) indicating the
+registration result. This key MUST be present. If the value of <code>authorization</code> is true, the JSON object contains 
+the client credentials (<code>client_id</code> and <code>client_secret</code>) and the <code>signature</code> that SHALL be used
+to verify the JWT on the client side.</p>
+	
+	</section>
+	
+	<section id="Authentication"><h4>Authentication</h4>
+<p>Once a client registered and holds the credentials, it can request a JWT by sending a request like the following:</p>
+
+<pre class="example" title="Token request">
+<b>Request</b> 
+POST /oauth/token HTTPS/1.1
+
+<b>Request headers</b> 
+Content-Type: application/x-www-form-urlencoded 
+Accept: application/json
+Authorization: Basic <code>NWI2MGExNTUtYmFkYS00NDk5LWJjNmYtMjZiNGQzN2JjMWVmOjQwZTE4ZDc3LTQyMWMtNDhjZS1hNDRhLTE0ZGExMjM4ZTkyMw==</code>
+</pre>
+
+<p>The <code>authorization</code> header uses the "basic" authentication scheme [[!RFC2671]] with value the base64 encoding [[!RFC4648]] of 
+the string <code>client_id:client_secret</code> (e.g., "5b60a155-bada-4499-bc6f-26b4d37bc1ef:40e18d77-421c-48ce-a44a-14da1238e923").
+A SEPA Engine implementation MUST respond to a token request with a JSON object like the following:</p>
+<pre class="example" title="Token response">
+{"access_token":"<code>eyJhbGciOiJSUzI1NiJ9.
+eyJzdWIiOiJTRVBBRW5naW5lIiwiYXVkIjpbImh0dHBzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6ODQ0M
+1wvc3BhcnFsIiwid3NzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6OTQ0M1wvc3BhcnFsIl0sIm5iZiI6MT
+Q5MTAzMzQ4MjI2MiwiaXNzIjoiaHR0cHM6XC9cL3dvdC5hcmNlcy51bmliby5pdCIsImV4cCI6MTQ5MTA
+zNzA4MjI2MiwiaWF0IjoxNDkxMDMzNDgyMjYyLCJqdGkiOiJjZTIwZmM3NC05NWU1LTQ2NzEtYTllOS1k
+MjMwZmE4NTlhMTQ6NjhhMmYwOWQtN2E4NS00YzU1LTgxOWUtZWU1YWRhYjgxNDI1In0.IwTisstsZhJVu
+Guhes4s9GE6sikh0rPtJg4QtY1DFT3OZ3WDF05OCwsBCe6dkNOn__68-e_9cEoiFY4s4KQ8heRQHpyRuD
+QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</code>",
+"token_type":"bearer",
+"expires_in":3600,
+"authorized": true,
+"reason": "the reason of authorization denial"}
+</pre>
+<p>The JSON object MUST contain the <code>authorized</code> boolean key. If the value of <code>authorized</code> member is <code>false</code>, 
+the response MUST contain the <code>reason</code> key whose value describe the reason of authorization denial, 
+otherwise the following keys MUST be present: <code>access_token</code> is the JWT,
+<code>token_type</code> to specify the token type (i.e., the default is <code>bearer</code>) and
+<code>expires_in</code> as the number of seconds after which the token will expire. Once a token is expired, the client
+can request a new token by using its credentials. Requesting a token while the current one is not expired generates an error.</p>
+
+	</section>
+	
+	<section id="Access"><h4>Access</h4>
+<p>HTTPS requests (i.e., for updates and queries) MUST include the <code>authorization</code> header as follows:</p>
+<pre class="example" title="HTTP access ">
+<b>Authorization: Bearer </b><code>eyJhbGciOiJSUzI1NiJ9.
+eyJzdWIiOiJTRVBBRW5naW5lIiwiYXVkIjpbImh0dHBzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6ODQ0M
+1wvc3BhcnFsIiwid3NzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6OTQ0M1wvc3BhcnFsIl0sIm5iZiI6MT
+Q5MTAzMzQ4MjI2MiwiaXNzIjoiaHR0cHM6XC9cL3dvdC5hcmNlcy51bmliby5pdCIsImV4cCI6MTQ5MTA
+zNzA4MjI2MiwiaWF0IjoxNDkxMDMzNDgyMjYyLCJqdGkiOiJjZTIwZmM3NC05NWU1LTQ2NzEtYTllOS1k
+MjMwZmE4NTlhMTQ6NjhhMmYwOWQtN2E4NS00YzU1LTgxOWUtZWU1YWRhYjgxNDI1In0.IwTisstsZhJVu
+Guhes4s9GE6sikh0rPtJg4QtY1DFT3OZ3WDF05OCwsBCe6dkNOn__68-e_9cEoiFY4s4KQ8heRQHpyRuD
+QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</code>
+</pre>
+<p>WSS requests (i.e., subscribes and unsubscribes) MUST include 
+the <code>authorization</code> member as shown in <a href='#SubscribeRequest'></a>
+and <a href='#UnsubscribeRequest'></a></p>
+	</section>
+	
+	</section>
+	
+	<section id="ErrorResponses"><h3>Error responses</h3>
+	TBD
+	</section>
+    </section>
+    
+    <!-- APPENDIX -->
+    <section class="appendix">
+
+      <!-- ACKNOWLEDGEMENTS -->
+      <h2>Acknowledgements</h2>
+
+      <p>
+	Authors would like to thanks the Advanced Research Center on Electronic Systems (ARCES) of the University of Bologna.
+      </p>
+
+    </section>
+
+
+  </body>
+
+</html>
