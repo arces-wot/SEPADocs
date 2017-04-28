@@ -143,11 +143,12 @@
 	</section>
 	
 	<section id ="SubscribeResponse"><h3>Subscribe response</h3>
-		<p>Every SEPA implementation MUST respond to a subscription request with the following message:</p>
+		<p>If the subscribe request is successfully processed, every SEPA implementation MUST respond with the following message:</p>
 		<pre class="example" title="Subscribe response">
 {"subscribed" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6","alias":"All"}</pre>
 		<p>The value of the <code>subscribed</code> member is an URI ([[!RFC3986]]). It is used to identify the corresponding notifications.
 		The <code>alias</code> member has the same value of the subscribe request <code>alias</code> member value (if present). </p>
+		<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a></p>
 	</section>
 	
 	<section id ="UnsubscribeRequest"><h3>Unsubscribe request</h3>
@@ -164,6 +165,7 @@
 		<p>A SEPA Engine implementation MUST reply to a unsubscribe request with the following message:</p>
 		<pre class="example" title="Unsubscribe response">
 {"unsubscribed" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6"}</pre>
+<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a></p>
 	</section>
 	
 	<section id="Notification"><h3>Notification</h3>
@@ -226,7 +228,7 @@ requests are not allowed. Application specific registration mechanisms MAY be im
 
 <pre class="example" title="Registration request">
 <b>Request</b> 
-POST /oauth/register HTTPS/1.1
+POST https://wot.arces.unibo.it:8443/oauth/register
 
 <b>Request headers</b> 
 Content-Type: application/json 
@@ -254,11 +256,11 @@ Accept: application/json
 	"n":"..."}}
 </pre>	
 
-<p>All SEPA implementation MUST support this JSON response. The <code>authorized</code> key is	a boolean (true or false) indicating the
+<p>All SEPA implementations MUST support this JSON response. The <code>authorized</code> key is	a boolean (true or false) indicating the
 registration result. This key MUST be present. If the value of <code>authorization</code> is true, the JSON object contains 
 the client credentials (<code>client_id</code> and <code>client_secret</code>) and the <code>signature</code> that SHALL be used
 to verify the JWT on the client side.</p>
-	
+	<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a></p>
 	</section>
 	
 	<section id="Authentication"><h4>Authentication</h4>
@@ -266,7 +268,7 @@ to verify the JWT on the client side.</p>
 
 <pre class="example" title="Token request">
 <b>Request</b> 
-POST /oauth/token HTTPS/1.1
+POST https://wot.arces.unibo.it:8443/oauth/token
 
 <b>Request headers</b> 
 Content-Type: application/x-www-form-urlencoded 
@@ -297,11 +299,11 @@ otherwise the following keys MUST be present: <code>access_token</code> is the J
 <code>token_type</code> to specify the token type (i.e., the default is <code>bearer</code>) and
 <code>expires_in</code> as the number of seconds after which the token will expire. Once a token is expired, the client
 can request a new token by using its credentials. Requesting a token while the current one is not expired generates an error.</p>
-
+<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a></p>
 	</section>
 	
 	<section id="Access"><h4>Access</h4>
-<p>HTTPS requests (i.e., for updates and queries) MUST include the <code>authorization</code> header as follows:</p>
+<p>HTTPS requests (e.g., https://wot.arces.unibo.it:8443/sparql) MUST include the <code>authorization</code> header as follows:</p>
 <pre class="example" title="HTTP access ">
 <b>Authorization: Bearer </b><code>eyJhbGciOiJSUzI1NiJ9.
 eyJzdWIiOiJTRVBBRW5naW5lIiwiYXVkIjpbImh0dHBzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6ODQ0M
@@ -312,15 +314,49 @@ MjMwZmE4NTlhMTQ6NjhhMmYwOWQtN2E4NS00YzU1LTgxOWUtZWU1YWRhYjgxNDI1In0.IwTisstsZhJV
 Guhes4s9GE6sikh0rPtJg4QtY1DFT3OZ3WDF05OCwsBCe6dkNOn__68-e_9cEoiFY4s4KQ8heRQHpyRuD
 QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</code>
 </pre>
-<p>WSS requests (i.e., subscribes and unsubscribes) MUST include 
+<p>WSS requests (e.g., wss://wot.arces.unibo.it:9443/sparql) MUST include 
 the <code>authorization</code> member as shown in <a href='#SubscribeRequest'></a>
 and <a href='#UnsubscribeRequest'></a></p>
+<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a></p>
 	</section>
 	
 	</section>
 	
 	<section id="ErrorResponses"><h3>Error responses</h3>
-	TBD
+ <p>In case of error, a SEPA Engine implementation SHOULD response with a JSON object like the following:</p>
+ <pre class="example" title="Error response">
+ { "body" : "Internal Server Error: SPARQL endpoint not found" , "code" : 500}
+ </pre>	
+	<p> If applies, the use of use of HTTP status codes [[!RFC2616]] is RECOMMENDED. As reference, a list of
+	status codes follows.</p> 
+	<pre>
+400 Bad Request
+401 Unauthorized
+402 Payment Required
+403 Forbidden
+404 Not Found
+405 Method Not Allowed
+406 Not Acceptable
+407 Proxy Authentication Required
+408 Request Timeout
+409 Conflict
+410 Gone
+411 Length Required
+412 Precondition Failed
+413 Request Entity Too Large
+414 Request-URI Too Long
+415 Unsupported Media Type
+416 Requested Range Not Satisfiable
+417 Expectation Failed
+
+500 Internal Server Error
+501 Not Implemented
+502 Bad Gateway
+503 Service Unavailable
+504 Gateway Timeout
+505 HTTP Version Not Supported
+	</pre>
+
 	</section>
     </section>
     
