@@ -16,9 +16,9 @@ This repository is maintained by:
 
 Name | Email | On Github
 ---- | ----- | ---------
-Fabio Viola | fabio <dot> viola <at> unibo <dot> it | @desmovalvo
-Francesco Antoniazzi | francesco <dot> antoniazzi <at> unibo <dot> it | @fr4ncidir
-Luca Roffia | luca <dot> roffia <at> unibo <dot> it | @lroffia
+Fabio Viola | fabio DOT viola AT unibo DOT it | @desmovalvo
+Francesco Antoniazzi | francesco DOT antoniazzi AT unibo DOT it | @fr4ncidir
+Luca Roffia | luca DOT roffia AT unibo DOT it | @lroffia
 
 
 
