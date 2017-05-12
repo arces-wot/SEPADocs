@@ -80,7 +80,7 @@
       </p>
       
       <section id="conventions"><h3>Document conventions</h3>
-      When this document uses the words must, must not, should, should not, may and recommended, and the words appear as emphasized text, they must be interpreted as described in RFC 2119 [[!RFC2119]].
+      When this document uses the words MUST, MUST NOT, SHOULD, SHOULD NOT, MAY and RECOMMENDED, and the words appear as emphasized text, they must be interpreted as described in RFC 2119 [[!RFC2119]].
       </section>
 	
 	  <section id="terms"><h3>Terminology</h3>
@@ -193,7 +193,7 @@
     
     <section id="SPARQL11SEProtocol"><h2>SPARQL 1.1 SE Protocol</h2>     
 
-	<p>The SPARQL 1.1 Security Event Protocol has been with the following aims:</p>
+	<p>The SPARQL 1.1 Security Event Protocol aims at:</p>
 	<ul>
 		<li>
 		Extending the SPARQL 1.1 Protocol [[sparql11-protocol]] to support SPARQL subscriptions
@@ -209,8 +209,46 @@
     <section id="Implementation"><h3>Implementation</h3>
 
 <p>On one hand, every SPARQL 1.1 SE Protocol implementation MUST transparently support the HTTP methods provided by the [[sparql11-protocol]] to
-implement the query and update primitives. On the other hand, subscriptions need a two-way communication between subscribers 
-and the SEPA Engine. It is RECOMMENDED that a SEPA Engine provides this kind of communication using Websockets [[!RFC6455]]. </p>
+transport the SPARQL 1.1 Queries [[sparql11-query]] and Updates [[sparql11-update]]. On the other hand, subscriptions need a two-way communication between subscribers 
+and the SEPA Engine. A SEPA Engine is RECOMMENDED to provide this kind of communication by using Websockets [[!RFC6455]]. </p>
+	
+	<section id="SPARQL11Query"><h4>SPARQL 1.1 Query</h4>
+	<p>SPARQL 1.1 Queries [[sparql11-query]] SHOULD be supported transparently</p>
+	<p> A SEPA Engine is RECOMMENDED to support the POST method of the SPARQL 1.1 Protocol[[sparql11-protocol]] and the SPARQL 1.1 Query Results JSON format ([[sparql11-results-json]]).</p>
+	<pre class="example" title="SPARQL 1.1 POST query">
+	<b>Request</b> 
+	POST http://wot.arces.unibo.it:8000/sparql
+
+	<b>Request headers</b> 
+	Content-Type: application/sparql-query
+	Accept: application/sparql-results+json
+
+	<b>Request body</b>
+	select * where {?vaimee ?deda ?didi}
+	</pre>
+	<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
+	</section>
+	
+	<section id="SPARQL11Update"><h4>SPARQL 1.1 Update</h4>
+	<p>SPARQL 1.1 Updates [[sparql11-update]] SHOULD be supported transparently</p>
+	<p> A SEPA Engine is RECOMMENDED to support the POST method of the SPARQL 1.1 Protocol[[sparql11-protocol]]. A SEPA engine MUST provide the results of a query using the same format used by 
+	error responses (<a href='#ErrorResponses'></a>)</p>
+	<pre class="example" title="SPARQL 1.1 POST update">
+	<b>Request</b> 
+	POST http://wot.arces.unibo.it:8000/sparql 
+
+	<b>Request headers</b> 
+	Content-Type: application/sparql-update
+	Accept: application/sparql-results+json
+
+	<b>Request body</b>
+	prefix wot:<http://wot.arces.unibo.it/wot#>
+	insert data {wot:Subject wot:Predicate "ვაიმეე"}
+	</pre>
+	
+	<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
+	</section>
+	
 	</section>
 	
 	<section id="Security"><h3>Security</h3>
@@ -244,8 +282,7 @@ Accept: application/json
 <p>A SEPA Engine response example follows:</p>
 
 <pre class="example" title="Registration response">
-{"authorized": true,
-"client_id":"<code>5b60a155-bada-4499-bc6f-26b4d37bc1ef</code>",
+{"client_id":"<code>5b60a155-bada-4499-bc6f-26b4d37bc1ef</code>",
 "client_secret":"<code>40e18d77-421c-48ce-a44a-14da1238e923</code>",
 "signature":
 	{"kty":"RSA",
@@ -256,11 +293,10 @@ Accept: application/json
 	"n":"..."}}
 </pre>	
 
-<p>All SEPA implementations MUST support this JSON response. The <code>authorized</code> key is	a boolean (true or false) indicating the
-registration result. This key MUST be present. If the value of <code>authorization</code> is true, the JSON object contains 
-the client credentials (<code>client_id</code> and <code>client_secret</code>) and the <code>signature</code> that SHALL be used
+<p>All SEPA implementations MUST support this JSON response. The JSON object contains 
+the client credentials (<code>client_id</code> and <code>client_secret</code>) and the <code>signature</code> . The latter SHALL be used
 to verify the JWT on the client side.</p>
-	<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a></p>
+	<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
 	</section>
 	
 	<section id="Authentication"><h4>Authentication</h4>
@@ -289,17 +325,13 @@ MjMwZmE4NTlhMTQ6NjhhMmYwOWQtN2E4NS00YzU1LTgxOWUtZWU1YWRhYjgxNDI1In0.IwTisstsZhJV
 Guhes4s9GE6sikh0rPtJg4QtY1DFT3OZ3WDF05OCwsBCe6dkNOn__68-e_9cEoiFY4s4KQ8heRQHpyRuD
 QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</code>",
 "token_type":"bearer",
-"expires_in":3600,
-"authorized": true,
-"reason": "the reason of authorization denial"}
+"expires_in":3600}
 </pre>
-<p>The JSON object MUST contain the <code>authorized</code> boolean key. If the value of <code>authorized</code> member is <code>false</code>, 
-the response MUST contain the <code>reason</code> key whose value describe the reason of authorization denial, 
-otherwise the following keys MUST be present: <code>access_token</code> is the JWT,
+<p> The JSON response MUST contain the following keys: <code>access_token</code> is the JWT,
 <code>token_type</code> to specify the token type (i.e., the default is <code>bearer</code>) and
 <code>expires_in</code> as the number of seconds after which the token will expire. Once a token is expired, the client
 can request a new token by using its credentials. Requesting a token while the current one is not expired generates an error.</p>
-<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a></p>
+<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
 	</section>
 	
 	<section id="Access"><h4>Access</h4>
@@ -317,7 +349,7 @@ QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</c
 <p>WSS requests (e.g., wss://wot.arces.unibo.it:9443/sparql) MUST include 
 the <code>authorization</code> member as shown in <a href='#SubscribeRequest'></a>
 and <a href='#UnsubscribeRequest'></a></p>
-<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a></p>
+<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
 	</section>
 	
 	</section>
@@ -328,7 +360,7 @@ and <a href='#UnsubscribeRequest'></a></p>
  { "body" : "Internal Server Error: SPARQL endpoint not found" , "code" : 500}
  </pre>	
 	<p> If applies, the use of use of HTTP status codes [[!RFC2616]] is RECOMMENDED. As reference, a list of
-	status codes follows.</p> 
+	common HTTP status codes follows:</p> 
 	<pre>
 400 Bad Request
 401 Unauthorized
@@ -356,7 +388,7 @@ and <a href='#UnsubscribeRequest'></a></p>
 504 Gateway Timeout
 505 HTTP Version Not Supported
 	</pre>
-
+<p>Implementation specific error codes MAY also be used.</p>
 	</section>
     </section>
     
