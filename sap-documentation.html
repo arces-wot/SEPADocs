@@ -113,36 +113,40 @@
 	the ports (one for a secure connection, the other for an
 	unsecure one) and the path to be appended must be known. Then
 	the JSON object passed to the <code>"parameters"</code> key
-	contains the keys <code>"host"</code> (without the
-	leading <code>http://</code> or <code>https://</code>), the
-	keys <code>"updatePort"</code> and <code>"updateSecurePort"</code>
-	and <code>"path"</code>. Values of <code>"updatePort"</code>
-	and <code>"updateSecurePort"</code> are numbers as defined in
-	RFC7159 [[!RFC7159]].
+	contains the keys <code>"ports"</code>, <code>"paths"</code>
+	and <code>"host"</code>. 
       </p>	
 
       <p>
-	Subscriptions play a crucial role in real-time
-	applications. SEPA platform supports using the SPARQL Query
-	[[rdf-sparql-query]] language to subscribe to
+	Ports MUST be specified using a JSON object with
+	keys <code>"ws"</code>, <code>"wss"</code>, <code>"http"</code>
+	and <code>"https"</code> (for secure updates and
+	queries). Values for such keys are numbers as defined in
+	RFC7159 [[!RFC7159]].
+	While <code>"http"</code>/<code>"https"</code> ports are
+	reserved for unsecure/secure updates and
+	queries, <code>"ws"</code>/<code>"wss"</code> handle
+	unsecure/secure subscriptions. Subscriptions play a crucial
+	role in real-time applications. SEPA platform supports using
+	the SPARQL Query [[rdf-sparql-query]] language to subscribe to
 	events. Subscriptions use the websocket interface of SEPA
-	platform. In order to configure access to websocket interface
-	the ports for unsecure and secure connection must be specified
-	as numbers to the keys <code>"subscribePort"</code>
-	and <code>"subscribeSecurePort"</code>.
+	platform.
+      </p>
+
+      <p>
+	The <code>"paths"</code> keys is bound to a JSON object
+	containing the same keys used to specify the connection port
+	plus <code>"register"</code> and <code>"token"</code>.
       </p>
 
       <p>
 	An example of this configuration section is reported below:
 
-	<pre class="example">"parameters" : { 
-    "host":"my.sepa.host.com",
-    "path":"/sparql",
-    "updateSecurePort":8443, 
-    "updatePort":8000,
-    "subscribeSecurePort":9443, 
-    "subscribePort":9000	    
-}</pre>
+	<pre class="example">"parameters":{
+    "ports":{"ws":9000,"wss":9443,"http":8000,"https":8443},
+    "paths":{"http":"/sparql","https":"/sparql","ws":"/sparql","wss":"/secure/sparql","register":"/oauth/register","token":"/oauth/token"}, 
+    "host": "wot.arces.unibo.it"
+ }</pre>
       </p>
 
       <p>
@@ -310,10 +314,11 @@
 
       <pre class="example">
 {
-    "parameters" : { "path":"sparql",
-		     "subscribeSecurePort":9443, "subscribePort":9000,
-		     "updateSecurePort":8443, "updatePort":8000,
-		     "host":"my.sepa.host.com"},
+    "parameters":{
+        "ports":{"ws":9000,"wss":9443,"http":8000,"https":8443},
+        "paths":{"http":"/sparql","https":"/sparql","ws":"/sparql","wss":"/secure/sparql","register":"/oauth/register","token":"/oauth/token"}, 
+        "host": "wot.arces.unibo.it"
+    },
     "namespaces" : { "iot":"http://www.arces.unibo.it/iot#",
 		     "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#"},
     "updates": {
