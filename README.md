@@ -1,5 +1,5 @@
 # Sepa Documentation
-This is the official documentation for the **SEPA** project. Every document is an html page produced with [respec](https://github.com/w3c/respec/wiki). SEPA stands for *Semantic Event Processing Architecture* and represent the main research area of the [**Web of Things**](http://wot.arces.unibo.it) working group of the [**ARCES**](http://www.arces.unibo.it) (*Advanced Research Center on Electronic Systems*) department of the [**University of Bologna**](http://www.unibo.it).
+This is the official documentation for the **SEPA** project. Every document is an html page produced with [respec](https://github.com/w3c/respec/wiki). SEPA stands for *SPARQL Event Processing Architecture* and represent the main research area of the [**Web of Things**](http://wot.arces.unibo.it) working group of the [**ARCES**](http://www.arces.unibo.it) (*Advanced Research Center on Electronic Systems*) department of the [**University of Bologna**](http://www.unibo.it).
 
 ## Status of this repository
 This repository is active and frequently updated. Currently we provide the following documents:
