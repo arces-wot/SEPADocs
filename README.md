@@ -4,8 +4,8 @@ This is the official documentation for the **SEPA** project. Every document is a
 ## Status of this repository
 This repository is active and frequently updated. Currently we provide the following documents:
 
-* **[Semantic Application Profile](sap-documentation.html)** 
-* **SPARQL EPA** (*SPARQL Event Processing Architecture*)
+* **JSAP** (*JSON SPARQL Application Profile*) 
+* **SEPA** (*SPARQL Event Processing Architecture*)
 * **respec** (how we use it to produce the doc)
 
 ## Read the doc
