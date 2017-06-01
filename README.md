@@ -6,6 +6,8 @@ This repository is active and frequently updated. Currently we provide the follo
 
 * **JSAP** (*JSON SPARQL Application Profile*) 
 * **SEPA** (*SPARQL Event Processing Architecture*)
+* **SPARQL 1.1 Secure Event Protocol**
+* **SPARQL Subscription Language**
 * **respec** (how we use it to produce the doc)
 
 ## Read the doc
