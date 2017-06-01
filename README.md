@@ -4,11 +4,12 @@ This is the official documentation for the **SEPA** project. Every document is a
 ## Status of this repository
 This repository is active and frequently updated. Currently we provide the following documents:
 
-* **JSAP** (*JSON SPARQL Application Profile*) 
 * **SEPA** (*SPARQL Event Processing Architecture*)
 * **SPARQL 1.1 Secure Event Protocol**
 * **SPARQL Subscription Language**
-* **respec** (how we use it to produce the doc)
+* **JSAP** (*JSON SPARQL Application Profile*) 
+
+The **respec** document (how we use it to produce the doc) can be used by who want to contribute to our effort of writing W3C Recommendation drafts for the SEPA project.
 
 ## Read the doc
 To read the documents all you need is a web browser. Clone this repository and open the html files in your browser.
