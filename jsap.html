@@ -1,0 +1,394 @@
+<html>
+
+<head>
+<title>JSON SPARQL Application Profile (JSAP)</title>
+
+<!-- RESPEC CONFIGURATION -->
+<script
+	src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js"
+	class="remove"></script>
+<script class='remove'>
+      var respecConfig = {
+      
+        // document info
+        specStatus:           "ED",
+        shortName:            "sap",      
+        copyrightStart:       "2017",
+        edDraftURI:           "http://github.com/desmovalvo/sap-documentation",
+        extraCSS:             ["css/respec.css"],
+      
+        // editors
+        editors:  [{ 
+          name: "Fabio Viola", 
+          url: "http://wot.arces.unibo.it",
+          mailto: "fabio.viola@unibo.it",
+          company: "ARCES", 
+          companyURL: "http://wot.arces.unibo.it" 
+        },
+        { 
+          name: "Luca Roffia", 
+          url: "http://wot.arces.unibo.it",
+          mailto: "luca.roffia@unibo.it",
+          company: "ARCES", 
+          companyURL: "http://wot.arces.unibo.it" 
+        }],
+      
+        // WG
+        wg:           "Web of Things working group of the ARCES laboratory",
+        wgURI:        "http://wot.arces.unibo.it/",
+      };
+    </script>
+
+</head>
+
+<body>
+
+	<!-- ABSTRACT -->
+	<section id="abstract">This document describes the JSON
+		SPARQL Application Profile (JSAP) needed to describe a semantic
+		application for the Web of Things. It uses JSON as the default
+		encoding system.</section>
+
+	<!-- STATUS OF THIS DOCUMENT -->
+	<section id="sotd">This is a first draft.</section>
+
+	<!-- INTRODUCTION -->
+	<section>
+
+		<h2>The JSON SPARQL Application Profile</h2>
+
+		<p>The JSON SPARQL Application Profile (JSAP) is a document
+			containing the full description of a Web of Thing application for the
+			SPARQL Event Processing Architecture (SEPA) platform.</p>
+
+		<p>The semantic application profile, in order to fully describe an
+			application, MUST contain the connection parameters needed by an
+			application to interact with a SEPA instance. Since a WoT application
+			is made up of producers, consumers and aggregators, the JSAP file
+			MUST contain the SPARQL updates, SPARQL queries and SPARQL
+			subscriptions performed by every application component. A JSAP file
+			MAY contain a list of prefixes to be appended to SPARQL
+			updates/queries/subscriptions.</p>
+
+		<p>A SAP file MUST be a JSON document compliant with RFC 7159
+			[[!RFC7159]].</p>
+
+		<p>
+			The JSAP file SHOULD NOT be modified at runtime, as it describes the
+			application scope. The need of runtime modifications of the JSAP file
+			is to be considered as a bad practice.
+			<!--Instead, the Authors suggest the use of more than one JSAP file or, of course, the review of the SPARQL code.-->
+		</p>
+
+
+	</section>
+
+	<!-- CORE OF THE DOCUMENT -->
+	<section>
+
+		<h2>Connection Parameters</h2>
+
+		<p>
+			The section named
+			<code>"parameters"</code>
+			defines all the parameters needed to interact with an instance of the
+			SPARQL Event Processing Architecture (SEPA). In this section are
+			defined parameters for the interaction with the HTTP interface (used
+			by SPARQL updates and SPARQL queries) and for the Websocket interface
+			(needed for SPARQL subscriptions). The value for the key
+			<code>"parameters"</code>
+			is a JSON object: its keys and values are specified in the next
+			subsections.
+		</p>
+		<p>An example of this configuration section is reported below:
+		<pre class="example">"parameters": {
+		"host": "wot.arces.unibo.it",
+		"path": "/sparql",
+		"scheme": "http",
+		"port": 8000,
+		"subscribe": {
+			"scheme": "ws",
+			"port": 9000
+		},
+		"secureQuery": {
+			"port": 8443,
+			"scheme": "https"
+		},
+		"secureUpdate": {
+			"port": 8443,
+			"scheme": "https"
+		},
+		"secureSubscribe": {
+			"scheme": "wss",
+			"port": 9443,
+			"path": "/secure/sparql"
+		},
+		"authorizationServer": {
+			"port": 8443,
+			"scheme": "https",
+			"register": "/oauth/register",
+			"requestToken": "/oauth/token"
+		}
+ }</pre>
+		</p>
+
+		<p>
+			As a general rule, the definition of a specific key (e.g., path) can
+			be overwritten by a subsequent one (e.g., with a deeper nesting). For
+			example, the default
+			<code>"path"</code>
+			key (e.g, /sparql) MAY be different from the one used by secure
+			subscriptions (e.g., /secure/sparql).
+		</p>
+
+		<p>A JSAP file MUST contain the following keys.
+		<ul>
+			<li><code>"host"</code>: the host (e.g., wot.arces.unibo.it) where the SEPA engine is
+				running </li>
+			<li><code>"port"</code>: the default port (e.g., 8000) where the SEPA engine is listening for SPARQL 1.1 primitives (i.e., updates and queries). 
+			Values for such keys are numbers as
+			defined in RFC7159 [[!RFC7159]]</li>
+			<li><code>"path"</code>: the default path (e.g., /sparql) where the SEPA engine is listening for SPARQL 1.1 primitives (i.e., updates and queries). </li>
+			<li><code>"scheme"</code>: the default scheme (e.g., http) used by SEPA. Values for such keys are numbers as
+			defined in RFC7159 [[!RFC7159]]. 
+		</ul>
+		</p>
+
+		<p>
+		Accessing the SEPA features (i.e., subscriptions and secure primitive) is granted by the following keys:
+		<ul>>
+		<li><code>"subscribe"</code>: allows to specify the parameters needed by subscriptions</li>
+		<li><code>"secureUpdate"</code>: allows to specify the parameters needed by secure updates</li>
+		<li><code>"secureQuery"</code>: allows to specify the parameters needed by secure queries</li>
+		<li><code>"secureSubscribe"</code>: allows to specify the parameters needed by secure subscriptions</li>
+		</ul>
+		Each of these keys MAY be used to overwrite the value of one or more of the defaults specified by <code>"scheme"</code>, <code>"port"</code> and <code>"path"</code>. 
+		</p>
+		
+		<p>As described in </p>
+		"SECURITY":{
+		"CLIENT_ID":"TP6Y7BTPKGSHVY1M5XSP6O7LB134S5W4X8DQN0V1N0TBEK828NZGX7R39L65RPC9",
+		"CLIENT_SECRET":"SVEMN1CMY5JNHQ6DRWFADKSHVTQ5T28WTS+EMYR2ZZ7HKQDIDN/YEMY+45X+EPFU",
+		"JWT":"XABTQWOH8RJJK1FYKJ78J8H8I2PCWMAUGFJ4J6NMD+1JVSOIIPV4PCV8BH+8WJLJ2YRAVAGE8/TZ\NDZJIZ2JDRP8BHKUNZFHGX6N1/1MGMVFKIHLHEMMCU0PLJ5UKOYWFB+TB98N1IPNO4G69LIA2YOR1\N5LSCBZIBBPPMKWF+XAR5TEDDHDZQK4N3VBS/E3TFL/YOHKFC9MW45S3MZ83OYDQAZPS2CFZOOKIH\NYDKJWFT7EIVL+RXJC4MVFR3PAVSZK5UCW8IT/0FKVSUW0MABOO4X49SDS+AHTONVUF67WNNPQJ2M\N1THTHV3DIR/WNN+8XJOVJWKWCPGP4T7NH7MOCFZZVNKTHR4HN3Q14VUWHYMVHZW3JOS06ELBPLJH\NIIRN6NF4SY6XXUJJUUBOKHSHZUTI22/VXA/HNOI2J3OBUPN3COX02/ZPMGSTIC1XKOMURQFIUR54\NVAMCQV6/TYH2JVHS2ZPEM0IHSTLTXUUXCQN/HIEETZSCXV8KC7GROW1Z6RIRAT2T644FVLMTSE18\N+SRH0MWX8XCUV3EXNGSZCBEHP3BHUE9H9NQMUFEHZT+WTKJZ11DG8EJOZLCCA5HHI2VH/EN1I3RN\NNUSQ64YKDBSMGQFXTDYSC8XEKZ4BGOLYQ4MYXBQ8WQ/Z+0DWLKW/ANEMP/N7Y9W6P8ONC+WPFXKA\NPLJGH8DBNJHTOKHRRD4CSRUX9UUDWD1JUF8FZD2AS7VTFR5JT80+P2OSSO3GIFNKVSWVAMSR78YL\NPMIESFXEJ0PUY664GOXC4M3HM4H2TWPS9PULXBQ8B38HVMWXCCK=",
+		"EXPIRES":"DSBUAXCGHRFQ2GGALQDUSQ==",
+		"TYPE":"XPRHEX2XHY+5IUXHPHIGMW==" }
+
+		<p>A SAP file SHOULD contain all of the above-mentioned keys.</p>
+
+	</section>
+
+	<section>
+		<h2>Namespaces</h2>
+
+		<p>
+			In a SAP file namespaces can be defined. Client-side APIs will take
+			the namespaces and prepend them to a SPARQL
+			update/query/subscription. In a SAP file namespaces are specified as
+			a JSON object assigned to the key
+			<code>"namespaces"</code>
+			. In this object every key represents a prefix, while the value is
+			the relative namespace.
+		</p>
+
+		<p>
+			In the following example the well known
+			<code>rdf</code>
+			and
+			<code>rdfs</code>
+			prefixes are defined in the SAP file:
+		<pre class="example">"namespaces" : {
+    "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs":"http://www.w3.org/2000/01/rdf-schema#"
+}</pre>
+		</p>
+
+	</section>
+
+	<section>
+		<h2>Updates</h2>
+
+		<p>
+			A SAP file includes a list of the SPARQL updates (see
+			[[RDF-SPARQL-UPDATE]]) performed by the application. The updates MUST
+			be specified as a JSON object passed to the
+			<code>"updates"</code>
+			key. In this object every key represent the friendly name of the
+			SPARQL update. The value is a JSON object in which the main key is
+			named
+			<code>"sparql"</code>
+			and contains the SPARQL code.
+		</p>
+
+		<p>
+			The following example shows the definition of a very basic SPARQL
+			update named
+			<code>INSERT_PERSON</code>
+			:
+		<pre class="example">
+"updates" : {
+  "INSERT_PERSON" : { "sparql":"INSERT DATA { &lt;http://ns#Person1&gt; rdf:type foaf:Person }" }
+}
+	</pre>
+
+		In a SPARQL update containing literals, quotes MUST be escaped.
+
+		</p>
+
+		<section>
+			<h3>Forced Bindings</h3>
+
+			<p>
+				The usefulness of a SAP profile consists in the ability to create
+				templates for SPARQL updates that can be fetched by the application
+				and modified at run-time to fit the actual need. For example a
+				producer that updates the value of a temperature sensor will only
+				need to fill a field in the template. Here is where the definition
+				of forced bindings comes in help. A forced binding enables the
+				developer to substitute a variable in a template with a custom
+				value. To define forced bindings for a SPARQL update, the key
+				<code>"forcedBindings"</code>
+				MUST be used. The value is a JSON object. The variable of a forced
+				binding is a key in that JSON object. Its value is again a JSON
+				object containing the keys
+				<code>"type"</code>
+				and
+				<code>"value"</code>
+				.
+				<code>"type"</code>
+				MUST be one of
+				<code>"uri"</code>
+				,
+				<code>"bnode"</code>
+				,
+				<code>"literal"</code>
+				.
+			</p>
+
+			<p>Now that forced bindings have been defined, we can write an
+				example of SPARQL update template. In the following example
+			<pre class="example">
+"ADD_PERSON":{
+"sparql":"INSERT DATA { ?person rdf:type iot:Person . ?person iot:hasName ?name }",
+    "forcedBindings": {
+        "person" : {"type":"uri", "value":""},
+        "name" : {"type":"literal", "value":""}
+    }
+}
+      </pre>
+			</p>
+		</section>
+
+	</section>
+
+	<section>
+		<h2>Subscriptions</h2>
+
+		<p>
+			Queries and persistent queries, named subscriptions, MUST be defined
+			in accord to SPARQL Query Language [[rdf-sparql-query]]. While a
+			SPARQL query MUST be sent over HTTP (or HTTPS), a SPARQL subscription
+			MUST be issued over Websocket (secure or unsecure). Both queries and
+			subscriptio-ns are defined using the
+			<code>"subscribes"</code>
+			key of the main JSON object. As for SPARQL updates, each
+			query/subscription has a friendly name, which is a key in the JSON
+			object assigned to the key
+			<code>"subscribes"</code>
+			. The JSON object describing a query/subscription MUST contain the
+			<code>"sparql"</code>
+			key.
+		</p>
+
+		<p>
+			In the following example a very simple
+			<code>"subscribe"</code>
+			section is presented. Only a SPARQL query/subscription related to the
+			whole knowledge-base is present. No forced bindings are defined.
+		<pre class="example">
+"subscribes" : {
+    "EVERYTHING" : {	
+        "sparql" : "SELECT ?s ?p ?o WHERE  { ?s ?p ?o }"
+    }
+}
+	</pre>
+
+		</p>
+
+		<section>
+			<h3>Forced Bindings</h3>
+
+			<p>
+				The JSON object of a SPARQL query/subscription MAY contain the keys
+				<code>"forcedBindings"</code>
+				. In that case the value of
+				<code>"forcedBindings"</code>
+				is a JSON object that MUST contain the keys
+				<code>"type"</code>
+				and
+				<code>"value"</code>
+				. The following example shows a template for a SPARQL
+				query/subscription containing forced bindings.
+			<pre class="example">
+"subscribes" : {
+    "tempSensor" : {	
+        "sparql" : "SELECT ?temp WHERE  { ?tempSens rdf:type iot:TempSensor . ?tempSens iot:hasValue ?temp }",
+        "forcedBindings" : {
+            "temp": {"type":"uri", "value":""}
+        }
+    }
+}	    
+	  </pre>
+
+			</p>
+		</section>
+
+	</section>
+
+	<section>
+		<h2>Example</h2>
+
+		In this section a Minimum Working Example (MWE) is presented.
+
+		<pre class="example">
+{
+    "parameters":{
+        "ports":{"ws":9000,"wss":9443,"http":8000,"https":8443},
+        "paths":{"http":"/sparql","https":"/sparql","ws":"/sparql","wss":"/secure/sparql","register":"/oauth/register","token":"/oauth/token"}, 
+        "host": "wot.arces.unibo.it"
+    },
+    "namespaces" : { "iot":"http://www.arces.unibo.it/iot#",
+		     "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#"},
+    "updates": {
+	"ADD_PERSON":{
+	    "sparql":"INSERT DATA { ?person rdf:type iot:Person . ?person iot:hasName ?name }",
+	    "forcedBindings": {
+		"person" : {"type":"uri", "value":""},
+		"name" : {"type":"literal", "value":""}}}
+    },    
+    "subscribes": {
+	"CLASS_INSTANCES":{
+	    "sparql":"SELECT ?s WHERE { ?s rdf:type ?class }",
+	    "forcedBindings": {
+		"class" : {"type":"uri", "value":""}}},
+	"EVERYTHING":{	
+	    "sparql":"SELECT ?s ?p ?o WHERE  { ?s ?p ?o }"}
+    }
+}	
+      </pre>
+
+	</section>
+
+	<!-- APPENDIX -->
+	<section class="appendix">
+
+		<!-- ACKNOWLEDGEMENTS -->
+		<h2>Acknowledgements</h2>
+		<p>Authors would like to thanks the Advanced Research Center on
+			Electronic Systems (ARCES) of the University of Bologna.</p>
+
+	</section>
+
+
+</body>
+
+</html>
