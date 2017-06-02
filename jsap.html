@@ -58,12 +58,12 @@
 		<h2>The JSON SPARQL Application Profile</h2>
 
 		<p>The JSON SPARQL Application Profile (JSAP) is a document
-			containing the full description of a Web of Things applicationbased on the
+			containing the full description of a Web of Things application based on the
 			SPARQL Event Processing Architecture (SEPA) platform.</p>
 
 		<p>The semantic application profile, in order to fully describe an
 			application, MUST contain the connection parameters needed by an
-			application to interact with a SEPA Engine instance. Since a WoT application
+			application to interact with a SEPA engine instance. Since a WoT application
 			is made up of <b>producers, consumers and aggregators</b>, the JSAP file
 			MUST contain the SPARQL updates and SPARQL queries used by the application component. A JSAP file
 			MAY contain a list of prefixes to be appended to SPARQL
@@ -85,13 +85,12 @@
 	<!-- CORE OF THE DOCUMENT -->
 	<section>
 
-		<h2>Connection Parameters</h2>
+		<h2>SEPA Engine connection parameters</h2>
 
 		<p>
 			The section named
 			<code>"parameters"</code>
-			defines all the parameters needed to interact with an instance of the
-			SPARQL Event Processing Architecture (SEPA). In this section are
+			defines the parameters needed to interact with a SEPA Engine instance. In this section are
 			defined parameters for the interaction with the HTTP interface (used
 			by SPARQL updates and SPARQL queries) and for the Websocket interface
 			(needed for SPARQL subscriptions). The value for the key
@@ -148,18 +147,17 @@
 			Values for such keys are numbers as
 			defined in RFC7159 [[!RFC7159]]</li>
 			<li><code>"path"</code>: the default path (e.g., /sparql) where the SEPA engine is listening for SPARQL 1.1 primitives (i.e., updates and queries). </li>
-			<li><code>"scheme"</code>: the default scheme (e.g., http) used by SEPA. Values for such keys are numbers as
+			<li><code>"scheme"</code>: the default scheme (e.g., http) used by the SEPA engine. Values for such keys are numbers as
 			defined in RFC7159 [[!RFC7159]]. 
 		</ul>
 		</p>
 
-		<p>
-		Accessing the SEPA features (i.e., subscriptions and secure primitive) is granted by the following keys:
+		<p>Access to the SEPA features (i.e., subscriptions and secure primitive) is granted by the following keys:
 		<ul>>
-		<li><code>"subscribe"</code>: allows to specify the parameters needed by subscriptions</li>
-		<li><code>"secureUpdate"</code>: allows to specify the parameters needed by secure updates</li>
-		<li><code>"secureQuery"</code>: allows to specify the parameters needed by secure queries</li>
-		<li><code>"secureSubscribe"</code>: allows to specify the parameters needed by secure subscriptions</li>
+		<li><code>"subscribe"</code>: contains subscriptions related parameters</li>
+		<li><code>"secureUpdate"</code>: contains sucure updates related parameters</li>
+		<li><code>"secureQuery"</code>: contains secure queries related parameters</li>
+		<li><code>"secureSubscribe"</code>: contains secure subscriptions related parameters</li>
 		</ul>
 		Each of these keys MAY be used to overwrite the value of one or more of the defaults specified by <code>"scheme"</code>, <code>"port"</code> and <code>"path"</code>. 
 		</p>
