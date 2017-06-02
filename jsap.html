@@ -159,8 +159,24 @@
 		<li><code>"secureQuery"</code>: contains secure queries related parameters</li>
 		<li><code>"secureSubscribe"</code>: contains secure subscriptions related parameters</li>
 		</ul>
-		Each of these keys MAY be used to overwrite the value of one or more of the defaults specified by <code>"scheme"</code>, <code>"port"</code> and <code>"path"</code>. 
-		</p>
+		Each of these keys MAY be used to overwrite the value of one or more of the defaults specified by <code>"scheme"</code>, <code>"port"</code> and <code>"path"</code>. <pre class = "example" "subscribe": {
+			"scheme": "ws",
+			"port": 9000
+		},
+		"secureQuery": {
+			"port": 8443,
+			"scheme": "https"
+		},
+		"secureUpdate": {
+			"port": 8443,
+			"scheme": "https"
+		},
+		"secureSubscribe": {
+			"scheme": "wss",
+			"port": 9443,
+			"path": "/secure/sparql"
+		},<pre>
+	</p>
 		
 		<p>As described in </p>
 		"SECURITY":{
