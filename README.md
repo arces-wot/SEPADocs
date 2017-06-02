@@ -6,7 +6,7 @@ This repository is active and frequently updated. Currently we provide the follo
 
 * **SEPA** (*SPARQL Event Processing Architecture*)
 * **SPARQL 1.1 Secure Event Protocol**
-* **SPARQL Subscription Language**
+* **SPARQL 1.1 Subscription Language**
 * **JSAP** (*JSON SPARQL Application Profile*) 
 
 The **respec** document (how we use it to produce the doc) can be used by who want to contribute writing W3C Recommendation drafts for the SEPA project.
