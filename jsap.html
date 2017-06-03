@@ -139,7 +139,7 @@
 			subscriptions (e.g., /secure/sparql).
 		</p>
 
-		<p>A JSAP file MUST contain the following keys.
+		<p>A JSAP file MUST contain the following keys.</p>
 		<ul>
 			<li><code>"host"</code>: the host (e.g., wot.arces.unibo.it) where the SEPA engine is
 				running </li>
@@ -150,9 +150,9 @@
 			<li><code>"scheme"</code>: the default scheme (e.g., http) used by the SEPA engine. Values for such keys are numbers as
 			defined in RFC7159 [[!RFC7159]]. 
 		</ul>
-		</p>
+		
 
-		<p>Access to SEPA primitives (i.e., subscriptions and secure primitive) is granted by the following keys:
+		<p>SEPA primitives access (i.e., subscriptions and secure primitive) is granted by the following keys:</p>
 		<ul>>
 		<li><code>"subscribe"</code>: contains subscriptions related parameters</li>
 		<li><code>"secureUpdate"</code>: contains sucure updates related parameters</li>
@@ -160,7 +160,7 @@
 		<li><code>"secureSubscribe"</code>: contains secure subscriptions related parameters</li>
 		</ul>
 		Each of these keys MAY be used to overwrite the value of one or more of the defaults specified by <code>"scheme"</code>, <code>"port"</code> and <code>"path"</code>. 
-	<pre class = "example" "subscribe": {
+	<pre class = "example"> "subscribe": {
 			"scheme": "ws",
 			"port": 9000
 		},
@@ -176,28 +176,26 @@
 			"scheme": "wss",
 			"port": 9443,
 			"path": "/secure/sparql"
-		},<pre>
-	</p>
+		},</pre>
+	
 		
 		<p>A SEPA engine implementation SHOULD provide two security related primitives: <b>register <b> and <b>request token <b>. 
 			The former can be used by clients to obtain credentials, while the latter to request JSON Web Tokens needed 
-			to invoke secure primitives. JSAP allows to specify the parameters needed to access these two primitives by defining an <code>authorizationServer<code> member as follows:
-			 
+			to invoke secure primitives. JSAP allows to specify the parameters needed to access these two primitives by defining an <code>authorizationServer<code> member as follows:</p>
+			 <pre>
 			"authorizationServer": {
 			"port": 8443,
 			"scheme": "https",
 			"register": "/oauth/register",
-			"requestToken": "/oauth/token"}	
+			"requestToken": "/oauth/token"}</pre><p>
 			
-			As described in </p>
-		"SECURITY":{
-		"CLIENT_ID":"TP6Y7BTPKGSHVY1M5XSP6O7LB134S5W4X8DQN0V1N0TBEK828NZGX7R39L65RPC9",
-		"CLIENT_SECRET":"SVEMN1CMY5JNHQ6DRWFADKSHVTQ5T28WTS+EMYR2ZZ7HKQDIDN/YEMY+45X+EPFU",
-		"JWT":"XABTQWOH8RJJK1FYKJ78J8H8I2PCWMAUGFJ4J6NMD+1JVSOIIPV4PCV8BH+8WJLJ2YRAVAGE8/TZ\NDZJIZ2JDRP8BHKUNZFHGX6N1/1MGMVFKIHLHEMMCU0PLJ5UKOYWFB+TB98N1IPNO4G69LIA2YOR1\N5LSCBZIBBPPMKWF+XAR5TEDDHDZQK4N3VBS/E3TFL/YOHKFC9MW45S3MZ83OYDQAZPS2CFZOOKIH\NYDKJWFT7EIVL+RXJC4MVFR3PAVSZK5UCW8IT/0FKVSUW0MABOO4X49SDS+AHTONVUF67WNNPQJ2M\N1THTHV3DIR/WNN+8XJOVJWKWCPGP4T7NH7MOCFZZVNKTHR4HN3Q14VUWHYMVHZW3JOS06ELBPLJH\NIIRN6NF4SY6XXUJJUUBOKHSHZUTI22/VXA/HNOI2J3OBUPN3COX02/ZPMGSTIC1XKOMURQFIUR54\NVAMCQV6/TYH2JVHS2ZPEM0IHSTLTXUUXCQN/HIEETZSCXV8KC7GROW1Z6RIRAT2T644FVLMTSE18\N+SRH0MWX8XCUV3EXNGSZCBEHP3BHUE9H9NQMUFEHZT+WTKJZ11DG8EJOZLCCA5HHI2VH/EN1I3RN\NNUSQ64YKDBSMGQFXTDYSC8XEKZ4BGOLYQ4MYXBQ8WQ/Z+0DWLKW/ANEMP/N7Y9W6P8ONC+WPFXKA\NPLJGH8DBNJHTOKHRRD4CSRUX9UUDWD1JUF8FZD2AS7VTFR5JT80+P2OSSO3GIFNKVSWVAMSR78YL\NPMIESFXEJ0PUY664GOXC4M3HM4H2TWPS9PULXBQ8B38HVMWXCCK=",
-		"EXPIRES":"DSBUAXCGHRFQ2GGALQDUSQ==",
-		"TYPE":"XPRHEX2XHY+5IUXHPHIGMW==" }
-
-		<p>A SAP file SHOULD contain all of the above-mentioned keys.</p>
+			JSAP MAY also be used by clients to store credentials (i.e. client_id and client_secret) and JWT. It is RECOMMENDED to encrypt those elements as follows: </p>
+		"security":{
+		"clint_id":"TP6Y7BTPKGSHVY1M5XSP6O7LB134S5W4X8DQN0V1N0TBEK828NZGX7R39L65RPC9",
+		"client_secret":"SVEMN1CMY5JNHQ6DRWFADKSHVTQ5T28WTS+EMYR2ZZ7HKQDIDN/YEMY+45X+EPFU",
+		"jwt":"XABTQWOH8RJJK1FYKJ78J8H8I2PCWMAUGFJ4J6NMD+1JVSOIIPV4PCV8BH+8WJLJ2YRAVAGE8/TZ\NDZJIZ2JDRP8BHKUNZFHGX6N1/1MGMVFKIHLHEMMCU0PLJ5UKOYWFB+TB98N1IPNO4G69LIA2YOR1\N5LSCBZIBBPPMKWF+XAR5TEDDHDZQK4N3VBS/E3TFL/YOHKFC9MW45S3MZ83OYDQAZPS2CFZOOKIH\NYDKJWFT7EIVL+RXJC4MVFR3PAVSZK5UCW8IT/0FKVSUW0MABOO4X49SDS+AHTONVUF67WNNPQJ2M\N1THTHV3DIR/WNN+8XJOVJWKWCPGP4T7NH7MOCFZZVNKTHR4HN3Q14VUWHYMVHZW3JOS06ELBPLJH\NIIRN6NF4SY6XXUJJUUBOKHSHZUTI22/VXA/HNOI2J3OBUPN3COX02/ZPMGSTIC1XKOMURQFIUR54\NVAMCQV6/TYH2JVHS2ZPEM0IHSTLTXUUXCQN/HIEETZSCXV8KC7GROW1Z6RIRAT2T644FVLMTSE18\N+SRH0MWX8XCUV3EXNGSZCBEHP3BHUE9H9NQMUFEHZT+WTKJZ11DG8EJOZLCCA5HHI2VH/EN1I3RN\NNUSQ64YKDBSMGQFXTDYSC8XEKZ4BGOLYQ4MYXBQ8WQ/Z+0DWLKW/ANEMP/N7Y9W6P8ONC+WPFXKA\NPLJGH8DBNJHTOKHRRD4CSRUX9UUDWD1JUF8FZD2AS7VTFR5JT80+P2OSSO3GIFNKVSWVAMSR78YL\NPMIESFXEJ0PUY664GOXC4M3HM4H2TWPS9PULXBQ8B38HVMWXCCK=",
+		"expires":"DSBUAXCGHRFQ2GGALQDUSQ==",
+		"type":"XPRHEX2XHY+5IUXHPHIGMW==" }
 
 	</section>
 
