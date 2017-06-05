@@ -2,7 +2,6 @@
 
 <head>
 <title>JSON SPARQL Application Profile (JSAP)</title>
-
 <!-- RESPEC CONFIGURATION -->
 <script
 	src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js"
@@ -12,9 +11,9 @@
       
         // document info
         specStatus:           "ED",
-        shortName:            "sap",      
+        shortName:            "jsap",      
         copyrightStart:       "2017",
-        edDraftURI:           "http://github.com/desmovalvo/sap-documentation",
+        edDraftURI:           "https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/jsap.html",
         extraCSS:             ["css/respec.css"],
       
         // editors
@@ -45,167 +44,254 @@
 
 	<!-- ABSTRACT -->
 	<section id="abstract">This document describes the JSON
-		SPARQL Application Profile (JSAP) needed to describe a semantic
-		application for the Web of Things. It uses JSON as the default
-		encoding system.</section>
+		SPARQL Application Profile (JSAP) used to describe a semantic
+		application based on the SPARQL Event Processing Architecture (SEPA)
+		[sepa]. It uses JSON as the default encoding system.</section>
 
 	<!-- STATUS OF THIS DOCUMENT -->
 	<section id="sotd">This is a first draft.</section>
 
 	<!-- INTRODUCTION -->
-	<section>
+	<section id="introduction">
 
-		<h2>The JSON SPARQL Application Profile</h2>
+		<h2>Introduction</h2>
 
-		<p>The JSON SPARQL Application Profile (JSAP) is a document
-			containing the full description of a Web of Things application based on the
-			SPARQL Event Processing Architecture (SEPA) platform.</p>
-
-		<p>The semantic application profile, in order to fully describe an
-			application, MUST contain the connection parameters needed by an
-			application to interact with a SEPA engine instance. Since a WoT application
-			is made up of <b>producers, consumers and aggregators</b>, the JSAP file
-			MUST contain the SPARQL updates and SPARQL queries used by the application component. A JSAP file
-			MAY contain a list of prefixes to be appended to SPARQL
-			updatessubscriptions.</p>
-
-		<p>A SAP file MUST be a JSON document compliant with RFC 7159
-			[[!RFC7159]].</p>
+		<p>The JSON SPARQL Application Profile (JSAP) is a JSON document
+			describing a SEPA application.</p>
 
 		<p>
-			The JSAP file SHOULD NOT be modified at runtime, as it describes the
-			application scope. The need of runtime modifications of the JSAP file
-			is to be considered as a bad practice.
+			This document first presents the concept of semantic application
+			profile from a developer point a view. Developers are RECOMMENDED to
+			follow the presented application design pattern (i.e., an application
+			is composed by a set of <b>producers, consumers and aggregators</b>).
+			The role of a JSAP file is to collect the <b>SPARQL updates</b>, <b>SPARQL
+				queries</b> and the <b>connection parameters</b> used by the application
+			to interact with a SEPA engine instance. A JSAP file MAY contain a
+			list of prefixes for SPARQL updates/queries. In such a way, a JSAP
+			file acts as <i>identity card</i> of a SEPA application.
+		</p>
+
+		<p>
+			A JSAP file MUST be a JSON document compliant with RFC 7159
+			[[!RFC7159]] and SHOULD NOT be modified at runtime, as it describes
+			the application scope. The need of runtime modifications of the JSAP
+			file is to be considered as a bad practice.
 			<!--Instead, the Authors suggest the use of more than one JSAP file or, of course, the review of the SPARQL code.-->
 		</p>
 
+		<section id="conventions">
+			<h3>Document conventions</h3>
+			When this document uses the words MUST, MUST NOT, SHOULD, SHOULD NOT,
+			MAY and RECOMMENDED, and the words appear as emphasized text, they
+			must be interpreted as described in RFC 2119 [[!RFC2119]].
+		</section>
 
+		<section id="terms">
+			<h3>Terminology</h3>
+			<b>SEPA</b>
+			<p style="text-indent: 40px">SPARQL Event Processing Architecture</p>
+			<b>JSAP</b>
+			<p style="text-indent: 40px">JSON SPARQL Application Profile</p>
+			<b>SPARQL</b>
+			<p style="text-indent: 40px">SPARQL Protocol and RDF Query
+				Language</p>
+			<b>SEPA engine</b>
+			<p style="text-indent: 40px">a server component implementing the
+				SEPA publish-subscribe mechanism</p>
+			<b>SEPA application</b>
+			<p style="text-indent: 40px">a collection of producers, consumers
+				and aggregators</p>
+		</section>
 	</section>
 
 	<!-- CORE OF THE DOCUMENT -->
-	<section>
+	<section id="pac-pattern">
 
-		<h2>SEPA Engine connection parameters</h2>
+		<h2>Application design pattern</h2>
+		<p>The following figure gives an overview of the RECOMMENDED
+			application design pattern to be followed by SEPA applications
+			developers.</p>
+
+		<img src="pac-pattern.jpg">
+		<p>
+			Fig. 1 - The SEPA application design pattern also know as
+			"PAC-Pattern" (<b>P</b>roducer-<b>A</b>ggregator-<b>C</b>onsumer)
+		</p>
+		<p>
+			The design pattern assumes that a client SHOULD interact with a SEPA
+			engine using two primitives: <b>update</b> and <b>subscribe</b>. The
+			protocol used by a client to interact with a SEPA engine is presented
+			in [[sparql11-se-protocol]]. While an update corresponds to a SPARQL
+			1.1 Update [[sparql11-update]], a subscribe is defined in
+			[[sparql11-subscription]]. A subscribe acts as a persistent SPARQL
+			1.1 Query [[sparql11-query]] and the content of a notification
+			contains the <i>delta</i> of the results since the previous
+			notification (i.e., when a subscribe is invoked the current query
+			results are returned to the client) as described in
+			[[sparql11-subscription]].
+		</p>
+		<p>A client can assume a different role depending on how it
+			interacts with a SEPA engine.</p>
+		<p>
+			A <i>producer</i> invokes a SPARQL 1.1 Update [[sparql11-update]]
+			and such update MUST be always the same (i.e., some literals or URIs
+			may change, but the query graph pattern MUST be the same; see <b>forced
+				bindings</b> and their role within the pattern). A sensor producing some
+			measures is an example.
+		</p>
+		<p>
+			A <i>consumer</i> invokes a SPARQL 1.1 Subscribe
+			[[sparql11-subscription]]. Like the update of a producer, a consumer
+			MUST invoke one and only one subscribe. When a consumer subscribes,
+			it MAY replace some variables within the SPARQL 1.1 Query with actual
+			values (e.g., variables MAY be replaced with literals or URIs; see <b>forced
+				bindings</b> and their role within the pattern). An actuator subscribed
+			to events (or commands) is an example.
+		</p>
+		<p>
+			An <i>aggregator</i> acts as follows: when it receives a
+			notification, it processes the notification content and it invokes an
+			update (if required). The processing of an aggregator can be
+			combinatorial or sequential. In the former case there is no need of
+			an internal <i>context memory</i>. To be classified as aggregator, a
+			relation between the notification and the relative update SHOULD
+			exist (i.e., an aggregator is not the sum of a producer and a
+			consumer). In the PAC pattern, <b>aggregators implement the
+				application business logic</b>.
+		</p>
+
+		<p class='note' title='Web of Things'>The PAC pattern MAY be
+			attractive for Web of Things applications: producers and consumers
+			interact with the physical world and SHOULD be kept as simpler as
+			possible. Aggregators MAY be more resources greedy (e.g., MAY run on
+			a high performance server machine). This distinction is also very
+			important for reusing and modularization: the same set of producers
+			and consumers can be used in other applications just adding or
+			extending existing aggregators.</p>
+		<p>
+	</section>
+
+	<section id="connectionParameters">
+
+		<h2>Connection parameters</h2>
+		<p>
+			A semantic application profile, in order to fully describe an
+			application, MUST contain the <b>connection parameters</b> needed by
+			an application to interact with a SEPA engine instance. Within a
+			JSAP, such parameters are described by a mandatory a JSON object
+			named
+			<code>"parameters"</code>
+			.
+		</p>
+		<p>
+			The
+			<code>"parameters"</code>
+			member of a JSAP MUST contain all the following default keys:
+		</p>
+		<pre class="example" title="Default connection parameters">
+"parameters": {
+	"host": "wot.arces.unibo.it",
+	"path": "/sparql",
+	"scheme": "http",
+	"port": 8000
+ }</pre>
+		<p>where:</p>
+		<ul>
+			<li><code>"host"</code>: is the host where the SEPA engine is
+				running (e.g., wot.arces.unibo.it)</li>
+			<li><code>"port"</code>: is the <i>default</i> port where the
+				SEPA engine is listening for SPARQL 1.1 primitives (e.g., 8000)</li>
+			<li><code>"path"</code>: is the <i>default</i> path where the
+				SEPA engine is listening for SPARQL 1.1 primitives (e.g., /sparql)</li>
+			<li><code>"scheme"</code>: is the <i>default</i> scheme used by
+				the SEPA engine (e.g., http)
+		</ul>
+
 
 		<p>
-			The section named
+			The
 			<code>"parameters"</code>
-			defines the parameters needed to interact with a SEPA Engine instance. In this section are
-			defined parameters for the interaction with the HTTP interface (used
-			by SPARQL updates and SPARQL queries) and for the Websocket interface
-			(needed for SPARQL subscriptions). The value for the key
-			<code>"parameters"</code>
-			is a JSON object: its keys and values are specified in the next
-			subsections.
-		</p>
-		<p>An example of this configuration section is reported below:
-		<pre class="example">"parameters": {
-		"host": "wot.arces.unibo.it",
-		"path": "/sparql",
-		"scheme": "http",
-		"port": 8000,
-		"subscribe": {
-			"scheme": "ws",
-			"port": 9000
-		},
-		"secureQuery": {
-			"port": 8443,
-			"scheme": "https"
-		},
-		"secureUpdate": {
-			"port": 8443,
-			"scheme": "https"
-		},
-		"secureSubscribe": {
-			"scheme": "wss",
-			"port": 9443,
-			"path": "/secure/sparql"
-		},
-		"authorizationServer": {
-			"port": 8443,
-			"scheme": "https",
-			"register": "/oauth/register",
-			"requestToken": "/oauth/token"
-		}
- }</pre>
+			member MUST also include all the parameters for the interaction with
+			the SPARQL 1.1 SE Protocol [[sparql11-se-protocol]] primitives, like
+			the HTTPS interface (used by secure SPARQL updates and SPARQL
+			queries) and the Websocket interface (needed by (secure) SPARQL
+			subscriptions). Access to these primitives require the definition of
+			the following keys:
+			<code>"subscribe"</code>
+			,
+			<code>"secureUpdate"</code>
+			,
+			<code>"secureQuery"</code>
+			and
+			<code>"secureSubscribe"</code>
+			.
 		</p>
 
+		<p>
+			Each of these keys MAY used to override the value of one or more of
+			the defaults specified by
+			<code>"scheme"</code>
+			,
+			<code>"port"</code>
+			and
+			<code>"path"</code>
+			as shown in the following example:
+		<pre class="example" title="SPARQL 1.1 SE Protocol primitives">
+		"parameters":{
+			"subscribe": {"scheme": "ws","port": 9000},
+			"secureQuery": {"port": 8443,"scheme": "https"},
+			"secureUpdate": {"port": 8443,"scheme": "https"},
+			"secureSubscribe": {"scheme": "wss","port": 9443,"path": "/secure/sparql"}</pre>
+		}
 		<p>
 			As a general rule, the definition of a specific key (e.g., path) can
-			be overwritten by a subsequent one (e.g., with a deeper nesting). For
+			be overwritten by a subsequent one (e.g., in a nested member). For
 			example, the default
 			<code>"path"</code>
 			key (e.g, /sparql) MAY be different from the one used by secure
 			subscriptions (e.g., /secure/sparql).
 		</p>
 
-		<p>A JSAP file MUST contain the following keys.</p>
-		<ul>
-			<li><code>"host"</code>: the host (e.g., wot.arces.unibo.it) where the SEPA engine is
-				running </li>
-			<li><code>"port"</code>: the default port (e.g., 8000) where the SEPA engine is listening for SPARQL 1.1 primitives (i.e., updates and queries). 
-			Values for such keys are numbers as
-			defined in RFC7159 [[!RFC7159]]</li>
-			<li><code>"path"</code>: the default path (e.g., /sparql) where the SEPA engine is listening for SPARQL 1.1 primitives (i.e., updates and queries). </li>
-			<li><code>"scheme"</code>: the default scheme (e.g., http) used by the SEPA engine. Values for such keys are numbers as
-			defined in RFC7159 [[!RFC7159]]. 
-		</ul>
-		
 
-		<p>SEPA primitives access (i.e., subscriptions and secure primitive) is granted by the following keys:</p>
-		<ul>>
-		<li><code>"subscribe"</code>: contains subscriptions related parameters</li>
-		<li><code>"secureUpdate"</code>: contains sucure updates related parameters</li>
-		<li><code>"secureQuery"</code>: contains secure queries related parameters</li>
-		<li><code>"secureSubscribe"</code>: contains secure subscriptions related parameters</li>
-		</ul>
-		Each of these keys MAY be used to overwrite the value of one or more of the defaults specified by <code>"scheme"</code>, <code>"port"</code> and <code>"path"</code>. 
-	<pre class = "example"> "subscribe": {
-			"scheme": "ws",
-			"port": 9000
-		},
-		"secureQuery": {
-			"port": 8443,
-			"scheme": "https"
-		},
-		"secureUpdate": {
-			"port": 8443,
-			"scheme": "https"
-		},
-		"secureSubscribe": {
-			"scheme": "wss",
-			"port": 9443,
-			"path": "/secure/sparql"
-		},</pre>
-	
-		
-		<p>A SEPA engine implementation SHOULD provide two security related primitives: <b>register <b> and <b>request token <b>. 
-			The former can be used by clients to obtain credentials, while the latter to request JSON Web Tokens needed 
-			to invoke secure primitives. JSAP allows to specify the parameters needed to access these two primitives by defining an <code>authorizationServer<code> member as follows:</p>
-			 <pre>
+		<p>
+			A SEPA engine implementation MUST provide two security related
+			primitives: <b>register</b> and <b>request token</b>. The former can
+			be used by clients to obtain credentials, while the latter to request
+			JSON Web Tokens needed to invoke secure primitives. JSAP allows to
+			specify the parameters needed to access such primitives by defining
+			an
+			<code>authorizationServer</code>
+			member as follows:
+		</p>
+		<pre class="example" title="Registration and token request primitives">
+		"parameters":{
 			"authorizationServer": {
 			"port": 8443,
 			"scheme": "https",
 			"register": "/oauth/register",
-			"requestToken": "/oauth/token"}</pre><p>
-			
-			JSAP MAY also be used by clients to store credentials (i.e. client_id and client_secret) and JWT. It is RECOMMENDED to encrypt those elements as follows: </p>
-		"security":{
-		"clint_id":"TP6Y7BTPKGSHVY1M5XSP6O7LB134S5W4X8DQN0V1N0TBEK828NZGX7R39L65RPC9",
-		"client_secret":"SVEMN1CMY5JNHQ6DRWFADKSHVTQ5T28WTS+EMYR2ZZ7HKQDIDN/YEMY+45X+EPFU",
-		"jwt":"XABTQWOH8RJJK1FYKJ78J8H8I2PCWMAUGFJ4J6NMD+1JVSOIIPV4PCV8BH+8WJLJ2YRAVAGE8/TZ\NDZJIZ2JDRP8BHKUNZFHGX6N1/1MGMVFKIHLHEMMCU0PLJ5UKOYWFB+TB98N1IPNO4G69LIA2YOR1\N5LSCBZIBBPPMKWF+XAR5TEDDHDZQK4N3VBS/E3TFL/YOHKFC9MW45S3MZ83OYDQAZPS2CFZOOKIH\NYDKJWFT7EIVL+RXJC4MVFR3PAVSZK5UCW8IT/0FKVSUW0MABOO4X49SDS+AHTONVUF67WNNPQJ2M\N1THTHV3DIR/WNN+8XJOVJWKWCPGP4T7NH7MOCFZZVNKTHR4HN3Q14VUWHYMVHZW3JOS06ELBPLJH\NIIRN6NF4SY6XXUJJUUBOKHSHZUTI22/VXA/HNOI2J3OBUPN3COX02/ZPMGSTIC1XKOMURQFIUR54\NVAMCQV6/TYH2JVHS2ZPEM0IHSTLTXUUXCQN/HIEETZSCXV8KC7GROW1Z6RIRAT2T644FVLMTSE18\N+SRH0MWX8XCUV3EXNGSZCBEHP3BHUE9H9NQMUFEHZT+WTKJZ11DG8EJOZLCCA5HHI2VH/EN1I3RN\NNUSQ64YKDBSMGQFXTDYSC8XEKZ4BGOLYQ4MYXBQ8WQ/Z+0DWLKW/ANEMP/N7Y9W6P8ONC+WPFXKA\NPLJGH8DBNJHTOKHRRD4CSRUX9UUDWD1JUF8FZD2AS7VTFR5JT80+P2OSSO3GIFNKVSWVAMSR78YL\NPMIESFXEJ0PUY664GOXC4M3HM4H2TWPS9PULXBQ8B38HVMWXCCK=",
+			"requestToken": "/oauth/token"}</pre>
+		}
+<p>JSAP MAY also be used by clients to store credentials (i.e., <i>client_id</i> and <i>client_secret</i>) and JSON Web Token. It is RECOMMENDED to encrypt those elements.</p>
+		<pre class="note" title="Storing client credentials">
+"parameters":{
+	"security":{
+		"client_id":"TP6...RPC9",
+		"client_secret":"SVEM...+EPFU",
+		"jwt":"XABTQ...HVMWXCCK=",
 		"expires":"DSBUAXCGHRFQ2GGALQDUSQ==",
-		"type":"XPRHEX2XHY+5IUXHPHIGMW==" }
-
+		"type":"XPRHEX2XHY+5IUXHPHIGMW=="
+	}
+}
+</pre>
 	</section>
 
 	<section>
 		<h2>Namespaces</h2>
 
 		<p>
-			In a SAP file namespaces can be defined. Client-side APIs will take
+			JSAP MAY include a set of namespaces used by SPARQL updates and queries. Client-side APIs will take
 			the namespaces and prepend them to a SPARQL
-			update/query/subscription. In a SAP file namespaces are specified as
+			update/query. Namespaces are specified as
 			a JSON object assigned to the key
 			<code>"namespaces"</code>
 			. In this object every key represents a prefix, while the value is
@@ -218,11 +304,12 @@
 			and
 			<code>rdfs</code>
 			prefixes are defined in the SAP file:
-		<pre class="example">"namespaces" : {
+		</p>
+		<pre class="example" title="Namescapes">"namespaces" : {
     "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs":"http://www.w3.org/2000/01/rdf-schema#"
-}</pre>
-		</p>
+}
+</pre>
 
 	</section>
 
@@ -230,8 +317,8 @@
 		<h2>Updates</h2>
 
 		<p>
-			A SAP file includes a list of the SPARQL updates (see
-			[[RDF-SPARQL-UPDATE]]) performed by the application. The updates MUST
+			JSAP includes the list of the SPARQL updates
+			[[sparql11-update]] performed by the application. The updates MUST
 			be specified as a JSON object passed to the
 			<code>"updates"</code>
 			key. In this object every key represent the friendly name of the
@@ -252,9 +339,7 @@
 }
 	</pre>
 
-		In a SPARQL update containing literals, quotes MUST be escaped.
-
-		</p>
+		<p>In a SPARQL update containing literals, quotes MUST be escaped.</p>
 
 		<section>
 			<h3>Forced Bindings</h3>
@@ -287,7 +372,7 @@
 			</p>
 
 			<p>Now that forced bindings have been defined, we can write an
-				example of SPARQL update template. In the following example
+				example of SPARQL update template. In the following example</p>
 			<pre class="example">
 "ADD_PERSON":{
 "sparql":"INSERT DATA { ?person rdf:type iot:Person . ?person iot:hasName ?name }",
@@ -297,7 +382,7 @@
     }
 }
       </pre>
-			</p>
+
 		</section>
 
 	</section>
@@ -326,6 +411,7 @@
 			<code>"subscribe"</code>
 			section is presented. Only a SPARQL query/subscription related to the
 			whole knowledge-base is present. No forced bindings are defined.
+		</p>
 		<pre class="example">
 "subscribes" : {
     "EVERYTHING" : {	
@@ -333,9 +419,6 @@
     }
 }
 	</pre>
-
-		</p>
-
 		<section>
 			<h3>Forced Bindings</h3>
 
@@ -350,6 +433,7 @@
 				<code>"value"</code>
 				. The following example shows a template for a SPARQL
 				query/subscription containing forced bindings.
+			</p>
 			<pre class="example">
 "subscribes" : {
     "tempSensor" : {	
@@ -360,8 +444,6 @@
     }
 }	    
 	  </pre>
-
-			</p>
 		</section>
 
 	</section>

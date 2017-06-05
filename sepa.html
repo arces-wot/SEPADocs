@@ -1,11 +1,13 @@
 <html>
-  
-  <head>
-    <title>SPARQL Event Processing Architecture (SEPA)</title>
 
-    <!-- RESPEC CONFIGURATION -->
-    <script src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js" class="remove"></script>
-    <script class='remove'>
+<head>
+<title>SPARQL Event Processing Architecture (SEPA)</title>
+
+<!-- RESPEC CONFIGURATION -->
+<script
+	src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js"
+	class="remove"></script>
+<script class='remove'>
       var respecConfig = {
       
         // document info
@@ -38,107 +40,136 @@
       };
     </script>
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <!-- ABSTRACT -->
-    <section id="abstract">
-      This document describes the <b>SPARQL Event Processing Architecture (SEPA)</b>. The SEPA consists
-      of the following components: the SPARQL Secure Event Protocol (SSEP) Service, the SPARQL 1.1 Secure Event (SE) Protocol and
-      the SPARQL Subscription Language. The SEPA is intended to be used in <b>dynamic contexts</b> where detecting events is critical.
-	  In such contexts, the use of SPARQL queries MAY be inefficient and MAY not guarantee to detect all the events
-	  because of their asynchronous nature. Moreover, the SEPA is built around a <b>security layer</b> (e.g.,TLS [[!RFC5246]]) in order
-	  to be applied in all the contexts where the security MUST be supported (e.g., the <b>Web of Things</b>).
-    </section>
+	<!-- ABSTRACT -->
+	<section id="abstract">
+		This document describes the <b>SPARQL Event Processing
+			Architecture (SEPA)</b>. The SEPA consists of the following components:
+		the SPARQL Secure Event Protocol (SSEP) Service, the SPARQL 1.1 Secure
+		Event (SE) Protocol and the SPARQL Subscription Language. The SEPA is
+		intended to be used in <b>dynamic contexts</b> where detecting events
+		is critical. In such contexts, the use of SPARQL queries MAY be
+		inefficient and MAY not guarantee to detect all the events because of
+		their asynchronous nature. Moreover, the SEPA is built around a <b>security
+			layer</b> (e.g.,TLS [[!RFC5246]]) in order to be applied in all the
+		contexts where the security MUST be supported (e.g., the <b>Web of
+			Things</b>).
+	</section>
 
-    <!-- STATUS OF THIS DOCUMENT -->
-    <section id="sotd">
-      This is a first draft.
-    </section>   
+	<!-- STATUS OF THIS DOCUMENT -->
+	<section id="sotd">This is a first draft.</section>
 
-    <!-- INTRODUCTION -->
-    <section id="intro"><h2>Introduction</h2> 
+	<!-- INTRODUCTION -->
+	<section id="intro">
+		<h2>Introduction</h2>
 
-      <p>
-      The proposed architecture implementing a <b>content based publish-subscribe</b> mechanism over SPARQL is named SEPA (SPARQL Event Processing Architecture).
-      The core component of SEPA is the SPARQL SE Protocol Service (also know as <b>SEPA Engine</b>). The SEPA Engine implements the subscription mechanisms and algorithms.
-      The SEPA is framed within W3C Recommendations as shown in the following figure.
-      </p>
+		<p>
+			The proposed architecture implementing a <b>content based
+				publish-subscribe</b> mechanism over SPARQL is named SEPA (SPARQL Event
+			Processing Architecture). The core component of SEPA is the SPARQL SE
+			Protocol Service (also know as <b>SEPA Engine</b>). The SEPA Engine
+			implements the subscription mechanisms and algorithms. The SEPA is
+			framed within W3C Recommendations as shown in the following figure.
+		</p>
 
-	<img src="sepa.jpg">
-    <p>Fig. 1 - The SPARQL Event Processing Architecture (SEPA)</p>
-      
-      <p>A SPARQL SE Protocol Service MUST implement the SPARQL 1.1 SE Protocol [[sparql-11-se-protocol]]. 
-       The SPARQL 1.1 SE Protocol [[sparql-11-se-protocol]] is proposed as an extension of the 
-       SPARQL 1.1 Protocol [[sparql11-protocol]] and, 
-      as shown in Fig. 1, it wraps the SPARQL 1.1 Protocol [[sparql11-protocol]] to support the subscription 
-      primitives (i.e., <b>subscribe</b>, <b>unsubscribe</b>).
-      The SPARQL 1.1 SE protocol is built around a <b>security layer</b> (e.g.,TLS [[!RFC5246]]) and it allows 
-      <b>client authentication</b> by means of JSON Web Tokens [[!RFC7519]]. 
-	  The SEPA Engine is built on top of a SPARQL Protocol Service [[sparql11-protocol]]. 
-	  The SPARQL 1.1 Secure Event (SE) Protocol [[sparql-11-se-protocol]] and
-      the SPARQL Subscription Language [[sparql-11-subscription]] are out of the scope of this document.     
-      </p>
-      
-      <section id="conventions"><h3>Document conventions</h3>
-      When this document uses the words MUST, MUST NOT, SHOULD, SHOULD NOT, MAY and RECOMMENDED, and the words appear as emphasized text, they must be interpreted as described in RFC 2119 [[!RFC2119]].
-      </section>
-	
-	  <section id="terms"><h3>Terminology</h3>
-      		<p><b>SEPA</b><br>SPARQL Event Processing Architecture</p>
-      	</section>
-      	
-    </section>
-    
-   <section id ="SEPASubscriptionMechanism"><h2>The SEPA subscription mechanism</h2>   
-      <p>The SEPA Engine implements a <b>content based publish-subscribe</b> mechanism where the content of events is 
-      expressed using the SPARQL 1.1 Query Language [[sparql11-query]].
-      A SPARQL subscription acts as a persistent query: on every SPARQL update [[sparql11-update]], the query is evaluated and 
-      the results returned. Instead of returning all the results,
-      a SEPA Engine MUST return only changes in the results (i.e., <i>added and removed bindings results</i>). This allows to save 
-      network traffic (e.g., a relevant aspect in
-      low rates network typical of Web of Things systems) and at the same time it reduces the processing cost on 
-      the client side (i.e., no need to compare previous results with the current
-      ones to understand what changed). 
-      
-      <p>Considering the previous results as the query results before the update and 
-      the current results as the query results after the update,
-      the content of a notification includes the added and removed results as shown in the following figure:</p></p>
-      
-     <img src="addedremoved.jpg" title="The content of notifications: added and removed results"><br>
-     <p>Fig. 2 - The content of notifications: added and removed results</p>
-    
-    <p>The publish-subscribe mechanism implemented by a SEPA Engine acts as follows:</p>
-    <ul>
-    	<li>On receiving a subscribe request:
-    	<ol>
-  			<li> It registers the subscription and returns to the subscriber the subscription URI (named SPUID, Subscription Processing Unit ID)</li>
-  			<li> It performs the SPARQL 1.1 Query [[sparql11-query]] specified in the subscription request and notifies the subscriber of the results (if any) </li>
-		</ol>
-    	</li>
-    	<li>On receiving an update request:
-    	<ol>
-  			<li> It checks all the active subscriptions for results to be notified (added, removed or both)</li>
-  			<li> It sends notifications (if any) to the subscribers</li>
-		</ol>
-    	</li>	
-    </ul>
-    </section>
-    
-    <!-- APPENDIX -->
-    <section class="appendix">
+		<img src="sepa.jpg">
+		<p>Fig. 1 - The SPARQL Event Processing Architecture (SEPA)</p>
 
-      <!-- ACKNOWLEDGEMENTS -->
-      <h2>Acknowledgements</h2>
+		<p>
+			A SPARQL SE Protocol Service MUST implement the SPARQL 1.1 SE
+			Protocol [[sparql-11-se-protocol]]. The SPARQL 1.1 SE Protocol
+			[[sparql-11-se-protocol]] is proposed as an extension of the SPARQL
+			1.1 Protocol [[sparql11-protocol]] and, as shown in Fig. 1, it wraps
+			the SPARQL 1.1 Protocol [[sparql11-protocol]] to support the
+			subscription primitives (i.e., <b>subscribe</b>, <b>unsubscribe</b>).
+			The SPARQL 1.1 SE protocol is built around a <b>security layer</b>
+			(e.g.,TLS [[!RFC5246]]) and it allows <b>client authentication</b> by
+			means of JSON Web Tokens [[!RFC7519]]. The SEPA Engine is built on
+			top of a SPARQL Protocol Service [[sparql11-protocol]]. The SPARQL
+			1.1 Secure Event (SE) Protocol [[sparql-11-se-protocol]] and the
+			SPARQL Subscription Language [[sparql-11-subscription]] are out of
+			the scope of this document.
+		</p>
 
-      <p>
-	Authors would like to thanks the Advanced Research Center on Electronic Systems (ARCES) of the University of Bologna.
-      </p>
+		<section id="conventions">
+			<h3>Document conventions</h3>
+			When this document uses the words MUST, MUST NOT, SHOULD, SHOULD NOT,
+			MAY and RECOMMENDED, and the words appear as emphasized text, they
+			must be interpreted as described in RFC 2119 [[!RFC2119]].
+		</section>
 
-    </section>
+		<section id="terms">
+			<h3>Terminology</h3>
+			<p>
+				<b>SEPA</b><br>SPARQL Event Processing Architecture
+			</p>
+		</section>
+
+	</section>
+
+	<section id="SEPASubscriptionMechanism">
+		<h2>The SEPA subscription mechanism</h2>
+		<p>
+			The SEPA Engine implements a <b>content based publish-subscribe</b>
+			mechanism where the content of events is expressed using the SPARQL
+			1.1 Query Language [[sparql11-query]]. A SPARQL subscription acts as
+			a persistent query: on every SPARQL update [[sparql11-update]], the
+			query is evaluated and the results returned. Instead of returning all
+			the results, a SEPA Engine MUST return only changes in the results
+			(i.e., <i>added and removed bindings results</i>). This allows to
+			save network traffic (e.g., a relevant aspect in low rates network
+			typical of Web of Things systems) and at the same time it reduces the
+			processing cost on the client side (i.e., no need to compare previous
+			results with the current ones to understand what changed).
+		<p>Considering the previous results as the query results before
+			the update and the current results as the query results after the
+			update, the content of a notification includes the added and removed
+			results as shown in the following figure:</p>
+		</p>
+
+		<img src="addedremoved.jpg"
+			title="The content of notifications: added and removed results"><br>
+		<p>Fig. 2 - The content of notifications: added and removed
+			results</p>
+
+		<p>The publish-subscribe mechanism implemented by a SEPA Engine
+			acts as follows:</p>
+		<ul>
+			<li>On receiving a subscribe request:
+				<ol>
+					<li>It registers the subscription and returns to the
+						subscriber the subscription URI (named SPUID, Subscription
+						Processing Unit ID)</li>
+					<li>It performs the SPARQL 1.1 Query [[sparql11-query]]
+						specified in the subscription request and notifies the subscriber
+						of the results (if any)</li>
+				</ol>
+			</li>
+			<li>On receiving an update request:
+				<ol>
+					<li>It checks all the active subscriptions for results to be
+						notified (added, removed or both)</li>
+					<li>It sends notifications (if any) to the subscribers</li>
+				</ol>
+			</li>
+		</ul>
+	</section>
+
+	<!-- APPENDIX -->
+	<section class="appendix">
+
+		<!-- ACKNOWLEDGEMENTS -->
+		<h2>Acknowledgements</h2>
+
+		<p>Authors would like to thanks the Advanced Research Center on
+			Electronic Systems (ARCES) of the University of Bologna.</p>
+
+	</section>
 
 
-  </body>
+</body>
 
 </html>
