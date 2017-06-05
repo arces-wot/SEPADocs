@@ -63,12 +63,12 @@
 			This document first presents the concept of semantic application
 			profile from a developer point a view. Developers are RECOMMENDED to
 			follow the presented application design pattern (i.e., an application
-			is composed by a set of <b>producers, consumers and aggregators</b>).
-			The role of a JSAP file is to collect the <b>SPARQL updates</b>, <b>SPARQL
-				queries</b> and the <b>connection parameters</b> used by the application
-			to interact with a SEPA engine instance. A JSAP file MAY contain a
-			list of prefixes for SPARQL updates/queries. In such a way, a JSAP
-			file acts as <i>identity card</i> of a SEPA application.
+			is composed by a set of producers, consumers and aggregators). The
+			role of a JSAP file is to collect the SPARQL updates, SPARQL
+			subscribes and the connection parameters used by a SEPA application.
+			A JSAP file MAY contain a list of prefixes for the SPARQL
+			updates/subscribes. In such a way, a JSAP file acts as <i>identity
+				card</i> of a SEPA application.
 		</p>
 
 		<p>
@@ -89,18 +89,30 @@
 		<section id="terms">
 			<h3>Terminology</h3>
 			<b>SEPA</b>
-			<p style="text-indent: 40px">SPARQL Event Processing Architecture</p>
+			<p style="text-indent: 40px">SPARQL Event Processing Architecture
+				(see [sepa])</p>
 			<b>JSAP</b>
-			<p style="text-indent: 40px">JSON SPARQL Application Profile</p>
+			<p style="text-indent: 40px">JSON SPARQL Application Profile
+				(described in this document)</p>
 			<b>SPARQL</b>
 			<p style="text-indent: 40px">SPARQL Protocol and RDF Query
 				Language</p>
 			<b>SEPA engine</b>
 			<p style="text-indent: 40px">a server component implementing the
-				SEPA publish-subscribe mechanism</p>
+				SEPA publish-subscribe mechanism (see [[sparql11-se-protocol]])</p>
 			<b>SEPA application</b>
 			<p style="text-indent: 40px">a collection of producers, consumers
 				and aggregators</p>
+			<b>SPARQL subscribe</b>
+			<p style="text-indent: 40px">as defined in
+				[[sparql11-subscription]]</p>
+			<b>SPARQL 1.1 SE Protocol</b>
+			<p style="text-indent: 40px">as defined in
+				[[sparql11-se-protocol]]</p>
+			<b>SPARQL 1.1 Update</b>
+			<p style="text-indent: 40px">as defined in [[sparql11-update]]</p>
+			<b>SPARQL 1.1 Query</b>
+			<p style="text-indent: 40px">as defined in [[sparql11-query]]</p>
 		</section>
 	</section>
 
@@ -133,9 +145,9 @@
 		<p>A client can assume a different role depending on how it
 			interacts with a SEPA engine.</p>
 		<p>
-			A <i>producer</i> invokes a SPARQL 1.1 Update [[sparql11-update]]
-			and such update MUST be always the same (i.e., some literals or URIs
-			may change, but the query graph pattern MUST be the same; see <b>forced
+			A <i>producer</i> invokes a SPARQL 1.1 Update [[sparql11-update]] and
+			such update MUST be always the same (i.e., some literals or URIs may
+			change, but the query graph pattern MUST be the same; see <b>forced
 				bindings</b> and their role within the pattern). A sensor producing some
 			measures is an example.
 		</p>
@@ -171,328 +183,374 @@
 		<p>
 	</section>
 
-	<section id="connectionParameters">
+	<section id="JSAPconten">
+		<h2>JSAP file content</h2>
+		<p>
+			The following sections report on the content of a JSAP file. A JSAP
+			file can be logically divided in four main sections, each of them
+			described by a JSON object. These JSON objects are:
+			<code>parameters</code>
+			,
+			<code>namespaces</code>
+			,
+			<code>updates</code>
+			and
+			<code>subscribes</code>
+			. In the following, for each of these JSON object is dedicated a
+			specific section of this document.
+		</p>
 
-		<h2>Connection parameters</h2>
-		<p>
-			A semantic application profile, in order to fully describe an
-			application, MUST contain the <b>connection parameters</b> needed by
-			an application to interact with a SEPA engine instance. Within a
-			JSAP, such parameters are described by a mandatory a JSON object
-			named
-			<code>"parameters"</code>
-			.
-		</p>
-		<p>
-			The
-			<code>"parameters"</code>
-			member of a JSAP MUST contain all the following default keys:
-		</p>
-		<pre class="example" title="Default connection parameters">
+		<section id="connectionParameters">
+
+			<h3>Connection parameters</h3>
+			<p>
+				A semantic application profile, in order to fully describe an
+				application, MUST contain the <b>connection parameters</b> needed by
+				an application to interact with a SEPA engine instance. Within a
+				JSAP, such parameters are described by a mandatory a JSON object
+				named
+				<code>"parameters"</code>
+				.
+			</p>
+			<p>
+				The
+				<code>"parameters"</code>
+				member of a JSAP MUST contain all the following default keys:
+			</p>
+			<pre class="example" title="Default connection parameters">
 "parameters": {
-	"host": "wot.arces.unibo.it",
-	"path": "/sparql",
-	"scheme": "http",
-	"port": 8000
+  "host": "wot.arces.unibo.it",
+  "path": "/sparql",
+  "scheme": "http",
+  "port": 8000
  }</pre>
-		<p>where:</p>
-		<ul>
-			<li><code>"host"</code>: is the host where the SEPA engine is
-				running (e.g., wot.arces.unibo.it)</li>
-			<li><code>"port"</code>: is the <i>default</i> port where the
-				SEPA engine is listening for SPARQL 1.1 primitives (e.g., 8000)</li>
-			<li><code>"path"</code>: is the <i>default</i> path where the
-				SEPA engine is listening for SPARQL 1.1 primitives (e.g., /sparql)</li>
-			<li><code>"scheme"</code>: is the <i>default</i> scheme used by
-				the SEPA engine (e.g., http)
-		</ul>
+			<p>where:</p>
+			<ul>
+				<li><code>"host"</code>: is the host where the SEPA engine is
+					running (e.g., wot.arces.unibo.it)</li>
+				<li><code>"port"</code>: is the <i>default</i> port where the
+					SEPA engine is listening for SPARQL 1.1 primitives (e.g., 8000)</li>
+				<li><code>"path"</code>: is the <i>default</i> path where the
+					SEPA engine is listening for SPARQL 1.1 primitives (e.g., /sparql)</li>
+				<li><code>"scheme"</code>: is the <i>default</i> scheme used by
+					the SEPA engine (e.g., http)
+			</ul>
 
-
-		<p>
-			The
-			<code>"parameters"</code>
-			member MUST also include all the parameters for the interaction with
-			the SPARQL 1.1 SE Protocol [[sparql11-se-protocol]] primitives, like
-			the HTTPS interface (used by secure SPARQL updates and SPARQL
-			queries) and the Websocket interface (needed by (secure) SPARQL
-			subscriptions). Access to these primitives require the definition of
-			the following keys:
-			<code>"subscribe"</code>
-			,
-			<code>"secureUpdate"</code>
-			,
-			<code>"secureQuery"</code>
-			and
-			<code>"secureSubscribe"</code>
-			.
-		</p>
-
-		<p>
-			Each of these keys MAY used to override the value of one or more of
-			the defaults specified by
-			<code>"scheme"</code>
-			,
-			<code>"port"</code>
-			and
-			<code>"path"</code>
-			as shown in the following example:
-		<pre class="example" title="SPARQL 1.1 SE Protocol primitives">
-		"parameters":{
-			"subscribe": {"scheme": "ws","port": 9000},
-			"secureQuery": {"port": 8443,"scheme": "https"},
-			"secureUpdate": {"port": 8443,"scheme": "https"},
-			"secureSubscribe": {"scheme": "wss","port": 9443,"path": "/secure/sparql"}</pre>
-		}
-		<p>
-			As a general rule, the definition of a specific key (e.g., path) can
-			be overwritten by a subsequent one (e.g., in a nested member). For
-			example, the default
-			<code>"path"</code>
-			key (e.g, /sparql) MAY be different from the one used by secure
-			subscriptions (e.g., /secure/sparql).
-		</p>
-
-
-		<p>
-			A SEPA engine implementation MUST provide two security related
-			primitives: <b>register</b> and <b>request token</b>. The former can
-			be used by clients to obtain credentials, while the latter to request
-			JSON Web Tokens needed to invoke secure primitives. JSAP allows to
-			specify the parameters needed to access such primitives by defining
-			an
-			<code>authorizationServer</code>
-			member as follows:
-		</p>
-		<pre class="example" title="Registration and token request primitives">
-		"parameters":{
-			"authorizationServer": {
-			"port": 8443,
-			"scheme": "https",
-			"register": "/oauth/register",
-			"requestToken": "/oauth/token"}</pre>
-		}
-<p>JSAP MAY also be used by clients to store credentials (i.e., <i>client_id</i> and <i>client_secret</i>) and JSON Web Token. It is RECOMMENDED to encrypt those elements.</p>
-		<pre class="note" title="Storing client credentials">
-"parameters":{
-	"security":{
-		"client_id":"TP6...RPC9",
-		"client_secret":"SVEM...+EPFU",
-		"jwt":"XABTQ...HVMWXCCK=",
-		"expires":"DSBUAXCGHRFQ2GGALQDUSQ==",
-		"type":"XPRHEX2XHY+5IUXHPHIGMW=="
-	}
-}
-</pre>
-	</section>
-
-	<section>
-		<h2>Namespaces</h2>
-
-		<p>
-			JSAP MAY include a set of namespaces used by SPARQL updates and queries. Client-side APIs will take
-			the namespaces and prepend them to a SPARQL
-			update/query. Namespaces are specified as
-			a JSON object assigned to the key
-			<code>"namespaces"</code>
-			. In this object every key represents a prefix, while the value is
-			the relative namespace.
-		</p>
-
-		<p>
-			In the following example the well known
-			<code>rdf</code>
-			and
-			<code>rdfs</code>
-			prefixes are defined in the SAP file:
-		</p>
-		<pre class="example" title="Namescapes">"namespaces" : {
-    "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs":"http://www.w3.org/2000/01/rdf-schema#"
-}
-</pre>
-
-	</section>
-
-	<section>
-		<h2>Updates</h2>
-
-		<p>
-			JSAP includes the list of the SPARQL updates
-			[[sparql11-update]] performed by the application. The updates MUST
-			be specified as a JSON object passed to the
-			<code>"updates"</code>
-			key. In this object every key represent the friendly name of the
-			SPARQL update. The value is a JSON object in which the main key is
-			named
-			<code>"sparql"</code>
-			and contains the SPARQL code.
-		</p>
-
-		<p>
-			The following example shows the definition of a very basic SPARQL
-			update named
-			<code>INSERT_PERSON</code>
-			:
-		<pre class="example">
-"updates" : {
-  "INSERT_PERSON" : { "sparql":"INSERT DATA { &lt;http://ns#Person1&gt; rdf:type foaf:Person }" }
-}
-	</pre>
-
-		<p>In a SPARQL update containing literals, quotes MUST be escaped.</p>
-
-		<section>
-			<h3>Forced Bindings</h3>
 
 			<p>
-				The usefulness of a SAP profile consists in the ability to create
-				templates for SPARQL updates that can be fetched by the application
-				and modified at run-time to fit the actual need. For example a
-				producer that updates the value of a temperature sensor will only
-				need to fill a field in the template. Here is where the definition
-				of forced bindings comes in help. A forced binding enables the
-				developer to substitute a variable in a template with a custom
-				value. To define forced bindings for a SPARQL update, the key
-				<code>"forcedBindings"</code>
-				MUST be used. The value is a JSON object. The variable of a forced
-				binding is a key in that JSON object. Its value is again a JSON
-				object containing the keys
-				<code>"type"</code>
+				The
+				<code>"parameters"</code>
+				member MUST also include all the parameters for the interaction with
+				the SPARQL 1.1 SE Protocol [[sparql11-se-protocol]] primitives, like
+				the HTTPS interface (used by secure SPARQL updates and SPARQL
+				queries) and the Websocket interface (needed by (secure) SPARQL
+				subscriptions). Access to these primitives require the definition of
+				the following keys:
+				<code>"subscribe"</code>
+				,
+				<code>"secureUpdate"</code>
+				,
+				<code>"secureQuery"</code>
 				and
-				<code>"value"</code>
-				.
-				<code>"type"</code>
-				MUST be one of
-				<code>"uri"</code>
-				,
-				<code>"bnode"</code>
-				,
-				<code>"literal"</code>
+				<code>"secureSubscribe"</code>
 				.
 			</p>
 
-			<p>Now that forced bindings have been defined, we can write an
-				example of SPARQL update template. In the following example</p>
-			<pre class="example">
-"ADD_PERSON":{
-"sparql":"INSERT DATA { ?person rdf:type iot:Person . ?person iot:hasName ?name }",
-    "forcedBindings": {
-        "person" : {"type":"uri", "value":""},
-        "name" : {"type":"literal", "value":""}
+			<p>
+				Each of these keys MAY used to override the value of one or more of
+				the defaults specified by
+				<code>"scheme"</code>
+				,
+				<code>"port"</code>
+				and
+				<code>"path"</code>
+				as shown in the following example:
+			<pre class="example" title="SPARQL 1.1 SE Protocol primitives">
+"parameters":{
+  "subscribe": {"scheme": "ws","port": 9000},
+  "secureQuery": {"port": 8443,"scheme": "https"},
+  "secureUpdate": {"port": 8443,"scheme": "https"},
+  "secureSubscribe": {"scheme": "wss","port": 9443,"path": "/secure/sparql"}</pre>
+			}
+			<p>
+				As a general rule, the definition of a specific key (e.g., path) can
+				be overwritten by a subsequent one (e.g., in a nested member). For
+				example, the default
+				<code>"path"</code>
+				key (e.g, /sparql) MAY be different from the one used by secure
+				subscriptions (e.g., /secure/sparql).
+			</p>
+
+
+			<p>
+				A SEPA engine implementation MUST provide two security related
+				primitives: <b>register</b> and <b>request token</b>. The former can
+				be used by clients to obtain credentials, while the latter to
+				request JSON Web Tokens needed to invoke secure primitives. JSAP
+				allows to specify the parameters needed to access such primitives by
+				defining an
+				<code>authorizationServer</code>
+				member as follows:
+			</p>
+			<pre class="example"
+				title="Registration and token request primitives">
+"parameters":{
+  "authorizationServer": {
+    "port": 8443,
+    "scheme": "https",
+    "register": "/oauth/register",
+    "requestToken": "/oauth/token"
+  }</pre>
+			}
+			<p>
+				JSAP MAY also be used by clients to store credentials (i.e., <i>client_id</i>
+				and <i>client_secret</i>) and JSON Web Token. It is RECOMMENDED to
+				encrypt those elements.
+			</p>
+			<pre class="note" title="Storing client credentials">
+"parameters":{
+  "security":{
+    "client_id":"TP6...RPC9",
+    "client_secret":"SVEM...+EPFU",
+    "jwt":"XABTQ...HVMWXCCK=",
+    "expires":"DSBUAXCGHRFQ2GGALQDUSQ==",
+    "type":"XPRHEX2XHY+5IUXHPHIGMW=="
+  }
+}
+</pre>
+		</section>
+
+		<section>
+			<h3>Namespaces</h3>
+
+			<p>
+				JSAP MAY include a set of namespaces used by SPARQL updates and
+				queries. Client-side APIs will take the namespaces and prepend them
+				to a SPARQL update/query. Namespaces are specified as a JSON object
+				assigned to the key
+				<code>"namespaces"</code>
+				. In this object every key represents a prefix, while the value is
+				the relative namespace.
+			</p>
+
+			<p>
+				In the following example the well known
+				<code>rdf</code>
+				and
+				<code>rdfs</code>
+				prefixes are defined in the SAP file:
+			</p>
+			<pre class="example" title="Namescapes">
+"namespaces" : {
+  "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs":"http://www.w3.org/2000/01/rdf-schema#",
+  "wot":"http://wot.arces.unibo.it/wot#
+}
+</pre>
+
+		</section>
+
+		<section>
+			<h3>Updates</h3>
+
+			<p>
+				JSAP includes the list of the SPARQL updates [[sparql11-update]]
+				performed by the application. The updates MUST be specified as a
+				JSON object passed to the
+				<code>"updates"</code>
+				key. In this object every key represent the friendly name of the
+				SPARQL update. The value is a JSON object in which the main key is
+				named
+				<code>"sparql"</code>
+				and contains the SPARQL code.
+			</p>
+
+			<p>
+				The following example shows the definition of a SPARQL update named
+				<code>SENSOR_UPDATE</code>
+				:
+			<pre class="example" title="Update (sensor)">
+"updates" : {
+  "UPDATE_ALL_TO_100" : { "sparql":"DELETE {?sensor wot:hasValue ?oldValue} INSERT {?sensor wot:hasValue "100" . wot:SENS_URI_1 rdf:type wot:SENSOR} WHERE {OPTIONAL{?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?oldValue} }"
+}
+	</pre>
+
+			<p>
+				<b>Note</b>: quotes in literals MUST be escaped.
+			</p>
+
+		</section>
+
+		<section>
+			<h3>Subscribes</h3>
+
+			<p>
+				Subscriptions, MUST be defined in accord to the SPARQL 1.1 Query
+				Language [[sparql11-query]. As RECOMMENDED in [[sparql11-se-protocol
+				]], a SPARQL subscription MUST be issued over a Websocket (secure or
+				unsecure). Subscriptions are defined using the
+				<code>"subscribes"</code>
+				key of the main JSON object. As for SPARQL updates, each
+				subscription has a friendly name, which is a key in the JSON object
+				assigned to the key
+				<code>"subscribes"</code>
+				. The JSON object describing a subscription MUST contain the
+				<code>"sparql"</code>
+				key.
+			</p>
+
+			<p>
+				In the following example a
+				<code>"subscribes"</code>
+				section including a single subscribe named
+				<code>SENSOR</code>
+				is presented.
+			</p>
+			<pre class="example" title="Subscribe (actuator)">
+"subscribes" : {
+    "ALL_SENSORS_VALUES" : {	
+        "sparql" : "SELECT ?sensor ?value WHERE  {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?value}"
     }
+}
+
+	</pre>
+		</section>
+	</section>
+	<section>
+		<h2>Forced Bindings</h2>
+
+		<p>
+			The usefulness of a JSAP profile consists in the ability to create
+			templates for SPARQL updates and subscribes that can be fetched by
+			the application and modified at run-time to fit the actual need. For
+			example a producer that updates the value of a temperature sensor
+			will only need to fill a field in the template. Here is where the
+			definition of <i>forced bindings</i> comes in help. A forced binding
+			enables the developer to substitute a variable in a template with a
+			custom value. To define forced bindings, the key
+			<code>"forcedBindings"</code>
+			MUST be used. The value is a JSON object. The variable of a forced
+			binding is a key in that JSON object. Its value is again a JSON
+			object containing the keys
+			<code>"type"</code>
+			and
+			<code>"value"</code>
+			.
+			<code>"type"</code>
+			MUST be one of
+			<code>"uri"</code>
+			,
+			<code>"bnode"</code>
+			,
+			<code>"literal"</code>
+			.
+		</p>
+
+		<p>Now that forced bindings have been defined, we can write an
+			example of SPARQL update template.</p>
+		<pre class="example" title="Update with forced bindings">
+"UPDATE_SENSOR_VALUE":{
+  "sparql":"DELETE {?sensor wot:hasValue ?oldValue} INSERT {?sensor wot:hasValue ?value . wot:SENS_URI_1 rdf:type wot:SENSOR} WHERE {OPTIONAL{?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?oldValue} }"
+  "forcedBindings": {
+    "sensor" : {"type":"uri", "value":""},
+    "value" : {"type":"literal", "value":""}
+  }
 }
       </pre>
-
-		</section>
-
-	</section>
-
-	<section>
-		<h2>Subscriptions</h2>
-
 		<p>
-			Queries and persistent queries, named subscriptions, MUST be defined
-			in accord to SPARQL Query Language [[rdf-sparql-query]]. While a
-			SPARQL query MUST be sent over HTTP (or HTTPS), a SPARQL subscription
-			MUST be issued over Websocket (secure or unsecure). Both queries and
-			subscriptio-ns are defined using the
-			<code>"subscribes"</code>
-			key of the main JSON object. As for SPARQL updates, each
-			query/subscription has a friendly name, which is a key in the JSON
-			object assigned to the key
-			<code>"subscribes"</code>
-			. The JSON object describing a query/subscription MUST contain the
-			<code>"sparql"</code>
-			key.
+			The
+			<code>UPDATE_SENSOR_VALUE</code>
+			update is very similar to the
+			<code>UPDATE_ALL_TO_100</code>
+			update. In the SPARQL,
+			<code>"100"</code>
+			has been replaced by the variable
+			<code>?value</code>
+			. If we look at the forced bindings, we can see that both
+			<code>sensor</code>
+			and
+			<code>value</code>
+			variables MUST be bind by the client.
 		</p>
 
 		<p>
-			In the following example a very simple
-			<code>"subscribe"</code>
-			section is presented. Only a SPARQL query/subscription related to the
-			whole knowledge-base is present. No forced bindings are defined.
-		</p>
-		<pre class="example">
-"subscribes" : {
-    "EVERYTHING" : {	
-        "sparql" : "SELECT ?s ?p ?o WHERE  { ?s ?p ?o }"
-    }
-}
-	</pre>
+			The same can be applied to subscribes. For example, the
+			<code>ALL_SENSORS_VALUES</code>
+			subscribe receive notifications on every changes in the value of all
+			sensors, the following subscribe can be used to be notified on
+			changes in the value of a specific sensor:
+		<pre class="example" title="Subscribe with forced bindings">			
+"SENSOR_VALUE" : {	
+  "sparql" : "SELECT ?value WHERE  {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?value}",
+  "forcedBindings": {
+    "sensor" : {"type":"uri", "value":""}
+  }
+}			
+</pre>
+</section>
 		<section>
-			<h3>Forced Bindings</h3>
+			<h2>Minimum Working Example (MWE)</h2>
 
-			<p>
-				The JSON object of a SPARQL query/subscription MAY contain the keys
-				<code>"forcedBindings"</code>
-				. In that case the value of
-				<code>"forcedBindings"</code>
-				is a JSON object that MUST contain the keys
-				<code>"type"</code>
-				and
-				<code>"value"</code>
-				. The following example shows a template for a SPARQL
-				query/subscription containing forced bindings.
-			</p>
+			In this section a Minimum Working Example (MWE) of a JSAP is presented.
+
 			<pre class="example">
-"subscribes" : {
-    "tempSensor" : {	
-        "sparql" : "SELECT ?temp WHERE  { ?tempSens rdf:type iot:TempSensor . ?tempSens iot:hasValue ?temp }",
-        "forcedBindings" : {
-            "temp": {"type":"uri", "value":""}
-        }
-    }
-}	    
-	  </pre>
-		</section>
-
-	</section>
-
-	<section>
-		<h2>Example</h2>
-
-		In this section a Minimum Working Example (MWE) is presented.
-
-		<pre class="example">
 {
-    "parameters":{
-        "ports":{"ws":9000,"wss":9443,"http":8000,"https":8443},
-        "paths":{"http":"/sparql","https":"/sparql","ws":"/sparql","wss":"/secure/sparql","register":"/oauth/register","token":"/oauth/token"}, 
-        "host": "wot.arces.unibo.it"
-    },
-    "namespaces" : { "iot":"http://www.arces.unibo.it/iot#",
-		     "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#"},
-    "updates": {
-	"ADD_PERSON":{
-	    "sparql":"INSERT DATA { ?person rdf:type iot:Person . ?person iot:hasName ?name }",
-	    "forcedBindings": {
-		"person" : {"type":"uri", "value":""},
-		"name" : {"type":"literal", "value":""}}}
-    },    
-    "subscribes": {
-	"CLASS_INSTANCES":{
-	    "sparql":"SELECT ?s WHERE { ?s rdf:type ?class }",
-	    "forcedBindings": {
-		"class" : {"type":"uri", "value":""}}},
-	"EVERYTHING":{	
-	    "sparql":"SELECT ?s ?p ?o WHERE  { ?s ?p ?o }"}
+  "parameters": {
+    "host": "wot.arces.unibo.it",
+    "path": "/sparql",
+    "scheme": "http",
+    "port": 8000,
+    "subscribe": {"scheme": "ws","port": 9000},
+    "secureQuery": {"port": 8443,"scheme": "https"},
+    "secureUpdate": {"port": 8443,"scheme": "https"},
+    "secureSubscribe": {"scheme": "wss","port": 9443,"path": "/secure/sparql"},
+    "authorizationServer": {
+      "port": 8443,
+      "scheme": "https",
+      "register": "/oauth/register",
+      "requestToken": "/oauth/token"},
+   },
+   "namespaces" : {
+     "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+     "rdfs":"http://www.w3.org/2000/01/rdf-schema#",
+     "wot":"http://wot.arces.unibo.it/wot#
+   }
+   "updates" : {
+     "UPDATE_ALL_TO_100" : { 
+       "sparql":"DELETE {?sensor wot:hasValue ?oldValue} INSERT {?sensor wot:hasValue "100" . wot:SENS_URI_1 rdf:type wot:SENSOR} WHERE {OPTIONAL{?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?oldValue} }",
+     "UPDATE_SENSOR_VALUE":{
+       "sparql":"DELETE {?sensor wot:hasValue ?oldValue} INSERT {?sensor wot:hasValue ?value . wot:SENS_URI_1 rdf:type wot:SENSOR} WHERE {OPTIONAL{?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?oldValue} }"
+       "forcedBindings": {
+         "sensor" : {"type":"uri", "value":""},
+         "value" : {"type":"literal", "value":""}
+       }
+     }
+   },
+   "subscribes": {
+     "ALL_SENSORS_VALUES" : {	
+       "sparql" : "SELECT ?sensor ?value WHERE  {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?value}"
+     }
+     "SENSOR_VALUE" : {	
+       "sparql" : "SELECT ?value WHERE  {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?value}",
+       "forcedBindings": {
+        "sensor" : {"type":"uri", "value":""}
+     }
     }
+  }
 }	
       </pre>
 
-	</section>
+		</section>
 
-	<!-- APPENDIX -->
-	<section class="appendix">
+		<!-- APPENDIX -->
+		<section class="appendix">
 
-		<!-- ACKNOWLEDGEMENTS -->
-		<h2>Acknowledgements</h2>
-		<p>Authors would like to thanks the Advanced Research Center on
-			Electronic Systems (ARCES) of the University of Bologna.</p>
+			<!-- ACKNOWLEDGEMENTS -->
+			<h2>Acknowledgements</h2>
+			<p>Authors would like to thanks the Advanced Research Center on
+				Electronic Systems (ARCES) of the University of Bologna.</p>
 
-	</section>
-
-
+		</section>
 </body>
 
 </html>
