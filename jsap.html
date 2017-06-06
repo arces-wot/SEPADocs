@@ -18,6 +18,13 @@
       
         // editors
         editors:  [{ 
+          name: "Luca Roffia", 
+          url: "http://wot.arces.unibo.it",
+          mailto: "luca.roffia@unibo.it",
+          company: "ARCES", 
+          companyURL: "http://wot.arces.unibo.it" 
+        },
+        { 
           name: "Fabio Viola", 
           url: "http://wot.arces.unibo.it",
           mailto: "fabio.viola@unibo.it",
@@ -25,13 +32,13 @@
           companyURL: "http://wot.arces.unibo.it" 
         },
         { 
-          name: "Luca Roffia", 
+          name: "Francesco Antonizazzi", 
           url: "http://wot.arces.unibo.it",
-          mailto: "luca.roffia@unibo.it",
+          mailto: "francesco.antoniazzi@unibo.it",
           company: "ARCES", 
           companyURL: "http://wot.arces.unibo.it" 
-        }],
-      
+        }
+        ],
         // WG
         wg:           "Web of Things working group @ ARCES University of Bologna",
         wgURI:        "http://wot.arces.unibo.it/",
@@ -44,9 +51,10 @@
 
 	<!-- ABSTRACT -->
 	<section id="abstract">This document describes the JSON
-		SPARQL Application Profile (JSAP) used to describe a semantic
+		SPARQL Application Profile (JSAP). JSAP is used to describe a semantic
 		application based on the SPARQL Event Processing Architecture (SEPA)
-		[sepa]. It uses JSON as the default encoding system.</section>
+		and following the application design pattern named PAC
+		(Producer-Aggregator-Consumer). JSAP uses JSON as default format.</section>
 
 	<!-- STATUS OF THIS DOCUMENT -->
 	<section id="sotd">This is a first draft.</section>
@@ -60,14 +68,13 @@
 			describing a SEPA application.</p>
 
 		<p>
-			This document first presents the concept of semantic application
-			profile from a developer point a view. Developers are RECOMMENDED to
-			follow the presented application design pattern (i.e., an application
-			is composed by a set of producers, consumers and aggregators). The
-			role of a JSAP file is to collect the SPARQL updates, SPARQL
-			subscribes and the connection parameters used by a SEPA application.
-			A JSAP file MAY contain a list of prefixes for the SPARQL
-			updates/subscribes. In such a way, a JSAP file acts as <i>identity
+			This document first presents the concept of SPARQL Application
+			Profile from a developer point a view. Developers are RECOMMENDED to
+			follow the PAC design pattern presented in this document (i.e., an
+			application is composed by a set of producers, consumers and
+			aggregators). The role of JSAP is to collect the SPARQL
+			updates [[sparql11-update]], SPARQL subscribes [[sparql11-subscribe]] and the connection parameters used by a
+			SEPA application. JSAP  MAY contain a list of SPARQL prefixes. In such a way, JSAP acts as an <i>identity
 				card</i> of a SEPA application.
 		</p>
 
@@ -88,38 +95,48 @@
 
 		<section id="terms">
 			<h3>Terminology</h3>
-			<b>SEPA</b>
-			<p style="text-indent: 40px">SPARQL Event Processing Architecture
-				(see [sepa])</p>
-			<b>JSAP</b>
-			<p style="text-indent: 40px">JSON SPARQL Application Profile
-				(described in this document)</p>
-			<b>SPARQL</b>
-			<p style="text-indent: 40px">SPARQL Protocol and RDF Query
-				Language</p>
-			<b>SEPA engine</b>
-			<p style="text-indent: 40px">a server component implementing the
-				SEPA publish-subscribe mechanism (see [[sparql11-se-protocol]])</p>
-			<b>SEPA application</b>
-			<p style="text-indent: 40px">a collection of producers, consumers
-				and aggregators</p>
-			<b>SPARQL subscribe</b>
-			<p style="text-indent: 40px">as defined in
-				[[sparql11-subscription]]</p>
-			<b>SPARQL 1.1 SE Protocol</b>
-			<p style="text-indent: 40px">as defined in
-				[[sparql11-se-protocol]]</p>
-			<b>SPARQL 1.1 Update</b>
-			<p style="text-indent: 40px">as defined in [[sparql11-update]]</p>
-			<b>SPARQL 1.1 Query</b>
-			<p style="text-indent: 40px">as defined in [[sparql11-query]]</p>
+			<dt>JSAP</dt>
+			<dd>JSON SPARQL Application Profile (as defined by this document
+				[[jsap]])</dd>
+
+			<dt>SEPA</dt>
+			<dd>SPARQL Event Processing Architecture (as defined by
+				[[sepa]])</dd>
+
+			<dt>SEPA engine</dt>
+			<dd>the server component of the SEPA. It implements the
+				publish-subscribe mechanisms and algorithms. Clients interact with a
+				SEPA engine with the SPARQL 1.1 SE Protocol (as defined by
+				[[sparql11-se-protocol]])</dd>
+
+			<dt>SEPA application</dt>
+			<dd>a collection of producers, consumers and aggregators (as
+				defined by this document [[jsap]])</dd>
+
+			<dt>SPARQL</dt>
+			<dd>SPARQL Protocol and RDF Query Language (as defined by
+				[[sparql11-overview]])</dd>
+
+			<dt>SPARQL subscribe</dt>
+			<dd>the primitive introduced by the SEPA (as defined by
+				[[sparql11-subscribe]])</dd>
+
+			<dt>SPARQL 1.1 SE Protocol</dt>
+			<dd>the protocol implemented by a SEPA engine (as defined by
+				[[sparql11-se-protocol]])</dd>
+
+			<dt>SPARQL 1.1 Update</dt>
+			<dd>as defined by [[sparql11-update]]</dd>
+
+			<dt>SPARQL 1.1 Query</dt>
+			<dd>as defined by [[sparql11-query]]</dd>
 		</section>
 	</section>
 
 	<!-- CORE OF THE DOCUMENT -->
 	<section id="pac-pattern">
 
-		<h2>Application design pattern</h2>
+		<h2>PAC design pattern</h2>
 		<p>The following figure gives an overview of the RECOMMENDED
 			application design pattern to be followed by SEPA applications
 			developers.</p>
@@ -135,12 +152,12 @@
 			protocol used by a client to interact with a SEPA engine is presented
 			in [[sparql11-se-protocol]]. While an update corresponds to a SPARQL
 			1.1 Update [[sparql11-update]], a subscribe is defined in
-			[[sparql11-subscription]]. A subscribe acts as a persistent SPARQL
+			[[sparql11-subscribe]]. A subscribe acts as a persistent SPARQL
 			1.1 Query [[sparql11-query]] and the content of a notification
 			contains the <i>delta</i> of the results since the previous
 			notification (i.e., when a subscribe is invoked the current query
 			results are returned to the client) as described in
-			[[sparql11-subscription]].
+			[[sparql11-subscribe]].
 		</p>
 		<p>A client can assume a different role depending on how it
 			interacts with a SEPA engine.</p>
@@ -153,7 +170,7 @@
 		</p>
 		<p>
 			A <i>consumer</i> invokes a SPARQL 1.1 Subscribe
-			[[sparql11-subscription]]. Like the update of a producer, a consumer
+			[[sparql11-subscribe]]. Like the update of a producer, a consumer
 			MUST invoke one and only one subscribe. When a consumer subscribes,
 			it MAY replace some variables within the SPARQL 1.1 Query with actual
 			values (e.g., variables MAY be replaced with literals or URIs; see <b>forced
@@ -183,8 +200,8 @@
 		<p>
 	</section>
 
-	<section id="JSAPconten">
-		<h2>JSAP file content</h2>
+	<section id="JSAPcontent">
+		<h2>JSAP content</h2>
 		<p>
 			The following sections report on the content of a JSAP file. A JSAP
 			file can be logically divided in four main sections, each of them
@@ -487,13 +504,14 @@
   }
 }			
 </pre>
-</section>
-		<section>
-			<h2>Minimum Working Example (MWE)</h2>
+	</section>
+	<section>
+		<h2>Minimum Working Example (MWE)</h2>
 
-			In this section a Minimum Working Example (MWE) of a JSAP is presented.
+		In this section a Minimum Working Example (MWE) of a JSAP is
+		presented.
 
-			<pre class="example">
+		<pre class="example">
 {
   "parameters": {
     "host": "wot.arces.unibo.it",
@@ -540,17 +558,17 @@
 }	
       </pre>
 
-		</section>
+	</section>
 
-		<!-- APPENDIX -->
-		<section class="appendix">
+	<!-- APPENDIX -->
+	<section class="appendix">
 
-			<!-- ACKNOWLEDGEMENTS -->
-			<h2>Acknowledgements</h2>
-			<p>Authors would like to thanks the Advanced Research Center on
-				Electronic Systems (ARCES) of the University of Bologna.</p>
+		<!-- ACKNOWLEDGEMENTS -->
+		<h2>Acknowledgements</h2>
+		<p>Authors would like to thanks the Advanced Research Center on
+			Electronic Systems (ARCES) of the University of Bologna.</p>
 
-		</section>
+	</section>
 </body>
 
 </html>

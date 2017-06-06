@@ -1,22 +1,31 @@
 <html>
-  
-  <head>
-    <title>SPARQL 1.1 Secure Event Protocol</title>
 
-    <!-- RESPEC CONFIGURATION -->
-    <script src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js" class="remove"></script>
-    <script class='remove'>
+<head>
+<title>SPARQL 1.1 Secure Event Protocol</title>
+
+<!-- RESPEC CONFIGURATION -->
+<script
+	src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js"
+	class="remove"></script>
+<script class='remove'>
       var respecConfig = {
       
         // document info
         specStatus:           "ED",
         shortName:            "sparql-11-se-protocol",      
         copyrightStart:       "2017",
-        edDraftURI:           "https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-se-protocol.html",
+        edDraftURI:           "http://wot.arces.unibo.it/TR/sparql11-se-protocol.html",
         extraCSS:             ["css/respec.css"],
       
         // editors
         editors:  [{ 
+          name: "Francesco Antoniazzi", 
+          url: "http://wot.arces.unibo.it",
+          mailto: "francesco.antoniazzi@unibo.it",
+          company: "ARCES", 
+          companyURL: "http:/wot.arces.unibo.it" 
+        },
+        { 
           name: "Luca Roffia", 
           url: "http://wot.arces.unibo.it",
           mailto: "luca.roffia@unibo.it",
@@ -38,77 +47,169 @@
       };
     </script>
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <!-- ABSTRACT -->
-    <section id="abstract">
-      This document describes the SPARQL 1.1 Secure Event (SE) Protocol that MUST be implemented by 
-      a generic SPARQL SE Service [[sepa]] and it is framed within W3C Recommendations as shown in the following figure.
-
-	<img src="sepa.jpg">
-    <p>Fig. 1 - The SPARQL Event Processing Architecture (SEPA)</p>
-	  
-    </section>
-
-    <!-- STATUS OF THIS DOCUMENT -->
-    <section id="sotd">
-      This is a first draft.
-    </section>   
-     
-    <section id="SPARQL11SEProtocol">
-    <h2>SPARQL 1.1 Secure Event (SE) Protocol</h2>     
- 	<p> The SPARQL 1.1 SE Protocol wraps the SPARQL 1.1 Protocol [[sparql11-protocol]] to support subscriptions 
- 	and secure connections.
- 	The SPARQL 1.1 SE protocol targets the application contexts where security MUST be supported 
- 	(e.g., the <b>Web of Things</b>). It is built around a security layer (e.g.,TLS [[!RFC5246]]) and allows clients 
- 	authentication by means of JSON Web Tokens [[!RFC7519]].
-	</p>
-	<p>The SPARQL 1.1 Security Event Protocol aims at:</p>
-	<ul>
-		<li>
-		Extending the SPARQL 1.1 Protocol [sparql11-protocol] to support SPARQL subscriptions
-    	</li>
-    	<li>
-		Providing clients authentication based on OAuth 2.0 [[!RFC6749]]
-    	</li>
-    	<li>
-		Providing data encryption, server authentication and message integrity 
-    	</li>
-	</ul>
-
-<p>On one hand, the SPARQL 1.1 SE Protocol MUST transparently support the HTTP methods provided by the [[sparql11-protocol]] to
-transport SPARQL 1.1 Queries [[sparql11-query]] and Updates [[sparql11-update]]. On the other hand, subscriptions need
- a two-way communication between subscribers and the SEPA Engine. A SEPA Engine is RECOMMENDED to provide this 
- kind of communication by using Websockets [[!RFC6455]]. </p>
+	<!-- ABSTRACT -->
+	<section id="abstract">
+		This document describes the SPARQL 1.1 Secure Event (SE) Protocol that
+		MUST be implemented by a generic <a
+			href="https://wot.arces.unibo.it/TR/sepa.html">SPARQL SE Service</a>.
 	</section>
-	
-	<section id="SPARQL11Query"><h3>SPARQL 1.1 Query</h3>
-	<p>SPARQL 1.1 Queries [[sparql11-query]] SHOULD be transparently supported like in a common SPARQL Protocol Service.</p>
-	<p> A SEPA Engine is RECOMMENDED to support the POST method of the SPARQL 1.1 Protocol [[sparql11-protocol]] and 
-	the SPARQL 1.1 Query Results JSON format [[sparql11-results-json]].</p>
-	<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
-	<pre class="example" title="SPARQL 1.1 POST query">
-	<b>Request</b> 
-	POST http://wot.arces.unibo.it:8000/sparql
+	<!-- STATUS OF THIS DOCUMENT -->
+	<section id="sotd">This is a first draft.</section>
 
-	<b>Request headers</b> 
-	Content-Type: application/sparql-query
-	Accept: application/sparql-results+json
+	<section id="intro">
+		<h2>Introduction</h2>
+		<p>
+			The SPARQL 1.1 SE Protocol wraps the SPARQL 1.1 Protocol
+			[[sparql11-protocol]] to support subscriptions and secure
+			connections. It is framed within W3C Recommendations as shown in the
+			following figure. <img src="sepa.jpg">
+		<p>Fig. 1 - The SPARQL Event Processing Architecture (SEPA)</p>
 
-	<b>Request body</b>
-	select * where {?vaimee ?deda ?didi}
-	</pre>
+		The SPARQL 1.1 SE protocol targets the application contexts where
+		security MUST be supported (e.g., the
+
+		<p>The SPARQL 1.1 SE Protocol aims at:</p>
+		<ul>
+			<li>Extending the SPARQL 1.1 Protocol [sparql11-protocol] to
+				support SPARQL subscriptions</li>
+			<li>Providing clients authentication based on OAuth 2.0
+				[[!RFC6749]]</li>
+			<li>Providing data encryption, server authentication and message
+				integrity</li>
+		</ul>
+
+		<p>On one hand, the SPARQL 1.1 SE Protocol MUST transparently
+			support the HTTP methods provided by the [[sparql11-protocol]] to
+			transport SPARQL 1.1 Queries [[sparql11-query]] and Updates
+			[[sparql11-update]]. On the other hand, subscriptions need a two-way
+			communication between subscribers and the SEPA Engine. A SEPA Engine
+			is RECOMMENDED to provide this kind of communication by using
+			Websockets [[!RFC6455]].</p>
+
+		<section id="conventions">
+			<h3>Document conventions</h3>
+			When this document uses the words MUST, MUST NOT, SHOULD, SHOULD NOT,
+			MAY and RECOMMENDED, and the words appear as emphasized text, they
+			must be interpreted as described in RFC 2119 [[!RFC2119]].
+		</section>
+
+		<section id="terms">
+			<h3>Terminology</h3>
+
+			<dt>SEPA</dt>
+			<dd>
+				<a href="http://wot.arces.unibo.it/TR/sepa.html">SPARQL Event
+					Processing Architecture</a>
+			</dd>
+
+			<dt>SEPA engine</dt>
+			<dd>
+				The server component of the SEPA. It implements the
+				publish-subscribe mechanisms and algorithms. Clients interact with a
+				SEPA engine with the <a
+					href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+					1.1 SE Protocol</a>
+			</dd>
+
+			<dt>SPARQL 1.1 Subscribe Language</dt>
+			<dd>
+				The <a href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">subscription
+					language</a> introduced by the SEPA
+			</dd>
+
+			<dt>SPARQL 1.1 SE Protocol</dt>
+			<dd>
+				The <a href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">protocol</a>
+				implemented by a SEPA engine and defined in this document
+			</dd>
+
+			<dt>SPARQL 1.1 Update Language</dt>
+			<dd>As defined by [[sparql11-update]]</dd>
+
+			<dt>SPARQL 1.1 Query Language</dt>
+			<dd>As defined by [[sparql11-query]]</dd>
+		</section>
 	</section>
-	
-	<section id="SPARQL11Update"><h3>SPARQL 1.1 Update</h3>
-	<p>SPARQL 1.1 Updates [[sparql11-update]] SHOULD be transparently supported like in 
-	a common SPARQL Protocol Service.</p>
-	<p> A SEPA Engine is RECOMMENDED supporting the POST method of the SPARQL 1.1 
-	Protocol [[sparql11-protocol]] and replying as shown in <a href='#ErrorResponses'></a>.
-	In case of success, the reply <code>code</code> member SHOULD be 200.</p>
-	<pre class="example" title="SPARQL 1.1 POST update">
+
+	<section id="SPARQL11Query">
+		<h3>SPARQL 1.1 Query</h3>
+		<p>SPARQL 1.1 Queries [[sparql11-query]] SHOULD be transparently
+			supported by a SPARQL SE Protocol Service as described in
+			[[sparql11-protocol]].
+		<p>A SEPA Engine is RECOMMENDED to :</p>
+
+		<ul>
+			<li>implement the POST method of the SPARQL 1.1 Protocol
+				[[sparql11-protocol]]</li>
+			<li>follow the SPARQL 1.1 Query Results JSON format
+				[[sparql11-results-json]]</li>
+			<li>reply as shown <a href='#ErrorResponses'>here</a> in case of
+				error
+			</li>
+		</ul>
+
+		<pre class="example" title="SPARQL 1.1 POST query">
+<b>Request</b> 
+POST http://wot.arces.unibo.it:8000/sparql
+
+<b>Request headers</b> 
+Content-Type: application/sparql-query
+Accept: application/sparql-results+json
+
+<b>Request body</b>
+SELECT * WHERE {?vaimee ?deda ?didi}
+
+<b>Response headers</b> 
+Content-Type: application/json
+
+<b>Response body</b>	
+{
+  "head": {
+    "vars": [
+      "vaimee",
+      "deda",
+      "didi"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "vaimee": {
+          "type": "uri",
+          "value": "http://wot.arces.unibo.it/example#Subject"
+        },
+        "deda": {
+          "type": "uri",
+          "value": "http://wot.arces.unibo.it/example#Predicate"
+        },
+        "didi": {
+          "type": "literal",
+          "value": "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"
+        }
+      }
+    ]
+  }
+}
+</pre>
+	</section>
+
+	<section id="SPARQL11Update">
+		<h3>SPARQL 1.1 Update</h3>
+		<p>SPARQL 1.1 Updates [[sparql11-update]] SHOULD be transparently
+			supported by a SPARQL SE Protocol Service as described in
+			[[sparql11-protocol]].</p>
+		<p>
+			A SEPA Engine is RECOMMENDED supporting the POST method of the SPARQL
+			1.1 Protocol [[sparql11-protocol]] and replying as shown <a
+				href='#ErrorResponses'>here</a>. In case of success, the reply
+			<code>code</code>
+			member SHOULD be 200.
+		</p>
+		<pre class="example" title="SPARQL 1.1 POST update">
 	<b>Request</b> 
 	POST http://wot.arces.unibo.it:8000/sparql 
 
@@ -117,43 +218,77 @@ transport SPARQL 1.1 Queries [[sparql11-query]] and Updates [[sparql11-update]].
 	Accept: application/sparql-results+json
 
 	<b>Request body</b>
-	prefix wot:<http://wot.arces.unibo.it/wot#>
-	insert data {wot:Subject wot:Predicate "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"}
-	</pre>
-	</section>
+	PREFIX wot:&lt;http://wot.arces.unibo.it/example#&gt;
+	INSERT DATA {wot:Subject wot:Predicate "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"}	
+
+<b>Response headers</b> 
+Content-Type: application/json
 	
-	<section id="SPARQL11Subscription"><h3>SPARQL 1.1 Subscription</h3>
-	<p>
-	A SEPA Engine implementation is RECOMMENDED to use <i>Websockets</i> [[!RFC6455]] as
-	protocol for the subscription mechanism. Furthermore, to provide a first level 
-	of dependability, a SEPA Engine implementation is RECOMMENDED to provide 
-	a periodic <i>ping</i> message to notify subscribes that the connection is up and 
-	the SEPA Engine is running.
-	The language used to specify the content of a subscription message (i.e., <b>subscribe</b>,
-	<b>unsubscribe</b>, <b>notification</b> and <b>ping</b>) is described in [[sparql-11-subscription]].
+<b>Response body</b>
+{
+  "body": "Some message...",
+  "code": 200
+}</pre>
 	</section>
-	
-	<section id="Security"><h3>Security</h3>
-<p>A SEPA implementation is RECOMMENDED to provide data encryption, server authentication 
-and message integrity accrtoding to [[!RFC5246]]. HTTPS [[!RFC2818]] and WSS [[!RFC6455]] 
-protocols are RECOMMENDED to be supported by a SEPA Engine implementation.
- The SEPA security mechanism conforms with the   
-<a href="http://w3c.github.io/wot/current-practices/wot-practices.html#security-mechanisms">security mechanisms</a> 
-RECOMMENDED by the Web of Things interest group.</p>
- 
-	<section id="Registration"><h4>Registration</h4>
-<p>Registration allows a client to obtain the credentials needed to request (or renew) a JSON Web Token [[!RFC7519]]. Every SEPA implementation
-MUST support the <a href="https://tools.ietf.org/html/rfc6749#section-1.3.4 client credentials">client credentials</a> authorization grant.
-Other authorization grants and registration mechanisms MAY be supported. To obtain the credentials, a client MUST own
- an application specific identifier, known as <code>client_identity</code>. The <code>client_identity</code> MAY correspond to the device serial number, the MAC address, the Electronic Product Code or
-any other sort of identifier defined by the application. </p>
 
-<p><b>Note: for the scope of this document, registration can be done once. 
-Multiple registration requests (using the same <code>client_identity</code>) are not allowed.</b></p>
+	<section id="SPARQL11Subscription">
+		<h3>SPARQL 1.1 Subscribe</h3>
+		<p>
+			A SEPA Engine implementation is RECOMMENDED to use <i>Websockets</i>
+			[[!RFC6455]] as protocol for the subscription mechanism. Furthermore,
+			to provide a first level of dependability, a SEPA Engine
+			implementation is RECOMMENDED to provide a periodic <i>ping</i>
+			message to notify subscribers that the connection is up and the SEPA
+			Engine is running. The language used to specify the content of a
+			subscription message (i.e., <b>subscribe</b>, <b>unsubscribe</b>, <b>notification</b>
+			and <b>ping</b>) is described <a
+				href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">here</a>.
 
-<p>An example of a client registration request follows:</p>
 
-<pre class="example" title="Registration request">
+		
+	</section>
+
+	<section id="Security">
+		<h3>Security</h3>
+		<p>A SEPA implementation is RECOMMENDED to :</p>
+		<ul>
+			<li> provide data encryption, server authentication and message
+			integrity according to [[!RFC5246]]</li>
+			<li>support HTTPS [[!RFC2818]] and WSS [[!RFC6455]] protocols</li>
+			<li>be compliant with the <a
+				href="http://w3c.github.io/wot/current-practices/wot-practices.html#security-mechanisms">security
+				mechanism</a> RECOMMENDED by the Web of Things interest group.</li>
+		</ul>
+		</p>
+
+		<section id="Registration">
+			<h4>Registration</h4>
+			<p>
+				Registration allows a client to obtain the credentials needed to
+				request (or renew) a JSON Web Token [[!RFC7519]]. Every SEPA
+				implementation MUST support the <a
+					href="https://tools.ietf.org/html/rfc6749#section-1.3.4 client credentials">client
+					credentials</a> authorization grant. Other authorization grants and
+				registration mechanisms MAY be supported. To obtain the credentials,
+				a client MUST own an <b>application specific identifier</b>, known as
+				<code>client_identity</code>
+				. The
+				<code>client_identity</code>
+				MAY correspond to the device serial number, the MAC address, the
+				Electronic Product Code or any other sort of identifier defined by
+				the application.
+			</p>
+
+			<p>
+				<b>Note: for the scope of this document, registration can be
+					done once. Multiple registration requests (using the same <code>client_identity</code>)
+					are not allowed. Re-registration policies and mechanisms are out of the scope of this document.
+				</b>
+			</p>
+
+			<p>An example of a client registration request and response follows:</p>
+
+			<pre class="example" title="Registration request">
 <b>Request</b> 
 POST https://wot.arces.unibo.it:8443/oauth/register
 
@@ -167,10 +302,7 @@ Accept: application/json
 "grant_types": ["client_credentials"] 
 }
 </pre>
-
-<p>A SEPA Engine response example follows:</p>
-
-<pre class="example" title="Registration response">
+			<pre class="example" title="Registration response">
 {"client_id":"<code>5b60a155-bada-4499-bc6f-26b4d37bc1ef</code>",
 "client_secret":"<code>40e18d77-421c-48ce-a44a-14da1238e923</code>",
 "signature":
@@ -180,18 +312,30 @@ Accept: application/json
 	"kid":"sepacertificate",
 	"x5c":["..."],
 	"n":"..."}}
-</pre>	
+</pre>
 
-<p>All SEPA implementations MUST support this JSON response. The JSON object contains 
-the client credentials (<code>client_id</code> and <code>client_secret</code>) and the <code>signature</code> . The latter SHALL be used
-to verify the JWT on the client side.</p>
-	<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
-	</section>
-	
-	<section id="Authentication"><h4>Authentication</h4>
-<p>Once a client registered and holds the credentials, it can request a JWT by sending a request like the following:</p>
+			<p>
+				All SEPA implementations MUST support this JSON response. The JSON
+				object contains the client credentials (
+				<code>client_id</code>
+				and
+				<code>client_secret</code>
+				) and the
+				<code>signature</code>
+				. The latter SHALL be used to verify the JWT on the client side.
+			</p>
+			<p>
+				In case of error, it is RECOMMENDED to reply as shown <a
+					href='#ErrorResponses'>here</a>.
+			</p>
+		</section>
 
-<pre class="example" title="Token request">
+		<section id="Authentication">
+			<h4>Authentication</h4>
+			<p>Once a client registered and holds the credentials, it can
+				request a JWT by sending a request like the following:</p>
+
+			<pre class="example" title="Token request">
 <b>Request</b> 
 POST https://wot.arces.unibo.it:8443/oauth/token
 
@@ -201,10 +345,17 @@ Accept: application/json
 Authorization: Basic <code>NWI2MGExNTUtYmFkYS00NDk5LWJjNmYtMjZiNGQzN2JjMWVmOjQwZTE4ZDc3LTQyMWMtNDhjZS1hNDRhLTE0ZGExMjM4ZTkyMw==</code>
 </pre>
 
-<p>The <code>authorization</code> header uses the "basic" authentication scheme [[!RFC2671]] with value the base64 encoding [[!RFC4648]] of 
-the string <b><code>"client_id:client_secret"</code></b> (e.g., "5b60a155-bada-4499-bc6f-26b4d37bc1ef:40e18d77-421c-48ce-a44a-14da1238e923").
-A SEPA Engine implementation MUST respond to a token request with a JSON object like the following:</p>
-<pre class="example" title="Token response">
+			<p>
+				The
+				<code>authorization</code>
+				header uses the "basic" authentication scheme [[!RFC2671]] having as
+				value the <b>base64 encoding</b> [[!RFC4648]] of the string <b><code>"client_id:client_secret"</code></b>
+				(e.g.,
+				"5b60a155-bada-4499-bc6f-26b4d37bc1ef:40e18d77-421c-48ce-a44a-14da1238e923").
+				A SEPA Engine implementation MUST respond to a token request with a
+				JSON object like the following one:
+			</p>
+			<pre class="example" title="Token response">
 {"access_token":"<code>eyJhbGciOiJSUzI1NiJ9.
 eyJzdWIiOiJTRVBBRW5naW5lIiwiYXVkIjpbImh0dHBzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6ODQ0M
 1wvc3BhcnFsIiwid3NzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6OTQ0M1wvc3BhcnFsIl0sIm5iZiI6MT
@@ -216,16 +367,35 @@ QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</c
 "token_type":"bearer",
 "expires_in":3600}
 </pre>
-<p> The JSON response MUST contain the following keys: <code>access_token</code> is the JWT,
-<code>token_type</code> to specify the token type (i.e., the default is <code>bearer</code>) and
-<code>expires_in</code> as the number of seconds after which the token will expire. Once a token is expired, the client
-can request a new token by using its credentials. Requesting a token while the current one is not expired generates an error.</p>
-<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
-	</section>
-	
-	<section id="Access"><h4>Secure access</h4>
-<p>HTTPS requests (e.g., https://wot.arces.unibo.it:8443/sparql) MUST include the <code>authorization</code> header as follows:</p>
-<pre class="example" title="HTTP access ">
+			<p>
+				The JSON response MUST contain the following keys:
+				<code>access_token</code>
+				is the JWT,
+				<code>token_type</code>
+				to specify the token type (i.e., the default is
+				<code>bearer</code>
+				) and
+				<code>expires_in</code>
+				as the number of seconds after which the token will expire. Once a
+				token is expired, the client can request a new token by using its
+				credentials. Requesting a token while the current one is not expired
+				generates an error.
+			</p>
+			<p>
+				In case of error, it is RECOMMENDED to reply as shown <a
+					href='#ErrorResponses'>here</a>.
+			</p>
+		</section>
+
+		<section id="Access">
+			<h4>Secure access</h4>
+			<p>
+				HTTPS requests (e.g., https://wot.arces.unibo.it:8443/sparql) MUST
+				include the
+				<code>authorization</code>
+				header as shwon in the following example:
+			</p>
+			<pre class="example" title="HTTP access ">
 <b>Authorization: Bearer </b><code>eyJhbGciOiJSUzI1NiJ9.
 eyJzdWIiOiJTRVBBRW5naW5lIiwiYXVkIjpbImh0dHBzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6ODQ0M
 1wvc3BhcnFsIiwid3NzOlwvXC93b3QuYXJjZXMudW5pYm8uaXQ6OTQ0M1wvc3BhcnFsIl0sIm5iZiI6MT
@@ -235,19 +405,28 @@ MjMwZmE4NTlhMTQ6NjhhMmYwOWQtN2E4NS00YzU1LTgxOWUtZWU1YWRhYjgxNDI1In0.IwTisstsZhJV
 Guhes4s9GE6sikh0rPtJg4QtY1DFT3OZ3WDF05OCwsBCe6dkNOn__68-e_9cEoiFY4s4KQ8heRQHpyRuD
 QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</code>
 </pre>
-<p>WSS requests (e.g., wss://wot.arces.unibo.it:9443/sparql) MUST include 
-the <code>authorization</code> member as shown in [[sparql-11-subscription]].
-<p>In case of error, it is RECOMMENDED to reply as shown in <a href='#ErrorResponses'></a>.</p>
+			<p>
+				WSS requests (e.g., wss://wot.arces.unibo.it:9443/sparql) MUST
+				include the
+				<code>authorization</code>
+				member as described in the <a href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL 1.1 Subscribe</a> document.
+			<p>
+				In case of error, it is RECOMMENDED to reply as shown <a
+					href='#ErrorResponses'>here</a>.
+			</p>
+		</section>
 	</section>
-	</section>
-	<section id="ErrorResponses"><h3>Error responses</h3>
- <p>In case of error, a SEPA Engine implementation SHOULD reply with a JSON object like the following:</p>
- <pre class="example" title="Error response">
+	<section id="ErrorResponses">
+		<h3>Error responses</h3>
+		<p>In case of error, a SEPA Engine implementation SHOULD reply
+			with a JSON object like the following:</p>
+		<pre class="example" title="Error response">
  { "body" : "Internal Server Error: SPARQL endpoint not found" , "code" : 500}
- </pre>	
-	<p> If applies, the use of use of HTTP status codes [[!RFC2616]] is RECOMMENDED. As reference, a list of
-	common HTTP status codes follows:</p> 
-	<pre>
+ </pre>
+		<p>If applies, the use of use of HTTP status codes [[!RFC2616]] is
+			RECOMMENDED. As reference, a list of common HTTP status codes
+			follows:</p>
+		<pre>
 400 Bad Request
 401 Unauthorized
 402 Payment Required
@@ -274,23 +453,22 @@ the <code>authorization</code> member as shown in [[sparql-11-subscription]].
 504 Gateway Timeout
 505 HTTP Version Not Supported
 	</pre>
-<p>Implementation specific error codes MAY also be used.</p>
+		<p>Implementation specific error codes MAY also be used.</p>
 	</section>
-    
-    
-    <!-- APPENDIX -->
-    <section class="appendix">
-
-      <!-- ACKNOWLEDGEMENTS -->
-      <h2>Acknowledgements</h2>
-
-      <p>
-	Authors would like to thanks the Advanced Research Center on Electronic Systems (ARCES) of the University of Bologna.
-      </p>
-
-    </section>
 
 
-  </body>
+	<!-- APPENDIX -->
+	<section class="appendix">
+
+		<!-- ACKNOWLEDGEMENTS -->
+		<h2>Acknowledgements</h2>
+
+		<p>Authors would like to thanks the Advanced Research Center on
+			Electronic Systems (ARCES) of the University of Bologna.</p>
+
+	</section>
+
+
+</body>
 
 </html>
