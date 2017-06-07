@@ -17,8 +17,16 @@
         edDraftURI:           "https://wot.arces.unibo.it/TR/sepa.html",
         extraCSS:             ["css/respec.css"],
       
-        // editors
-        editors:  [ { 
+         // editors
+        editors:  [
+        { 
+          name: "Cristiano Aguzzi", 
+          url: "http://wot.arces.unibo.it",
+          mailto: "cristiano.aguzzi@studio.unibo.it",
+          company: "ARCES", 
+          companyURL: "http://wot.arces.unibo.it" 
+        },
+         { 
           name: "Francesco Antoniazzi", 
           url: "http://wot.arces.unibo.it",
           mailto: "francesco.antoniazzi@unibo.it",
@@ -29,8 +37,8 @@
           name: "Luca Roffia", 
           url: "http://wot.arces.unibo.it",
           mailto: "luca.roffia@unibo.it",
-          company: "ARCES", 
-          companyURL: "http:/wot.arces.unibo.it" 
+          company: "DISI", 
+          companyURL: "http://wot.arces.unibo.it" 
         },
         { 
           name: "Fabio Viola", 
@@ -38,7 +46,7 @@
           mailto: "fabio.viola@unibo.it",
           company: "ARCES", 
           companyURL: "http://wot.arces.unibo.it" 
-        }  
+        } 
         ],
       
         // WG
@@ -57,9 +65,9 @@
 			Architecture (SEPA)</b>. The SEPA consists of the following components:
 		the <i>SPARQL Secure Event (SE) Protocol Service</i> (also known as
 		SEPA Engine), the <a
-			href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-se-protocol.html">SPARQL
+			href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 			1.1 Secure Event (SE) Protocol</a> and the <a
-			href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-subscribe.html">SPARQL
+			href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
 			1.1 Subscribe Language</a>. The SEPA aims supporting the development of
 		context aware applications, in particular with reference to <b>dynamic
 			contexts</b> where detecting and reacting to events is critical. In such
@@ -93,7 +101,7 @@
 
 		<p>
 			A SPARQL SE Protocol Service MUST implement the <a
-				href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-se-protocol.html">SPARQL
+				href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 				1.1 Secure Event (SE) Protocol</a> that is proposed as an extension of
 			the SPARQL 1.1 Protocol [[sparql11-protocol]] and, as shown in Fig.
 			1, it wraps the SPARQL 1.1 Protocol [[sparql11-protocol]] to support
@@ -105,10 +113,10 @@
 		</p>
 		<p>
 			The definition of the <a
-				href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-se-protocol.html">SPARQL
+				href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 				1.1 Secure Event (SE) Protocol</a> and the <a
-			href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-subscribe.html">SPARQL
-			1.1 Subscribe Language</a> are out of the scope of this document.
+				href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				1.1 Subscribe Language</a> are out of the scope of this document.
 		</p>
 
 		<section id="conventions">
@@ -123,9 +131,8 @@
 
 			<dt>SEPA</dt>
 			<dd>
-				<a
-					href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sepa.html">SPARQL
-					Event Processing Architecture</a>
+				<a href="http://wot.arces.unibo.it/TR/sepa.html">SPARQL Event
+					Processing Architecture</a>
 			</dd>
 
 			<dt>SEPA engine</dt>
@@ -133,21 +140,19 @@
 				The server component of the SEPA. It implements the
 				publish-subscribe mechanisms and algorithms. Clients interact with a
 				SEPA engine with the <a
-					href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-se-protocol.html">SPARQL
+					href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 					1.1 SE Protocol</a>
 			</dd>
 
 			<dt>SPARQL 1.1 Subscribe Language</dt>
 			<dd>
-				The <a
-					href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-subscribe.html">subscription
+				The <a href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">subscription
 					language</a> introduced by the SEPA
 			</dd>
 
 			<dt>SPARQL 1.1 SE Protocol</dt>
 			<dd>
-				The <a
-					href="https://github.com/arces-wot/W3C-Recommendation-Drafts/blob/master/sparql11-se-protocol.html">protocol</a>
+				The <a href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">protocol</a>
 				implemented by a SEPA engine
 			</dd>
 
@@ -217,9 +222,18 @@
 		<!-- ACKNOWLEDGEMENTS -->
 		<h2>Acknowledgements</h2>
 
-		<p>Authors would like to thanks the Advanced Research Center on
-			Electronic Systems (ARCES) of the University of Bologna.</p>
-
+		<p>
+			Editors would like to thanks the <a
+				href="http://www.arces.unibo.it/en">Advanced Research Center on
+				Electronic Systems "Ercole De Castro" (ARCES)</a> and the <a
+				href="http://www.cse.unibo.it/en/index.html">Computer Science
+				and Engineering Department (DISI)</a> of the <a
+				href="http://http://www.unibo.it/en/homepage">University of
+				Bologna</a>, the <a href="https://ec.europa.eu/commission/index_en">European
+				Commission</a> and all the partners of the <a
+				href="https://artemis-ia.eu/">ARTEMIS</a> projects who inspired the
+			SPARQL Event Processing Architecture (SEPA).
+		</p>
 	</section>
 
 
