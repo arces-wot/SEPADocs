@@ -138,7 +138,7 @@
 			A subscribe primitive is expressed as shown in the following example:
 			<pre class="example" title="Subscribe request">
 {"subscribe" : "<code>select * where {?s ?p ?o}</code>",
-"authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ",
+"authorization" : "<code>Bearer</code> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ",
 "alias" : "All"}</pre>
 
 			<p>
@@ -147,7 +147,7 @@
 				member MUST be a SPARQL 1.1 Query [[sparql11-query]], the value of
 				the
 				<code>authorization</code>
-				member (if present) MUST be a JSON Web Token [[!RFC7519]] and the
+				member (if present) MUST be a <code>Bearer</code> JSON Web Token [[!RFC7519]] and the
 				value of the
 				<code>alias</code>
 				member (if present ) is a string representing a friendly name of the
@@ -205,14 +205,14 @@
 			<p>
 			<pre class="example" title="Unsubscribe request">
 {"unsubscribe" : "<code>sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6</code>",
-"authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ",}</pre>
+"authorization" : "<code>Bearer</code> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ",}</pre>
 			<p>
 				The
 				<code>unsubscribe</code>
 				member value is the subscription URI ([[!RFC3986]]) provided by the
 				subscribe response message. The value of the
 				<code>authorization</code>
-				member (if present) MUST be a JSON Web Token [[!RFC7519]]. The
+				member (if present) MUST be a <code>Bearer</code> JSON Web Token [[!RFC7519]]. The
 				former member is REQUIRED, while the latter is only REQUIRED for
 				secure primitives.
 			</p>

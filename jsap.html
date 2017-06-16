@@ -324,7 +324,7 @@
 
 			<p>
 				A SEPA engine implementation MUST provide two security primitives: <b>register</b>
-				and <b>request token</b>. The former is used by clients to obtain <i>credentials</i>,
+				and <b>token request</b>. The former is used by clients to obtain <i>credentials</i>,
 				while the latter to request <i>JSON Web Tokens (JWT)</i> (i.e., JWT
 				are needed to invoke secure primitives). JSAP allows to specify the
 				parameters needed to access such primitives by defining an
@@ -338,12 +338,12 @@
     "port": 8443,
     "scheme": "https",
     "register": "/oauth/register",
-    "requestToken": "/oauth/token"
+    "tokenRequest": "/oauth/token"
   }
 }</pre>
 			<p>
-				JSAP MAY also be used by clients to store credentials (i.e., <i>client_id</i>
-				and <i>client_secret</i>) and JSON Web Token. For security reasons,
+				JSAP MAY also be used by clients to store credentials (i.e., <i>clientId</i>
+				and <i>clientSecret</i>) and JSON Web Token. For security reasons,
 				it is RECOMMENDED to encrypt those elements (e.g., using <a
 					href="https://dx.doi.org/10.6028/NIST.FIPS.197">Advanced
 					Encryption Standard (AES)</a>) like in the following example:
@@ -351,8 +351,8 @@
 			<pre class="note" title="Storing client credentials">
 "parameters":{
   "security":{
-    "client_id":"TP6...RPC9",
-    "client_secret":"SVEM...+EPFU",
+    "clientId":"TP6...RPC9",
+    "clientSecret":"SVEM...+EPFU",
     "jwt":"XABTQ...HVMWXCCK=",
     "expires":"DSBUAXCGHRFQ2GGALQDUSQ==",
     "type":"XPRHEX2XHY+5IUXHPHIGMW=="
