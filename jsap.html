@@ -10,7 +10,7 @@
       var respecConfig = {
       
         // document info
-        specStatus:           "ED",
+        specStatus:           "unofficial",
         shortName:            "jsap",      
         copyrightStart:       "2017",
         edDraftURI:           "http://wot.arces.unibo.it/TR/jsap.html",
@@ -257,13 +257,24 @@
 				.
 			</p>
 
-			<pre class="example" title="Default connection parameters">
+			<pre class="example" title="Connection parameters">
 "parameters": {
   "host": "wot.arces.unibo.it",
-  "path": "/sparql",
-  "scheme": "http",
-  "port": 8000
- }</pre>
+  "ports": {
+    "http": 8000,
+	"https": 8443,
+	"ws": 9000,
+	"wss": 9443
+  },
+  "paths": {
+    "query": "/query",
+	"update": "/update",
+    "subscribe": "/subscribe",
+	"register": "/oauth/register",
+    "tokenRequest": "/oauth/token",
+	"securePath": "/secure"
+  }
+}</pre>
 			<p>
 				The
 				<code>"parameters"</code>
@@ -306,11 +317,22 @@
 				<code>"path"</code>
 				as shown in the following example:
 			<pre class="example" title="SPARQL 1.1 SE Protocol primitives">
-"parameters":{
-  "subscribe": {"scheme": "ws","port": 9000},
-  "secureQuery": {"port": 8443,"scheme": "https"},
-  "secureUpdate": {"port": 8443,"scheme": "https"},
-  "secureSubscribe": {"scheme": "wss","port": 9443,"path": "/secure/sparql"}
+"parameters": {
+  "host": "wot.arces.unibo.it",
+  "ports": {
+    "http": 8000,
+	"https": 8443,
+	"ws": 9000,
+	"wss": 9443
+  },
+  "paths": {
+    "query": "/query",
+	"update": "/update",
+    "subscribe": "/subscribe",
+	"register": "/oauth/register",
+    "tokenRequest": "/oauth/token",
+	"securePath": "/secure"
+  }
 }</pre>
 			<p>
 				As a general rule, the definition of a specific key MAY be
