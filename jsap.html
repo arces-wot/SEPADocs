@@ -250,119 +250,104 @@
 			<p>
 				A semantic application profile, in order to fully describe an
 				application, MUST contain the <b>connection parameters</b> needed by
-				an application to interact with a SEPA engine instance. Within a
-				JSAP, such parameters are described by a mandatory a JSON object
-				named
-				<code>"parameters"</code>
-				.
-			</p>
-
-			<pre class="example" title="Connection parameters">
-"parameters": {
-  "host": "wot.arces.unibo.it",
-  "ports": {
-    "http": 8000,
-	"https": 8443,
-	"ws": 9000,
-	"wss": 9443
-  },
-  "paths": {
-    "query": "/query",
-	"update": "/update",
-    "subscribe": "/subscribe",
-	"register": "/oauth/register",
-    "tokenRequest": "/oauth/token",
-	"securePath": "/secure"
-  }
-}</pre>
-			<p>
-				The
-				<code>"parameters"</code>
-				member of a JSAP MUST contain all the following <i>default</i> keys:
-			</p>
-			<ul>
-				<li><code>"host"</code>: is the host where the SEPA engine is
-					running (e.g., wot.arces.unibo.it)</li>
-				<li><code>"port"</code>: is the <i>default</i> port where the
-					SEPA engine is listening for SPARQL 1.1 primitives (e.g., 8000)</li>
-				<li><code>"path"</code>: is the <i>default</i> path where the
-					SEPA engine is listening for SPARQL 1.1 primitives (e.g., /sparql)</li>
-				<li><code>"scheme"</code>: is the <i>default</i> scheme used by
-					the SEPA engine (e.g., http)
-			</ul>
-
-
-			<p>
-				The
-				<code>"parameters"</code>
-				member MUST also include all the parameters to connect with the <a
+				an application to interact with a SEPA engine instance through the <a
 					href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 					1.1 SE Protocol</a>, like the HTTPS interface (used by secure SPARQL
 				updates and SPARQL queries) and the Websocket interface (needed by
-				(secure) SPARQL subscriptions). Access to these primitives require
-				the definition of the following keys:
-				<code>"subscribe"</code>
+				(secure) SPARQL subscriptions). In JSAP, such parameters are
+				described by a mandatory a JSON object named
+				<code>"parameters"</code>
+				that MUST contain all the following keys:
+				<code>"host"</code>
 				,
-				<code>"secureUpdate"</code>
-				,
-				<code>"secureQuery"</code>
+				<code>"ports"</code>
 				and
-				<code>"secureSubscribe"</code>
-				. Each of these keys MAY used to override the value of one or more
-				of the defaults specified by
-				<code>"scheme"</code>
-				,
-				<code>"port"</code>
-				and
-				<code>"path"</code>
-				as shown in the following example:
-			<pre class="example" title="SPARQL 1.1 SE Protocol primitives">
+				<code>"paths"</code>
+				.
+			<pre class="example" title="Connection parameters" id="ConnectionParametersExample">
 "parameters": {
   "host": "wot.arces.unibo.it",
   "ports": {
     "http": 8000,
-	"https": 8443,
-	"ws": 9000,
-	"wss": 9443
+    "https": 8443,
+    "ws": 9000,
+    "wss": 9443
   },
   "paths": {
     "query": "/query",
-	"update": "/update",
+    "update": "/update",
     "subscribe": "/subscribe",
-	"register": "/oauth/register",
-    "tokenRequest": "/oauth/token",
-	"securePath": "/secure"
-  }
-}</pre>
-			<p>
-				As a general rule, the definition of a specific key MAY be
-				overwritten by the same key in a nested member. For example, the
-				default
-				<code>"path"</code>
-				key (e.g, /sparql) MAY be different from the one used by secure
-				subscriptions (e.g., /secure/sparql).
-			</p>
-
-
-			<p>
-				A SEPA engine implementation MUST provide two security primitives: <b>register</b>
-				and <b>token request</b>. The former is used by clients to obtain <i>credentials</i>,
-				while the latter to request <i>JSON Web Tokens (JWT)</i> (i.e., JWT
-				are needed to invoke secure primitives). JSAP allows to specify the
-				parameters needed to access such primitives by defining an
-				<code>authorizationServer</code>
-				member as follows:
-			</p>
-			<pre class="example"
-				title="Registration and token request primitives">
-"parameters":{
-  "authorizationServer": {
-    "port": 8443,
-    "scheme": "https",
     "register": "/oauth/register",
-    "tokenRequest": "/oauth/token"
-  }
-}</pre>
+    "tokenRequest": "/oauth/token",
+    "securePath": "/secure"
+}}</pre>
+
+			<p>
+				The value of the
+				<code>"host"</code>
+				member specifies the host where the SEPA engine is running (e.g.,
+				wot.arces.unibo.it).
+			</p>
+			<p>
+				The
+				<code>"ports"</code>
+				member contains a list of the ports where the SEPA engine is
+				listening for SPARQL 1.1 SE primitives:
+				<code>"http"</code>
+				for updates and queries,
+				<code>"https"</code>
+				for secure updates, queries and authorization requests,
+				<code>"ws"</code>
+				and
+				<code>"wss"</code>
+				respectively for unsecure and secure subscribes.
+			</p>
+			<p>
+				The
+				<code>"paths"</code>
+				member contains the paths used to form the URLs used by SPARQL 1.1
+				SE primitives, like
+				<code>"query"</code>
+				,
+				<code>"update"</code>
+				and
+				<code>"subscribe"</code>
+				. A SEPA engine implementation MUST also provide two more
+				primitives: <b>register</b> and <b>token request</b>. The former is
+				used by clients to obtain <i>credentials</i>, while the latter to
+				request <i>JSON Web Tokens (JWT)</i> (i.e., JWT are needed to invoke
+				secure primitives). The path included in the URLs of these
+				primitives is specified respectively by the value of
+				<code>"register"</code> and <code>"tokenRequest"</code>.
+				The URLs of secure primitives (i.e., secure query, secure update and
+				secure subscribe) are obtained by adding at the beginning of the
+				path what is specified by the
+				<code>"securePath"</code>
+				member value.
+			</p>
+			The URLs obtained from the <a
+					href='ConnectionParametersExample'>above JSON</a> follow:
+			<pre class="example"
+				title="URLs used by SEPA primitives">
+<a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 Protocol</a>
+
+- Query URL: http://wot.arces.unibo.it:8000/query
+
+- Update URL: http://wot.arces.unibo.it:8000/update
+
+<a href="https://wot.arces.unibo.it/TR/sparql11-se-protocol/">SPARQL SE 1.1 Protocol</a>
+
+- Subscribe on: ws://wot.arces.unibo.it:9000/subscribe
+
+- SECURE Query URL: https://wot.arces.unibo.it:8443/secure/query
+
+- SECURE Update URL: https://wot.arces.unibo.it:8443/secure/update
+
+- SECURE Subscribe on: wss://wot.arces.unibo.it:9443/secure/subscribe
+
+- Regitration URL: https://wot.arces.unibo.it:8443/oauth/register
+
+- Token request URL: https://wot.arces.unibo.it:8443/oauth/token</pre>
 			<p>
 				JSAP MAY also be used by clients to store credentials (i.e., <i>clientId</i>
 				and <i>clientSecret</i>) and JSON Web Token. For security reasons,
