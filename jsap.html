@@ -240,7 +240,7 @@
 			,
 			<code>updates</code>
 			and
-			<code>subscribes</code>
+			<code>queries</code>
 			. For each of these objects, a specific sub-section follows.
 		</p>
 
@@ -452,10 +452,10 @@
 			</p>
 			<p>
 				In JSAP, subscribes are listed by the
-				<code>"subscribes"</code>
+				<code>"queries"</code>
 				JSON object. As for the updates, each subscribe has a friendly name,
 				which is the key of a JSON object children of
-				<code>"subscribes"</code>
+				<code>"queries"</code>
 				. The JSON object describing a subscribe MUST contain the
 				<code>"sparql"</code>
 				key.
@@ -463,13 +463,13 @@
 
 			<p>
 				In the following example, a
-				<code>"subscribes"</code>
+				<code>"queries"</code>
 				section including a single subscribe named
 				<code>SENSOR</code>
 				is presented.
 			</p>
 			<pre class="example" title="Subscribe (actuator)">
-"subscribes" : {
+"queries" : {
   "ALL_SENSORS_VALUES" : {
     "sparql" : "
       SELECT ?sensor ?value 
@@ -619,7 +619,7 @@ WHERE  {<b><code>wot:A_SENSOR_URI</code></b> rdf:type wot:SENSOR . <b><code>wot:
        }
      }
    },
-"subscribes": {
+"queries": {
   "ALL_SENSORS_VALUES" : {	
     "sparql" : "
       SELECT ?sensor ?value 
