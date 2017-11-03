@@ -178,7 +178,7 @@
 			<p>If the subscribe request is successfully processed, every SEPA
 				implementation MUST respond with a message like the following:</p>
 			<pre class="example" title="Subscribe response">
-{"subscribed" : "<code>sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6</code>","alias":"All"}</pre>
+{"subscribed" : "<code>sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6</code>","alias":"All","firstResults":[[sparql11-results-json]]}</pre>
 			<p>
 				The value of the
 				<code>subscribed</code>
@@ -187,7 +187,8 @@
 				<code>alias</code>
 				member (if present) has the same value of the corresponding
 				<code>alias</code>
-				member of the subscribe request.
+				member of the subscribe request. Eventually, the value of the <code>firstResults"</code> corresponds to the 
+				results of a SPARQL query serialized in JSON [[sparql11-update]].
 			</p>
 			<p>
 				In case of error, it is RECOMMENDED to reply as shown <a
