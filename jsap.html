@@ -7,51 +7,34 @@
 	src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js"
 	class="remove"></script>
 <script class='remove'>
-      var respecConfig = {
-      
-        // document info
-        specStatus:           "unofficial",
-        shortName:            "jsap",      
-        copyrightStart:       "2017",
-        edDraftURI:           "http://wot.arces.unibo.it/TR/jsap.html",
-        extraCSS:             ["css/respec.css"],
-      
-        // editors
-        editors:  [
-        { 
-          name: "Cristiano Aguzzi", 
-          url: "http://wot.arces.unibo.it",
-          mailto: "cristiano.aguzzi@studio.unibo.it",
-          company: "ARCES", 
-          companyURL: "http://wot.arces.unibo.it" 
-        },
-         { 
-          name: "Francesco Antoniazzi", 
-          url: "http://wot.arces.unibo.it",
-          mailto: "francesco.antoniazzi@unibo.it",
-          company: "ARCES", 
-          companyURL: "http://wot.arces.unibo.it" 
-        },
-        { 
-          name: "Luca Roffia", 
-          url: "http://wot.arces.unibo.it",
-          mailto: "luca.roffia@unibo.it",
-          company: "DISI", 
-          companyURL: "http://wot.arces.unibo.it" 
-        },
-        { 
-          name: "Fabio Viola", 
-          url: "http://wot.arces.unibo.it",
-          mailto: "fabio.viola@unibo.it",
-          company: "ARCES", 
-          companyURL: "http://wot.arces.unibo.it" 
-        }
-        ],
-        // WG
-        wg:           "Web of Things working group @ ARCES University of Bologna",
-        wgURI:        "http://wot.arces.unibo.it/",
-      };
-    </script>
+	var respecConfig = {
+
+		// document info
+		specStatus : "unofficial",
+		shortName : "jsap",
+		copyrightStart : "2017",
+		edDraftURI : "http://mml.arces.unibo.it/TR/jsap.html",
+		extraCSS : [ "css/respec.css" ],
+
+		// editors
+		editors : [ {
+			name : "Cristiano Aguzzi",
+			mailto : "cristiano.aguzzi@unibo.it"
+		}, {
+			name : "Francesco Antoniazzi",
+			mailto : "francesco.antoniazzi@unibo.it"
+		}, {
+			name : "Luca Roffia",
+			mailto : "luca.roffia@unibo.it"
+		}, {
+			name : "Fabio Viola",
+			mailto : "fabio.viola@unibo.it"
+		} ],
+		// WG
+		wg : "Linked Data and Web of Things working group @ ARCES University of Bologna",
+		wgURI : "http://mml.arces.unibo.it/",
+	};
+</script>
 
 </head>
 
@@ -61,7 +44,7 @@
 	<section id="abstract">
 		This document describes the JSON SPARQL Application Profile (JSAP).
 		JSAP is used to describe an application based on the <a
-			href="http://wot.arces.unibo.it/TR/sepa.html">SPARQL Event
+			href="http://mml.arces.unibo.it/TR/sepa.html">SPARQL Event
 			Processing Architecture</a> (SEPA) and following the application design
 		pattern named <b>PAC</b> (<b>P</b>roducer-<b>A</b>ggregator-<b>C</b>onsumer)
 		described in this document. JSAP uses JSON as default format
@@ -83,8 +66,8 @@
 			application is composed by a set of producers, consumers and
 			aggregators). The role of JSAP is to collect the <b>SPARQL
 				updates</b> [[sparql11-update]], <b><a
-				href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
-					subscribes</a></b> and the <b>connection parameters</b> used by a SEPA
+				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+					subscribes</a></b> and the <b>protocol parameters</b> used by a SEPA
 			application. JSAP MAY contain a list of SPARQL prefixes. In such a
 			way, JSAP acts as an <i>identity card</i> of a SEPA application.
 		</p>
@@ -109,7 +92,7 @@
 			<dt>JSAP</dt>
 			<dd>
 				JSON SPARQL Application Profile (as defined by this <a
-					href="http://wot.arces.unibo.it/TR/jsap.html">document</a>)
+					href="http://mml.arces.unibo.it/TR/jsap.html">document</a>)
 			</dd>
 			<dt>SPARQL</dt>
 			<dd>SPARQL Protocol and RDF Query Language (as defined by
@@ -123,34 +106,34 @@
 
 			<dt>SPARQL 1.1 Subscribe Language</dt>
 			<dd>
-				The <a href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">subscription
+				The <a href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">subscription
 					language</a> introduced by the SEPA
 			</dd>
 
 			<dt>SPARQL 1.1 SE Protocol</dt>
 			<dd>
-				The <a href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">protocol</a>
-				implemented by a SEPA engine
+				The <a href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">protocol</a>
+				implemented by a SEPA broker
 			</dd>
 
 			<dt>SEPA</dt>
 			<dd>
-				<a href="http://wot.arces.unibo.it/TR/sepa.html">SPARQL Event
+				<a href="http://mml.arces.unibo.it/TR/sepa.html">SPARQL Event
 					Processing Architecture</a>
 			</dd>
 
 			<dt>SEPA application</dt>
 			<dd>
 				a collection of producers, consumers and aggregators (as defined by
-				this <a href="http://wot.arces.unibo.it/TR/jsap.html">document</a>)
+				this <a href="http://mml.arces.unibo.it/TR/jsap.html">document</a>)
 			</dd>
 
-			<dt>SEPA engine</dt>
+			<dt>SEPA broker</dt>
 			<dd>
 				The server component of the SEPA. It implements the
 				publish-subscribe mechanisms and algorithms. Clients interact with a
-				SEPA engine with the <a
-					href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+				SEPA broker with the <a
+					href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 					1.1 SE Protocol</a>
 			</dd>
 		</section>
@@ -171,20 +154,20 @@
 		</p>
 		<p>
 			The design pattern assumes that a client SHOULD interact with a SEPA
-			engine using two primitives: <b>update</b> and <b>subscribe</b>. The
-			protocol used by a client to interact with a SEPA engine is described
-			in <a href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+			broker using two primitives: <b>update</b> and <b>subscribe</b>. The
+			protocol used by a client to interact with a SEPA broker is described
+			in <a href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 				1.1 Secure Event Protocol</a>. While an update corresponds to a SPARQL
 			1.1 Update [[sparql11-update]], a subscribe is described in <a
-				href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe Language</a>. A subscribe acts as a persistent SPARQL 1.1
 			Query [[sparql11-query]] and the content of a notification contains
 			the <i>delta</i> of the results since the previous notification
 			(i.e., when a subscribe is invoked the current query results are
 			returned to the client) as described in <a
-				href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe Language</a>. A client assumes a different role depending
-			on how it interacts with a SEPA engine.
+			on how it interacts with a SEPA broker.
 		</p>
 		<p></p>
 		<p>
@@ -195,11 +178,11 @@
 		</p>
 		<p>
 			A <i>consumer</i> invokes a <a
-				href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe</a>. Like the update of a producer, a consumer MUST invoke
 			one and only one subscribe. When a consumer subscribes, it MAY
 			replace some variables within the <a
-				href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe</a> with actual values (i.e., see <b><a
 				href="#forcedBindings">forced bindings</a></b>). An actuator subscribed
 			to events (or commands) is an example.
@@ -231,123 +214,171 @@
 
 	<section id="JSAPcontent">
 		<h2>JSAP content</h2>
-		<p>
-			JSAP can be logically divided in four main sections, each of them
-			described by a JSON object. These JSON objects are:
-			<code>parameters</code>
-			,
-			<code>namespaces</code>
-			,
-			<code>updates</code>
-			and
-			<code>queries</code>
-			. For each of these objects, a specific sub-section follows.
+		<p>A JSAP is structured as follows.
+		<pre class="example" title="JASP structure" id="JSAPMainStructure">
+{"<b>host</b>":"Host name or IP",
+ "<b>sparql11protocol</b>":{...},
+ "<b>sparql11seprotocol</b>":{...},
+ "<b>namespaces</b>":{
+   "prefix-1":"namespace URI1",
+   ...,
+   "prefix-n":"namespace URIn"},
+"<b>graphs</b>":{ (all are optional)
+  "default-graph-uri":["...",...,"..."],
+  "named-graph-uri":["...",...,"..."],
+  "using-graph-uri":["...",...,"..."],
+  "using-named-graph-uri":["...",...,"..."]},
+"<b>updates</b>":{...},
+"<b>queries</b>":{...},
+"<b>extended</b>":{...}(optional)}</pre>
+
+		The
+		<code>host</code>
+		,
+		<code>sparql11protocol</code>
+		and
+		<code>sparql11seprotocol</code>
+		MUST be all present. The
+		<code>host</code>
+		member contains the host name or IP of the SEPA broker. The other two
+		members allow to configure respectively the SPARQL 1.1 protocol
+		[[sparql11-protocol]] and <a
+			href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+			1.1 Secure Event Protocol</a>. With reference to the SPARQL 1.1 protocol
+		[[sparql11-protocol]], the
+		<code>graphs</code>
+		member MAY be used to specify zero or more default graph URIs (
+		<code>default-graph-uri</code>
+		) and named graph URIs (
+		<code>named-graph-uri</code>
+		) for queries (i.e., subscribes), as well as zero or more default
+		graph URIs (
+		<code>using-graph-uri</code>
+		) and named graph URIs (
+		<code>using-named-graph-uri</code>
+		) for udpdates. The values of all these members MAY be overwritten
+		within the
+		<code>updates</code>
+		and
+		<code>queries</code>
+		as described later. The
+		<code>extended</code>
+		member is optional and it can be used to store application specific
+		data.
 		</p>
 
-		<section id="connectionParameters">
+		<section id="protocolParameters">
 
-			<h3>Connection parameters</h3>
+			<h3>Protocol parameters</h3>
 			<p>
 				A semantic application profile, in order to fully describe an
-				application, MUST contain the <b>connection parameters</b> needed by
-				an application to interact with a SEPA engine instance through the <a
-					href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+				application, MUST contain the protocol parameters needed by an
+				application to interact with a SEPA broker instance through the <a
+					href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 					1.1 SE Protocol</a>, like the HTTPS interface (used by secure SPARQL
 				updates and SPARQL queries) and the Websocket interface (needed by
 				(secure) SPARQL subscriptions). In JSAP, such parameters are
-				described by a mandatory a JSON object named
-				<code>"parameters"</code>
-				that MUST contain all the following keys:
-				<code>"host"</code>
-				,
-				<code>"ports"</code>
+				described by two mandatory JSON objects named
+				<code>sparql11protocol</code>
 				and
-				<code>"paths"</code>
+				<code>sparql11seprotocol</code>
 				.
-			<pre class="example" title="Connection parameters" id="ConnectionParametersExample">
-"parameters": {
-  "host": "wot.arces.unibo.it",
-  "ports": {
-    "http": 8000,
-    "https": 8443,
-    "ws": 9000,
-    "wss": 9443
-  },
-  "paths": {
-    "query": "/query",
-    "update": "/update",
-    "subscribe": "/subscribe",
-    "register": "/oauth/register",
-    "tokenRequest": "/oauth/token",
-    "securePath": "/secure"
-}}</pre>
+			<pre class="example" title="SPARQL 1.1 protocol parameters"
+				id="sparql11protocol">
+"<b>sparql11protocol</b>": {
+  "<b>host</b>": "mml.arces.unibo.it", (optional)
+  "<b>port</b>": 8000,
+  "<b>protocol</b>" : "http",
+  "<b>query</b>":{
+    "<b>path</b>":"/query",
+    "<b>method</b>:"POST",
+    "<b>format</b>":"JSON"},
+  "<b>update</b>":{
+    "<b>path</b>":"/query",
+    "<b>method</b>:"URL_ENCODED_POST",
+    "<b>format</b>":"JSON"}}</pre>
 
 			<p>
 				The value of the
-				<code>"host"</code>
-				member specifies the host where the SEPA engine is running (e.g.,
-				wot.arces.unibo.it).
+				<code>host</code>
+				member specifies the host where the SEPA broker is running (e.g.,
+				mml.arces.unibo.it).
 			</p>
 			<p>
 				The
-				<code>"ports"</code>
-				member contains a list of the ports where the SEPA engine is
-				listening for SPARQL 1.1 SE primitives:
-				<code>"http"</code>
-				for updates and queries,
-				<code>"https"</code>
-				for secure updates, queries and authorization requests,
-				<code>"ws"</code>
-				and
-				<code>"wss"</code>
-				respectively for unsecure and secure subscribes.
+				<code>port</code>
+				member specifies the port where the SEPA broker is listening for
+				SPARQL 1.1 primitives (updates and queries).
 			</p>
 			<p>
 				The
-				<code>"paths"</code>
-				member contains the paths used to form the URLs used by SPARQL 1.1
-				SE primitives, like
-				<code>"query"</code>
-				,
-				<code>"update"</code>
-				and
-				<code>"subscribe"</code>
-				. A SEPA engine implementation MUST also provide two more
-				primitives: <b>register</b> and <b>token request</b>. The former is
-				used by clients to obtain <i>credentials</i>, while the latter to
-				request <i>JSON Web Tokens (JWT)</i> (i.e., JWT are needed to invoke
-				secure primitives). The path included in the URLs of these
-				primitives is specified respectively by the value of
-				<code>"register"</code> and <code>"tokenRequest"</code>.
-				The URLs of secure primitives (i.e., secure query, secure update and
-				secure subscribe) are obtained by adding at the beginning of the
-				path what is specified by the
-				<code>"securePath"</code>
-				member value.
+				<code>protocol</code>
+				member specifies the protocol used and it can assume the values:
+				<code>http</code>
+				or
+				<code>https</code>
+				.
 			</p>
-			The URLs obtained from the <a
-					href='ConnectionParametersExample'>above JSON</a> follow:
-			<pre class="example"
-				title="URLs used by SEPA primitives">
+			<p>
+				The
+				<code>update</code>
+				and
+				<code>query</code>
+				members contain the following members:
+				<code>path</code>
+				(i.e., the path part of the URL),
+				<code>method</code>
+				(i.e., the HTTP method used) and
+				<code>format</code>
+				(i.e., the format of the response). According to the SPARQL 1.1
+				protocol [[sparql11-protocol]], for queries the
+				<code>format</code>
+				can be POST, GET, URL_ENCODED_POST, while for updates it can be POST
+				or URL_ENCODED_POST. All the SEPA implementations MUST support JSON
+				as return format, while other formats like XML, CSV or HTML MAY be
+				supported.
+			</p>
+
+			<pre class="example" title="SPARQL 1.1 SE protocol parameters"
+				id="sparql11seprotocol">
+"<b>sparql11protocol</b>": {
+  "<b>host</b>": "mml.arces.unibo.it", (optional)
+  "<b>protocol</b>":"ws",
+  "<b>availableProtocols</b>":{
+    "ws":{
+      "port":9000,
+      "path":"/subscribe"},
+    "wss":{
+      "port":9443,
+      "path":"/subscribe"},
+    ...},
+  "<b>security</b>":{
+    "<b>host</b>": "mml.arces.unibo.it", (optional),
+    "<b>port</b>":8443,
+    "<b>registration</b>":"/oauth/register",
+    "<b>tokeRequest</b>":"/oauth/token",
+    "<b>securePath</b>":"/secure"}}</pre>
+			The URLs corresponding to the above protocol configuration follow:
+			<pre class="example" title="URLs used by SEPA primitives">
 <a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 Protocol</a>
 
-- Query: http://wot.arces.unibo.it:8000/query
+- Query: http://mml.arces.unibo.it:8000/query
 
-- Update: http://wot.arces.unibo.it:8000/update
+- Update: http://mml.arces.unibo.it:8000/update
 
-<a href="https://wot.arces.unibo.it/TR/sparql11-se-protocol/">SPARQL SE 1.1 Protocol</a>
+<a href="https://mml.arces.unibo.it/TR/sparql11-se-protocol/">SPARQL SE 1.1 Protocol</a>
 
-- Subscribe: ws://wot.arces.unibo.it:9000/subscribe
+- Subscribe: ws://mml.arces.unibo.it:9000/subscribe
 
-- SECURE Query: https://wot.arces.unibo.it:8443/secure/query
+- SECURE Query: https://mml.arces.unibo.it:8443/secure/query
 
-- SECURE Update: https://wot.arces.unibo.it:8443/secure/update
+- SECURE Update: https://mml.arces.unibo.it:8443/secure/update
 
-- SECURE Subscribe: wss://wot.arces.unibo.it:9443/secure/subscribe
+- SECURE Subscribe: wss://mml.arces.unibo.it:9443/secure/subscribe
 
-- Registration: https://wot.arces.unibo.it:8443/oauth/register
+- Registration: https://mml.arces.unibo.it:8443/oauth/register
 
-- Token request: https://wot.arces.unibo.it:8443/oauth/token</pre>
+- Token request: https://mml.arces.unibo.it:8443/oauth/token</pre>
 			<p>
 				JSAP MAY also be used by clients to store credentials (i.e., <i>clientId</i>
 				and <i>clientSecret</i>) and JSON Web Token. For security reasons,
@@ -356,15 +387,13 @@
 					Encryption Standard (AES)</a>) like in the following example:
 			</p>
 			<pre class="note" title="Storing client credentials">
-"parameters":{
-  "security":{
-    "client_id":"TP6...RPC9",
-    "client_secret":"SVEM...+EPFU",
-    "jwt":"XABTQ...HVMWXCCK=",
-    "expires":"DSBUAXCGHRFQ2GGALQDUSQ==",
-    "type":"XPRHEX2XHY+5IUXHPHIGMW=="
-  }
-}
+"security":{
+  ...,
+  "<b>client_id</b>":"TP6...RPC9",
+  "<b>client_secret</b>":"SVEM...+EPFU",
+  "<b>jwt</b>":"XABTQ...HVMWXCCK=",
+  "<b>expires</b>":"DSBUAXCGHRFQ2GGALQDUSQ==",
+  "<b>type</b>":"XPRHEX2XHY+5IUXHPHIGMW=="}
 </pre>
 		</section>
 
@@ -377,37 +406,286 @@
 				them to a SPARQL update/subscribe. This allows to simplify the
 				SPARQL text by using qualified names for URIs [[xml-names]].
 				Namespaces are specified as a JSON object assigned to the key
-				<code>"namespaces"</code>
+				<code>namespaces</code>
 				. In this object, every key represents a prefix, while the value is
 				the relative namespace.
 			</p>
 
-			<p>
-				In the following example the well known
-				<code>rdf</code>
-				and
-				<code>rdfs</code>
-				prefixes are defined in JSAP:
-			</p>
-			<pre class="example" title="Namescapes">
-"namespaces" : {
+			<pre class="example" title="Namespaces">
+"<b>namespaces</b>":{
   "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
   "rdfs":"http://www.w3.org/2000/01/rdf-schema#",
-  "wot":"http://wot.arces.unibo.it/wot#
-}
+  "wot":"http://wot.arces.unibo.it/wot#}
 </pre>
 
 		</section>
 
 		<section>
-			<h3>Updates</h3>
+			<h3>Updates, queries and forced bindings</h3>
+			<p>
+				The main benefit of JSAP consists in the ability of creating
+				templates for applications. Those templates act as an <i>identity
+					card</i> of an application. JSAP MAY include two JSON objects named
+				<code>updates</code>
+				and
+				<code>queries</code>
+				listing all the SPARQL 1.1 updates [[sparql11-update]] and <a
+					href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+					1.1 subscribes</a> used by the application.The
+				<code>updates</code>
+				and
+				<code>queries</code>
+				members, if present, contain a list of objects sharing the structure
+				here reported:
+			</p>
+
+			<pre class="example" title="Update and query template">
+"<b>QUERY_OR_UPDATE_IDENTIFIER</b>":{
+  "<b>sparql</b>":"SPARQL Update or Query" ,
+  "<b>forcedBindings</b>":{...}, (optional)
+  "<b>sparql11protocol</b>":{...}, (optional, used by updates or queries)
+  "<b>sparql11seprotocol</b>":{...}, (optional, used by subscribes)
+  "<b>graphs</b>":{...} (optional, used by updates, queries or subscribes)}
+</pre>
 
 			<p>
-				JSAP MAY include a JSON object named
-				<code>"updates"</code>
-				listing all the SPARQL 1.1 Updates [[sparql11-update]] used by the
-				application.
+				The value of the mandatory
+				<code>sparql</code>
+				member is the SPARQL query [[sparql11-query]] or update
+				[[sparql11-update]]. The
+				<code>sparql11protocol</code>
+				,
+				<code>sparql11seprotocol</code>
+				and
+				<code>graphs</code>
+				members MAY be used to overwrite some protocol parameters.
 			</p>
+			<p>
+				SPARQL updates and subscribes can be fetched by the application and
+				modified at run-time to fit the application needs. For example, a
+				producer that updates the value of a temperature sensor will only
+				need to fill a field in the template (i.e., the current value). Here
+				is where the definition of <i>forced bindings</i> comes in help. A
+				forced binding enables the developer to substitute at run-time a
+				variable in a template with a custom value. To define forced
+				bindings, the key
+				<code>forcedBindings</code>
+				MUST be used. The value is a JSON object. The variable of a forced
+				binding is a key in that JSON object. Its value is again a JSON
+				object containing the keys
+				<code>type</code>
+				and
+				<code>value</code>
+				.
+				<code>type</code>
+				is mandatory and MUST be one of
+				<code>"uri"</code>
+				,
+				<code>"bnode"</code>
+				,
+				<code>"literal"</code>
+				. The
+				<code>value</code>
+				key is optional and SHOULD be used to specify a <i>default</i> value
+				for that variable.
+			</p>
+			<pre class="example" title="Forced bindings">
+
+"<b>forcedBindings</b>":{
+  "<i>variable-1</i>":{"type":"<b><i>uri</i></b> or <b><i>literal</i></b> or <b><i>bnode</i></b>","value":"..."},
+  "...":{...},
+  "<i>variable-n</i>":{"type":"<b><i>uri</i></b> or <b><i>literal</i></b> or <b><i>bnode</i></b>","value":"..."}}
+</pre>
+			<p>
+				The role of the
+				<code>forcedBindings</code>
+				member is to define which variables will be replaced at run-time by
+				their actual values. The use of forced bindings can be appreciated
+				by considering the following example. The updates listed within the
+				<code>updates</code>
+				member share a common template but with different forced bindings.
+			</p>
+
+			<pre class="example" title="The role of forced bindings">
+...,
+"namespaces":{
+  "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "wot":"http://wot.arces.unibo.it/wot#,
+  ...},
+...,
+"updates" : {
+  "UPDATE_ALL_TO_100" : {
+    "sparql":"
+      DELETE {?sensor wot:hasValue ?oldValue}
+      INSERT {?sensor wot:hasValue <b><code>"100"</code></b>} 
+      WHERE {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?oldValue}"},
+  "UPDATE_ALL_TO_X" : {
+    "sparql":"
+      DELETE {?sensor wot:hasValue ?oldValue}
+      INSERT {?sensor wot:hasValue <b><code>?x</code></b>} 
+      WHERE {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?oldValue}"
+    "forcedBindings":{
+      "<b><code>x</code></b>":{"type":"literal"}}},
+  "UPDATE_SENSOR_TO_X" : {
+    "sparql":"
+      DELETE {<b>?sensor</b> wot:hasValue ?oldValue}
+      INSERT {<b>?sensor</b> wot:hasValue <b><code>?x</code></b>} 
+      WHERE {<b>?sensor</b> rdf:type wot:SENSOR . <b>?sensor</b> wot:hasValue ?oldValue}"
+    "forcedBindings":{
+      "<b><code>x</code></b>":{"type":"literal"},
+      "<b>sensor</b>":{"type":"uri"}}}
+</pre>
+			<p>
+				The <b>UPDATE_ALL_TO_100</b> do not have any forced binding. The
+				update will be issued as it is to the SEPA broker and the effect
+				will be to update all the sensor data values (e.g., <i>wot:hasValue</i>)
+				to
+				<code>"100"</code>
+				.
+			</p>
+			<p>
+				In the update "UPDATE_ALL_TO_X", the fixed value
+				<code>"100"</code>
+				has been replaced by the variable
+				<code>?x</code>
+				, that is also a literal forced binding. At run-time, the a SEPA
+				agent would replace the variable
+				<code>?x</code>
+				with a literal value, like for example "46". The actual update
+				issued to the SEPA broker follows and the effect will be to update
+				all the sensor data values (e.g., <i>wot:hasValue</i>) to
+				<code>"46"</code>
+				.
+			</p>
+			<pre class="example"
+				title="Actual SPARQL update after replacing the ?x forced binding">
+DELETE {?sensor wot:hasValue ?oldValue}
+INSERT {?sensor wot:hasValue <code>"46"</code>} 
+WHERE {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?oldValue}"
+</pre>
+
+			<p>
+				The update "UPDATE_SENSOR_TO_X", is the same as the previous update,
+				but the
+				<code>?sensor</code>
+				variable is to be considered a forced binding. A SEPA agent is
+				supposed to replace both the forced bindings (i.e,
+				<code>?x</code>
+				and
+				<code>?sensor</code>
+				) before sending the update to the SEPA broker (e.g., ?x =
+				<code>"69"</code>
+				and ?sensor =
+				<code>wot:SENSOR_XYZ_URI</code>
+				). The actual update issued to the SEPA broker follows and the
+				effect will be to update the data value (e.g., <i>wot:hasValue</i>)
+				of the sensor identified by the URI
+				<code>wot:SENSOR_XYZ_URI</code>
+				to
+				<code>"69"</code>
+				.
+			</p>
+			<pre class="example"
+				title="Actual SPARQL update after replacing the ?x and ?sensor forced bindings">
+DELETE {<code>wot:SENSOR_XYZ_URI</code> wot:hasValue ?oldValue}
+INSERT {<code>wot:SENSOR_XYZ_URI</code> wot:hasValue <code>"69"</code>} 
+WHERE {<code>wot:SENSOR_XYZ_URI</code> rdf:type wot:SENSOR . <code>wot:SENSOR_XYZ_URI</code> wot:hasValue ?oldValue}"
+</pre>
+		</section>
+		<section>
+			<h3>A complete SEPA application example</h3>
+
+<img src="images/chat.jpg">
+		<p>
+			Fig. 2 - The SEPA Chat example: each client is composed by three SEPA agents (sender, receiver and remover)
+		</p>
+			<pre class="example" title="Chat JSAP">
+{"parameters":{
+  "host" : "mml.arces.unibo.it",
+  "sparql11protocol":{
+    "port":8000,
+    "protocol":"http",
+    "query":{
+      "path":"/query",
+      "method":"POST",
+      "format":"JSON"},
+    "update":{
+      "path":"/update",
+      "method":"URL_ENCODED_POST",
+      "format":"JSON"}},
+  "sparql11seprotocol":{
+    "protocol":"ws",
+    "availableProtocols":{
+      "ws":{
+        "port":9000,
+        "path":"/subscribe"}}},
+  "namespaces":{
+    "schema" : "http://schema.org/",
+    "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#"},
+  "updates":{
+    "<b>SEND</b>":{
+      "sparql":
+        "INSERT {
+          ?message rdf:type schema:Message ; 
+          schema:text <code>?text</code> ; 
+          schema:sender <code>?sender</code> ; 
+          schema:toRecipient <code>?receiver</code>; 
+          schema:dateSent ?time} 
+         WHERE {
+           <code>?sender</code> rdf:type schema:Person . 
+           <code>?receiver</code> rdf:type schema:Person BIND(STR(now()) AS ?time) 
+           BIND(IRI(CONCAT(\"http://schema.org/Message-\",STRUUID())) AS ?message)}" ,
+      "forcedBindings":{
+        "<code>text</code>":{"type":"literal"},
+        "<code>sender</code>":{"type":"uri"},
+        "<code>receiver</code>":{"type":"uri"}}},
+    "<b>SET_RECEIVED</b>":{
+      "sparql":
+        "INSERT {
+          <code>?message</code> schema:dateReceived ?time} 
+        WHERE {
+          <code>?message</code> rdf:type schema:Message BIND(STR(now()) AS ?time)}" ,
+      "forcedBindings":{
+        "<code>message</code>":{"type":"uri"}}},
+    "<b>REMOVE</b>":{
+      "sparql":
+        "DELETE {
+          ?message ?p ?o} 
+        WHERE {
+          <code>?message</code> rdf:type schema:Message ; 
+          schema:dateReceived <code>?time</code> . 
+          <code>?message</code> ?p ?o}" ,
+      "forcedBindings":{
+        "<code>message</code>":{"type":"uri"},
+        "<code>time</code>":{"type":"literal"}}}},
+  "queries":{
+    "<b>SENT</b>":{
+      "sparql":
+        "SELECT ?message ?sender ?name ?text ?time 
+         WHERE {?message rdf:type schema:Message ; 
+                schema:text ?text ; 
+                schema:sender ?sender ; 
+                schema:toRecipient <code>?receiver</code> ; 
+                schema:dateSent ?time . 
+                ?sender rdf:type schema:Person ; 
+                schema:name ?name .
+                <code>?receiver</code> rdf:type schema:Person} ORDER BY ?time" ,
+      "forcedBindings":{
+        "<code>receiver</code>":{"type":"uri"}}},
+    "<b>RECEIVED</b>":{
+      "sparql":
+        "SELECT ?message ?time 
+         WHERE {
+           ?message schema:sender <code>?sender</code> ; 
+           schema:dateReceived ?time ; 
+           rdf:type schema:Message}" ,
+      "forcedBindings":{
+        "<code>sender</code>":{"type":"uri"}}}}}
+</pre>
+
+		</section>
+
+		<!--
 			<p>
 				A single update is specified by a JSON object where the key is the
 				friendly name of the update, while the value is a JSON object with a
@@ -423,6 +701,8 @@
 				<code>UPDATE_ALL_TO_100</code>
 				is presented.
 			</p>
+
+
 			<pre class="example" title="Update (sensor)">
 "updates" : {
   "UPDATE_ALL_TO_100" : {
@@ -444,9 +724,9 @@
 
 			<p>
 				A subscribe, MUST be defined according to the <a
-					href="http://wot.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+					href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
 					1.1 Subscribe Language</a>. As described by <a
-					href="http://wot.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+					href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 					1.1 SE Protocol</a>, a SPARQL 1.1 Subscribe is RECOMMENDED to be sent
 				over a Websocket (secure or unsecure).
 			</p>
@@ -482,43 +762,6 @@
 	</section>
 	<section id="forcedBindings">
 		<h2>Forced Bindings</h2>
-
-		<p>
-			The main benefit of JSAP consists in the ability of creating
-			templates for applications. Those templates act also as an <i>identity
-				card</i> of an application.
-		</p>
-		<p>
-			SPARQL updates and subscribes can be fetched by the application and
-			modified at run-time to fit the application needs. For example, a
-			producer that updates the value of a temperature sensor will only
-			need to fill a field in the template (i.e., the current value). Here
-			is where the definition of <i>forced bindings</i> comes in help. A
-			forced binding enables the developer to substitute at run-time a
-			variable in a template with a custom value.
-		</p>
-		<p>
-			To define forced bindings, the key
-			<code>"forcedBindings"</code>
-			MUST be used. The value is a JSON object. The variable of a forced
-			binding is a key in that JSON object. Its value is again a JSON
-			object containing the keys
-			<code>"type"</code>
-			and
-			<code>"value"</code>
-			.
-			<code>"type"</code>
-			is mandatory and MUST be one of
-			<code>"uri"</code>
-			,
-			<code>"bnode"</code>
-			,
-			<code>"literal"</code>
-			. The
-			<code>"value"</code>
-			key is optional and SHOULD be used to specify a <i>default</i> value
-			for that variable.
-		</p>
 
 		<p>Now that forced bindings have been defined, we can write an
 			example of a SPARQL update template.</p>
@@ -583,7 +826,7 @@ WHERE  {<b><code>wot:A_SENSOR_URI</code></b> rdf:type wot:SENSOR . <b><code>wot:
 
 		<pre class="example">
 {"parameters": {
-  "host": "wot.arces.unibo.it",
+  "host": "mml.arces.unibo.it",
   "path": "/sparql",
   "scheme": "http",
   "port": 8000,
@@ -637,28 +880,26 @@ WHERE  {<b><code>wot:A_SENSOR_URI</code></b> rdf:type wot:SENSOR . <b><code>wot:
 }</pre>
 
 	</section>
+-->
+		<!-- APPENDIX -->
+		<section class="appendix">
 
-	<!-- APPENDIX -->
-	<section class="appendix">
+			<!-- ACKNOWLEDGEMENTS -->
+			<h2>Acknowledgements</h2>
 
-		<!-- ACKNOWLEDGEMENTS -->
-		<h2>Acknowledgements</h2>
-
-		<p>
-			Editors would like to thanks the <a
-				href="http://www.arces.unibo.it/en">Advanced Research Center on
-				Electronic Systems "Ercole De Castro" (ARCES)</a> and the <a
-				href="http://www.cse.unibo.it/en/index.html">Computer Science
-				and Engineering Department (DISI)</a> of the <a
-				href="http://http://www.unibo.it/en/homepage">University of
-				Bologna</a>, the <a href="https://ec.europa.eu/commission/index_en">European
-				Commission</a> and all the partners of the <a
-				href="https://artemis-ia.eu/">ARTEMIS</a> projects who inspired the
-			SPARQL Event Processing Architecture (SEPA).
-		</p>
-	</section>
-
-	</section>
+			<p>
+				Editors would like to thanks the <a
+					href="http://www.arces.unibo.it/en">Advanced Research Center on
+					Electronic Systems "Ercole De Castro" (ARCES)</a> and the <a
+					href="http://www.cse.unibo.it/en/index.html">Computer Science
+					and Engineering Department (DISI)</a> of the <a
+					href="http://http://www.unibo.it/en/homepage">University of
+					Bologna</a>, the <a href="https://ec.europa.eu/commission/index_en">European
+					Commission</a> and all the partners of the <a
+					href="https://artemis-ia.eu/">ARTEMIS</a> projects who inspired the
+				SPARQL Event Processing Architecture (SEPA).
+			</p>
+		</section>
 </body>
 
 </html>
