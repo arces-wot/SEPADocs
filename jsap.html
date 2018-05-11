@@ -637,9 +637,8 @@ WHERE {<code>wot:SENSOR_XYZ_URI</code> rdf:type wot:SENSOR . <code>wot:SENSOR_XY
         </ul>
         These information define the semantic application and can be written in a first draft of the JSAP:
       </p>
-      <pre class="example" title="Chat draft JSAP">
-              {	
-    				...,
+      <pre class="example" title="Draft of the chat's JSAP. The JSAP includes all the primitives used by the application. For some primitives (e.g., SET_RECEIVED), the forced bindings are specified (e.g., message)">
+              {	...,
                 "updates":{
                   "<b>SEND</b>":{ 
                     "sparql" : "...",
@@ -680,9 +679,8 @@ WHERE {<code>wot:SENSOR_XYZ_URI</code> rdf:type wot:SENSOR . <code>wot:SENSOR_XY
       <p>
         Finally the primitives are implemented with SPARQL queries/updates and the JASP is filled with this information:
       </p>
-      <pre class="example" title="Chat JSAP: updates and queries">
-          {
-			...,
+      <pre class="example" title="Chat's JSAP: updates and queries">
+          {...,
             "namespaces":{
               "schema" : "http://schema.org/",
               "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#"},
