@@ -639,8 +639,7 @@ WHERE {<code>wot:SENSOR_XYZ_URI</code> rdf:type wot:SENSOR . <code>wot:SENSOR_XY
       </p>
       <pre class="example" title="Chat draft JSAP">
               {	
-                "parameters":{...},
-                "namespaces":{...},
+    				...,
                 "updates":{
                   "<b>SEND</b>":{ 
                     "sparql" : "...",
@@ -681,9 +680,9 @@ WHERE {<code>wot:SENSOR_XYZ_URI</code> rdf:type wot:SENSOR . <code>wot:SENSOR_XY
       <p>
         Finally the primitives are implemented with SPARQL queries/updates and the JASP is filled with this information:
       </p>
-      <pre class="example" title="Chat JSAP with queries">
+      <pre class="example" title="Chat JSAP: updates and queries">
           {
-            "parameters":{...},
+			...,
             "namespaces":{
               "schema" : "http://schema.org/",
               "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#"},
@@ -770,7 +769,7 @@ WHERE {<code>wot:SENSOR_XYZ_URI</code> rdf:type wot:SENSOR . <code>wot:SENSOR_XY
       </p>
       <p>Finally the following snippet show the full JSAP of the chat application with the configuration parameters</p>
       <pre class="example" title="Chat JSAP">
-{"parameters":{
+{
   "host" : "mml.arces.unibo.it",
   "sparql11protocol":{
     "port":8000,
@@ -788,7 +787,7 @@ WHERE {<code>wot:SENSOR_XYZ_URI</code> rdf:type wot:SENSOR . <code>wot:SENSOR_XY
     "availableProtocols":{
       "ws":{
         "port":9000,
-        "path":"/subscribe"}}},
+        "path":"/subscribe"}},
   "namespaces":{
     "schema" : "http://schema.org/",
     "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#"},
