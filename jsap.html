@@ -263,7 +263,7 @@
     <code>queries</code>
     as described later. The
     <code>extended</code>
-    member is optional and it can be used to store application specific
+    member is optional and it MAY be used to store application specific
     data.
     </p>
 
@@ -283,7 +283,7 @@
         and
         <code>sparql11seprotocol</code>
         .
-      <pre class="example" title="SPARQL 1.1 protocol parameters"
+      <pre class="example" title="SPARQL 1.1 protocol parameters (not secure)"
         id="sparql11protocol">
 "<b>sparql11protocol</b>": {
   "<b>host</b>": "mml.arces.unibo.it", (optional)
@@ -294,7 +294,7 @@
     "<b>method</b>:"POST",
     "<b>format</b>":"JSON"},
   "<b>update</b>":{
-    "<b>path</b>":"/query",
+    "<b>path</b>":"/update",
     "<b>method</b>:"URL_ENCODED_POST",
     "<b>format</b>":"JSON"}}</pre>
 
@@ -339,9 +339,9 @@
         supported.
       </p>
 
-      <pre class="example" title="SPARQL 1.1 SE protocol parameters"
+      <pre class="example" title="SPARQL 1.1 SE protocol parameters (not secure)"
         id="sparql11seprotocol">
-"<b>sparql11protocol</b>": {
+"<b>sparql11seprotocol</b>": {
   "<b>host</b>": "mml.arces.unibo.it", (optional)
   "<b>protocol</b>":"ws",
   "<b>availableProtocols</b>":{
@@ -350,25 +350,47 @@
       "path":"/subscribe"},
     "wss":{
       "port":9443,
-      "path":"/subscribe"},
+      "path":"/secure/subscribe"},
     ...},
   "<b>security</b>":{
-    "<b>host</b>": "mml.arces.unibo.it", (optional),
-    "<b>port</b>":8443,
-    "<b>registration</b>":"/oauth/register",
-    "<b>tokeRequest</b>":"/oauth/token",
-    "<b>securePath</b>":"/secure"}}</pre>
-      The URLs corresponding to the above protocol configuration follow:
-      <pre class="example" title="URLs used by SEPA primitives">
-<a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 Protocol</a>
+    "<b>registration</b>":"https://mml.arces.unibo.it:8443/oauth/register",
+    "<b>tokeRequest</b>":"https://mml.arces.unibo.it:8443/oauth/token",
+    }</pre>
+     
+      The URLs corresponding to the above protocol configuration (not secure) follow:
+      <pre class="example" title="URLs used by SEPA primitives (not secure)">
 
 - Query: http://mml.arces.unibo.it:8000/query
 
 - Update: http://mml.arces.unibo.it:8000/update
 
-<a href="https://mml.arces.unibo.it/TR/sparql11-se-protocol/">SPARQL SE 1.1 Protocol</a>
+- Subscribe: ws://mml.arces.unibo.it:9000/subscribe</pre>
 
-- Subscribe: ws://mml.arces.unibo.it:9000/subscribe
+In order to connect to a secure SEPA broker, the following changes should be made on the above protocol configurations:
+
+  <pre class="example" title="SPARQL 1.1 protocol parameters (secure)"
+        id="sparql11protocol">
+"<b>sparql11protocol</b>": {
+ ...
+  "<b>port</b>": 8443,
+  "<b>protocol</b>" : "https",
+  "<b>query</b>":{
+    "<b>path</b>":"/secure/query",
+    ...},
+  "<b>update</b>":{
+    "<b>path</b>":"/secure/update",
+    ...}}</pre>
+
+<pre class="example" title="SPARQL 1.1 SE protocol parameters (secure)"
+        id="sparql11seprotocol">
+"<b>sparql11seprotocol</b>": {
+  ...
+  "<b>protocol</b>":"wss",
+ ...
+    }</pre>
+    
+The corresponding URLs would be as follows:
+ <pre class="example" title="URLs used by SEPA primitives (secure)">
 
 - SECURE Query: https://mml.arces.unibo.it:8443/secure/query
 
@@ -378,7 +400,8 @@
 
 - Registration: https://mml.arces.unibo.it:8443/oauth/register
 
-- Token request: https://mml.arces.unibo.it:8443/oauth/token</pre>
+- Token request: https://mml.arces.unibo.it:8443/oauth/token
+</pre>
       <p>
         JSAP MAY also be used by clients to store credentials (i.e., <i>clientId</i>
         and <i>clientSecret</i>) and JSON Web Token. For security reasons,
