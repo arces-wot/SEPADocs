@@ -413,13 +413,33 @@ QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</c
 			with a JSON object like the following:</p>
 		<pre class="example" title="Error response">
  {
-   "<b>error</b>": A string representing the error. Refer to RFC6749 for all authorization errors, otherwise it would be SPARQL 1.1 SE Protocol specific,
-   "<b>error_description</b>": Refer to RFC6749 for all authorization errors, otherwise it would be SPARQL 1.1 SE Protocol specific (OPTIONAL),
-   "<b>status_code</b>" : if applies, the use of use of HTTP status codes [[!RFC2616]] is RECOMMENDED. As reference, a list of common HTTP status codes
-			follows. Implementation specific error codes MAY also be used.
+   "<b><code>error</code></b>":"unauthorized_client",
+   "<b><code>error_description</code></b>" (optional): "Client is not authorized",
+   "<b><code>status_code</code></b>" : 400
  }
  </pre>
-<pre>
+
+		<p>
+			The
+			<code>error</code>
+			member is a string representing the error. Refer to [[!RFC6749]] for
+			all OAuth related errors. Otherwise it would be a SPARQL 1.1 SE
+			Protocol specific error string.
+		</p>
+		<p>
+			The
+			<code>error_description</code>
+			member is optional and if present it provides a human readable
+			description of the error.
+		</p>
+		<p>
+			The
+			<code>status_code</code>
+			member is an integer representing the error. The use of use of HTTP
+			status codes [[!RFC2616]] is RECOMMENDED. As reference, a list of
+			common HTTP status codes follows. Implementation specific error codes
+			MAY also be used.
+		<pre>
 400 Bad Request
 401 Unauthorized
 402 Payment Required
