@@ -412,14 +412,14 @@ QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</c
 		<p>In case of error, a SEPA broker implementation SHOULD reply
 			with a JSON object like the following:</p>
 		<pre class="example" title="Error response">
- { "<b>error</b>": 
-   { "<b>body</b>" : "Internal Server Error: SPARQL endpoint not found" , 
-     "<b>code</b>" : 500}}
+ {
+   "<b>error</b>": A string representing the error. Refer to RFC6749 for all authorization errors, otherwise it would be SPARQL 1.1 SE Protocol specific,
+   "<b>error_description</b>": Refer to RFC6749 for all authorization errors, otherwise it would be SPARQL 1.1 SE Protocol specific (OPTIONAL),
+   "<b>status_code</b>" : if applies, the use of use of HTTP status codes [[!RFC2616]] is RECOMMENDED. As reference, a list of common HTTP status codes
+			follows. Implementation specific error codes MAY also be used.
+ }
  </pre>
-		<p>If applies, the use of use of HTTP status codes [[!RFC2616]] is
-			RECOMMENDED. As reference, a list of common HTTP status codes
-			follows:</p>
-		<pre>
+<pre>
 400 Bad Request
 401 Unauthorized
 402 Payment Required
@@ -446,7 +446,6 @@ QK0vTOefpgumKtRHrlCe0JGHBnPNqo8Zp7cVivZnin8NsePcuweFgZxWfaOC-EH5ClpqjPEbjj65g</c
 504 Gateway Timeout
 505 HTTP Version Not Supported
 	</pre>
-		<p>Implementation specific error codes MAY also be used.</p>
 	</section>
 
 

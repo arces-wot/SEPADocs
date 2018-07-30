@@ -8,50 +8,47 @@
 	src="http://pandora.aptest.com/w3c/respec-style/builds/respec-w3c-common.js"
 	class="remove"></script>
 <script class='remove'>
-      var respecConfig = {
-      
-        // document info
-        specStatus:           "unofficial",
-        shortName:            "sparql11-subscribe",      
-        copyrightStart:       "2017",
-        edDraftURI:           "https://mml.arces.unibo.it/TR/sparql11-subscribe.html",
-        extraCSS:             ["css/respec.css"],
-      
-         // editors
-        editors:  [
-        { 
-          name: "Cristiano Aguzzi", 
-          mailto: "cristiano.aguzzi@unibo.it"
-        },
-         { 
-          name: "Francesco Antoniazzi", 
-          mailto: "francesco.antoniazzi@unibo.it"
-        },
-        { 
-          name: "Luca Roffia", 
-          mailto: "luca.roffia@unibo.it"
-        },
-        { 
-          name: "Fabio Viola", 
-          mailto: "fabio.viola@unibo.it"
-        }
-        ],
-      
-        // WG
-        wg:           "Linked Data and Web of Things working group of the ARCES laboratory",
-        wgURI:        "http://wot.arces.unibo.it/",
-      };
-    </script>
+	var respecConfig = {
+
+		// document info
+		specStatus : "unofficial",
+		shortName : "sparql11-subscribe",
+		copyrightStart : "2017",
+		edDraftURI : "https://mml.arces.unibo.it/TR/sparql11-subscribe.html",
+		extraCSS : [ "css/respec.css" ],
+
+		// editors
+		editors : [ {
+			name : "Cristiano Aguzzi",
+			mailto : "cristiano.aguzzi@unibo.it"
+		}, {
+			name : "Francesco Antoniazzi",
+			mailto : "francesco.antoniazzi@unibo.it"
+		}, {
+			name : "Luca Roffia",
+			mailto : "luca.roffia@unibo.it"
+		}, {
+			name : "Fabio Viola",
+			mailto : "fabio.viola@unibo.it"
+		} ],
+
+		// WG
+		wg : "Linked Data and Web of Things working group of the ARCES laboratory",
+		wgURI : "http://wot.arces.unibo.it/",
+	};
+</script>
 
 </head>
 
 <body>
 
 	<!-- ABSTRACT -->
-	<section id="abstract">This document describes the SPARQL 1.1
-		Subscribe Language used within the <a href="http://mml.arces.unibo.it/TR/sepa.html">SPARQL Event Processing
-		Architecture</a> to describe subscription requests and
-		notifications.</section>
+	<section id="abstract">
+		This document describes the SPARQL 1.1 Subscribe Language used within
+		the <a href="http://mml.arces.unibo.it/TR/sepa.html">SPARQL Event
+			Processing Architecture</a> to describe subscription requests and
+		notifications.
+	</section>
 
 	<!-- STATUS OF THIS DOCUMENT -->
 	<section id="sotd">This is a first draft.</section>
@@ -61,11 +58,11 @@
 		<h2>Introduction</h2>
 		<p>
 			The SPARQL 1.1 Subscribe Language defines the content of the
-			following elements: primitives (i.e., <i>subscribe</i> and <i>unsubscribe</i>) and
-			<i>notifications</i>. Every SEPA implementation MUST
-			provide a JSON serialization [[!RFC7159]] of the all these elements.
-			Other kinds of serialization formats MAY be provided. This document
-			refers to the REQUIRED JSON serialization.
+			following elements: primitives (i.e., <i>subscribe</i> and <i>unsubscribe</i>)
+			and <i>notifications</i>. Every SEPA implementation MUST provide a
+			JSON serialization [[!RFC7159]] of the all these elements. Other
+			kinds of serialization formats MAY be provided. This document refers
+			to the REQUIRED JSON serialization.
 		</p>
 		<p>The SPARQL 1.1 Subscribe Language is framed within W3C
 			Recommendations as shown in the following figure.</p>
@@ -127,8 +124,13 @@
 			<pre class="example" title="Subscribe request">
 {"<b>subscribe</b>":{
    "<b>sparql</b>":"<code>select * where {?s ?p ?o}</code>",
-   "<b>authorization</b>" : "<code>Bearer</code> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ",
-   "<b>alias</b>" : "All"}}</pre>
+   "<b>authorization</b>" (optional) : "<code>Bearer</code> eyJhbGciO....ZgeFONFh7HgQ",
+   "<b>alias</b>" (optional) : "All"
+   "<b>default-graph-uri</b>" (optional) : it corresponds to the "default-graph-uri" parameter 
+   		defined in the SPARQL 1.1 Protocol
+   "<b>named-graph-uri</b>" (optional): it corresponds to the "named-graph-uri" parameter 
+   		defined in the SPARQL 1.1 Protocol
+ }}</pre>
 
 			<p>
 				The value of the
@@ -136,8 +138,9 @@
 				member MUST be a SPARQL 1.1 Query [[sparql11-query]], the value of
 				the
 				<code>authorization</code>
-				member (if present) MUST be a <code>Bearer</code> JSON Web Token [[!RFC7519]] and the
-				value of the
+				member (if present) MUST be a
+				<code>Bearer</code>
+				JSON Web Token [[!RFC7519]] and the value of the
 				<code>alias</code>
 				member (if present ) is a string representing a friendly name of the
 				subscription.
@@ -160,6 +163,14 @@
 				alias and link it with the subscription URI [[!RFC3986]] contained
 				in the subscribe response message.
 			</p>
+			<p>
+				The value of the
+				<code>default-graph-uri</code>
+				and of the
+				<code>named-graph-uri</code>
+				(if present) have the same meaning and content of the corresponding
+				parameters defined in the SPARQL 1.1 Protocol [[sparql11-protocol]]
+			</p>
 		</section>
 
 		<section id="SubscribeResponse">
@@ -176,13 +187,28 @@
 			<p>
 				The value of the
 				<code>spuid</code>
-				member is an URI [[!RFC3986]], while the <code>sequence</code> member is a number and it will be always 0. Both members MUST be present. The <code>sequence</code> member 
-				will be incremented by one on each following <a href="#Notification">notification</a>. The
+				member is an URI [[!RFC3986]], while the
+				<code>sequence</code>
+				member is a number and it will be always 0. Both members MUST be
+				present. The
+				<code>sequence</code>
+				member will be incremented by one on each following <a
+					href="#Notification">notification</a>.
+			</p>
+			<p>
+				The
 				<code>alias</code>
 				member (if present) has the same value of the corresponding
 				<code>alias</code>
-				member of the subscribe request. Eventually, the value of the <code>addedResults</code> member corresponds to the 
-				results of the SPARQL query according to the SPARQL 1.1 Query Results JSON format [[sparql11-results-json]], while the value of the <code>removedResults</code>
+				member of the subscribe request.
+			</p>
+			<p>
+				Eventually, the value of the
+				<code>addedResults</code>
+				member corresponds to the results of the SPARQL query according to
+				the SPARQL 1.1 Query Results JSON format [[sparql11-results-json]],
+				while the value of the
+				<code>removedResults</code>
 				will be always an empty object.
 			</p>
 			<p>
@@ -202,17 +228,22 @@
 			<pre class="example" title="Unsubscribe request">
 {"<b>unsubscribe</b>":{
    "<b>spuid</b>":"<code>sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6</code>",
-   "<b>authorization</b>":"<code>Bearer</code> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"}}</pre>
+   "<b>authorization</b>" (optional) :"<code>Bearer</code> eyJhbGciOiJIUzI....ONFh7HgQ"}}</pre>
 			<p>
 				The
 				<code>spuid</code>
-				member value is the subscription URI ([[!RFC3986]]) provided by the
-				subscribe response message. The value of the
-				<code>authorization</code>
-				member (if present) MUST be a <code>Bearer</code> JSON Web Token [[!RFC7519]]. The
-				former member is REQUIRED, while the latter is only REQUIRED for
-				secure primitives.
+				member value is the subscription URI [[!RFC3986]] provided by the
+				subscribe response message.
 			</p>
+			<p>
+				The value of the
+				<code>authorization</code>
+				member (if present) MUST be a
+				<code>Bearer</code>
+				JSON Web Token [[!RFC7519]].
+			</p>
+			<p>The former member is REQUIRED, while the latter is only
+				REQUIRED for secure primitives.</p>
 		</section>
 
 		<section id="UnsubscribeResponse">
@@ -246,18 +277,26 @@
 			The value of
 			<code>spuid</code>
 			member is the URI [[!RFC3986]] of the subscription who generates the
-			notification, the value of the
+			notification.
+		</p>
+		<p>
+			The value of the
 			<code>sequence</code>
 			member is a number (incremented by one at every new notification of
-			the same SPUID). The <code>addedResults</code>
+			the same SPUID).
+		</p>
+		<p>
+			The
+			<code>addedResults</code>
 			and
-			<code>removedResults</code> are two JSON objects whose content conform with the <a
-				href="https://www.w3.org/TR/sparql11-results-json//">SPARQL 1.1 Query Results JSON format
-				</a>.
+			<code>removedResults</code>
+			are two JSON objects whose content conform with the <a
+				href="https://www.w3.org/TR/sparql11-results-json//">SPARQL 1.1
+				Query Results JSON format </a>.
 		</p>
 
 	</section>
-<!--  
+	<!--  
 	<section id="Ping">
 		<h3>Ping</h3>
 		<p>The default content of a ping message follows:</p>
@@ -275,13 +314,33 @@
 		<p>In case of error, a SEPA broker implementation SHOULD reply
 			with a JSON object like the following:</p>
 		<pre class="example" title="Error response">
- {"<b>error</b>":{
-    "<b>body</b>":"Internal Server Error: SPARQL endpoint not found",
-    "<b>code</b>":500}}
+ {
+   "<b><code>error</code></b>":"unauthorized_client",
+   "<b><code>error_description</code></b>": "Client is not authorized",
+   "<b><code>status_code</code></b>" : 400
+ }
  </pre>
-		<p>If applies, the use of use of HTTP status codes [[!RFC2616]] is
-			RECOMMENDED. As reference, a list of common HTTP status codes
-			follows:</p>
+
+		<p>
+			The
+			<code>error</code>
+			member is a string representing the error. Refer to [[!RFC6749]] for
+			all OAuth related errors. Otherwise it would be a SPARQL 1.1 SE
+			Protocol specific error string.
+		</p>
+		<p>
+			The
+			<code>error_description</code>
+			member is optional and if present it provides a human readable
+			description of the error.
+		</p>
+		<p>
+			The
+			<code>status_code</code>
+			member is an integer representing the error. The use of use of HTTP
+			status codes [[!RFC2616]] is RECOMMENDED. As reference, a list of
+			common HTTP status codes follows. Implementation specific error codes
+			MAY also be used.
 		<pre>
 400 Bad Request
 401 Unauthorized
@@ -309,7 +368,6 @@
 504 Gateway Timeout
 505 HTTP Version Not Supported
 	</pre>
-		<p>Implementation specific error codes MAY also be used.</p>
 	</section>
 	<!-- APPENDIX -->
 	<section class="appendix">

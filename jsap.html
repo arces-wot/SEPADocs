@@ -76,7 +76,9 @@
       A JSAP file MUST be a JSON document compliant with RFC 7159
       [[!RFC7159]] and SHOULD NOT be modified at runtime, as it describes
       the application scope. The need of runtime modifications of the JSAP
-      file is to be considered as a bad practice.
+      file is to be considered as a bad practice. Other serialization formats 
+      (e.g., YAML, XML) MAY be used but their definition is out of the context
+      of this document.
       <!--Instead, the Authors suggest the use of more than one JSAP file or, of course, the review of the SPARQL code.-->
     </p>
 
@@ -217,6 +219,7 @@
     <p>A JSAP is structured as follows.
     <pre class="example" title="JASP structure" id="JSAPMainStructure">
 {"<b>host</b>":"Host name or IP",
+ "<b>oauth</b>":{...},
  "<b>sparql11protocol</b>":{...},
  "<b>sparql11seprotocol</b>":{...},
  "<b>namespaces</b>":{
@@ -351,11 +354,8 @@
     "wss":{
       "port":9443,
       "path":"/secure/subscribe"},
-    ...},
-  "<b>security</b>":{
-    "<b>registration</b>":"https://mml.arces.unibo.it:8443/oauth/register",
-    "<b>tokeRequest</b>":"https://mml.arces.unibo.it:8443/oauth/token",
-    }</pre>
+    ...}
+ </pre>
      
       The URLs corresponding to the above protocol configuration (not secure) follow:
       <pre class="example" title="URLs used by SEPA primitives (not secure)">
@@ -366,8 +366,25 @@
 
 - Subscribe: ws://mml.arces.unibo.it:9000/subscribe</pre>
 
-In order to connect to a secure SEPA broker, the following changes should be made on the above protocol configurations:
+ <section>
+      <h3>Security</h3>
+Connecting to a secure SEPA broker require the following changes to the above protocol configurations:
 
+<pre class="example" title="Enabling security and client authorization"
+        id="oauth">
+ {
+ ...,
+  "<b>oauth</b>":{
+    "<b>enabled</b>":<b>true</b>,
+    "<b>registration</b>":"https://mml.arces.unibo.it:8443/oauth/register",
+    "<b>tokeRequest</b>":"https://mml.arces.unibo.it:8443/oauth/token",
+    } ,
+  ...
+  }    
+</pre>
+
+The <code>oauth</code> member allows to specify the Authorization Server URLs used to register a new client identity and request tokens.
+    
   <pre class="example" title="SPARQL 1.1 protocol parameters (secure)"
         id="sparql11protocol">
 "<b>sparql11protocol</b>": {
@@ -410,7 +427,7 @@ The corresponding URLs would be as follows:
           Encryption Standard (AES)</a>) like in the following example:
       </p>
       <pre class="note" title="Storing client credentials">
-"security":{
+"oauth":{
   ...,
   "<b>client_id</b>":"TP6...RPC9",
   "<b>client_secret</b>":"SVEM...+EPFU",
@@ -419,7 +436,7 @@ The corresponding URLs would be as follows:
   "<b>type</b>":"XPRHEX2XHY+5IUXHPHIGMW=="}
 </pre>
     </section>
-
+</section>
     <section>
       <h3>Namespaces</h3>
 
