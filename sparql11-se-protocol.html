@@ -146,35 +146,34 @@
 
 		<p>An example of a query request and response follows:</p>
 
-		<pre class="example" title="Query request (via POST)">
-Request: 
-POST http://mml.arces.unibo.it:8000/query
+<aside class="example" title="Query request (via POST)">
+<br>Request 
+<pre>POST http://mml.arces.unibo.it:8000/query</pre>
 
-Headers:
-Content-Type: application/sparql-query
-Accept: application/sparql-results+json
+Headers
+<pre>Content-Type: application/sparql-query
+Accept: application/sparql-results+json</pre>
 
-Body:
-SELECT * WHERE {?vaimee ?deda ?didi}
-</pre>
+Body
+<pre>SELECT * WHERE {?vaimee ?deda ?didi}</pre>
+</aside>
 
-		<pre class="example" title="Query response">
-Headers: 
-Content-Type: application/json
+		<aside class="example" title="Query response">
+<br>Headers 
+<pre>Content-Type: application/json</pre>
 
-Body:
-{
-  "head": {
-    "vars": ["vaimee","deda","didi"]
-  },
+Body
+<pre>
+{ "head": { "vars": ["vaimee","deda","didi"] },
   "results": {
-    "bindings": [
-      {
-        "vaimee": {"type": "uri", "value": "http://wot.arces.unibo.it/example#Subject"},
-        "deda": {"type": "uri", "value": "http://wot.arces.unibo.it/example#Predicate"},
-        "didi": {"type": "literal","value": "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"}
-      }]}}
-</pre>
+   "bindings": [{ 
+     "vaimee": {"type": "uri", "value" : "http://wot.arces.unibo.it/example#Subject"}, 
+     "deda": {"type": "uri", "value": "http://wot.arces.unibo.it/example#Predicate"}, 
+     "didi": {"type": "literal","value": "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"} }]}}
+     </pre>
+		</aside>
+		
+		
 	</section>
 
 	<section id="SPARQL11Update">
@@ -191,29 +190,30 @@ Body:
 		</p>
 
 		<p>An example of a query request and response follows:</p>
-		<pre class="example" title="Update request (via POST)">
-Request:
-POST http://mml.arces.unibo.it:8000/update
+<aside class="example" title="Update request (via POST)">
+<br>Request
+<pre>POST http://mml.arces.unibo.it:8000/update</pre>
 
-Headers:
-Content-Type: application/sparql-update
-Accept: application/sparql-results+json
+Headers
+<pre>Content-Type: application/sparql-update
+Accept: application/sparql-results+json</pre>
 
-Body:
-PREFIX wot:&lt;http://wot.arces.unibo.it/example#&gt;
+Body
+<pre>PREFIX wot:&lt;http://wot.arces.unibo.it/example#&gt;
 INSERT DATA {GRAPH &lt;http://wot.arces.unibo.it/graph&gt; {wot:Subject wot:Predicate "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"}}
 </pre>
+</aside>
 
-		<pre class="example" title="Update response">
-Headers:
-Content-Type: application/json
+<aside class="example" title="Update response">
+<br>Headers
+<pre>Content-Type: application/json</pre>
 	
-Body:
-{ "response" : {
+Body
+<pre>{ "response" : {
     "isJsonBody": <code>true</code> or <code>false</code>,
-    "body": JSON Object or "A string response message"
-}}
-</pre>
+    "body": {JSON Object} or "A string response message"
+}}</pre>
+</aside>
 
 	</section>
 
@@ -273,20 +273,21 @@ Body:
 				follows:</p>
 
 
-<pre class="example" title="Registration request">
-Request: 
-POST https://mml.arces.unibo.it:8443/oauth/register
+<aside class="example" title="Registration request">
+<br>Request 
+<pre>POST https://mml.arces.unibo.it:8443/oauth/register</pre>
 
-Headers: 
-Content-Type: application/json 
-Accept: application/json
+Headers
+<pre>Content-Type: application/json 
+Accept: application/json</pre>
 
-Body:
-{ "register":{
+Body
+<pre>{ "register":{
     "client_identity":"68:a8:6d:1a:9c:04", 
     "grant_types":["client_credentials"]
 }}
 </pre>
+</aside>
 
 <pre class="example" title="Registration response">
 {"credentials":{
@@ -322,15 +323,15 @@ Body:
 			<p>Once a client registered and holds the credentials, it can
 				request a JWT by sending a request like the following:</p>
 
-<pre class="example" title="Token request">
-Request:
-POST https://mml.arces.unibo.it:8443/oauth/token
+<aside class="example" title="Token request">
+<br>Request
+<pre>POST https://mml.arces.unibo.it:8443/oauth/token</pre>
 
-Headers:
-Content-Type: application/json
+Headers
+<pre>Content-Type: application/json
 Accept: application/json
 Authorization: Basic NWI2MGExNTUtYmFkYS00NDk5LWJjNmYtMjZiNGQzN2JjMWVmOjQwZTE4ZDc3LTQyMWMtNDhjZS1hNDRhLTE0ZGExMjM4ZTkyMw==
-</pre>
+</pre></aside>
 
 			<p>
 				The
@@ -342,12 +343,12 @@ Authorization: Basic NWI2MGExNTUtYmFkYS00NDk5LWJjNmYtMjZiNGQzN2JjMWVmOjQwZTE4ZDc
 				A SEPA broker implementation MUST respond to a token request with a
 				JSON object like the following one:
 			</p>
-			
+
 <pre class="example" title="Token response">			
-{"token":{<br>
-  "access_token":"<code>eyJhb....PEbjj65g</code>",<br>
-  "token_type":"Bearer",<br>
-  "expires_in":3600<br>
+{"token":{
+  "access_token":"xabtQWoH8RJJk1FyKJ78J8h8i2PcWmAugfJ4J6nMd+1jVSoiipV4Pcv8bH+8wJLJ2yRaVage8/TzdZJiz2jdRP8bhkuNzFhGx6N1/1mgmvfKihLheMmcU0pLj5uKOYWFb+TB98n1IpNO4G69lia2YoR15LScBzibBPpmKWF+XAr5TeDDHDZQK4N3VBS/e3tFL/yOhkfC9Mw45s3mz83oyeoFFePUX8MQIuqd3TIcjOhoPgYWd0E+L/EN5wItL5/n78pX/8mVZcpxdyNNqr3bVvrCi0I84mIAefwQ0GyPxFhUHu9PtVNQnXchZuFgppX/YDtOesZSxfIoffUpHFPBY3u4FRIYwpSZX96Knnp0J22RQm+0l8yobik3z6jftw0jbF5+/YC6PnfZT3Wzb6PRJPuVkDzpo+BTC9eKx87GEj8VjtfXjbYRTeZNumD+59wL5kV/OrntNqNQD+IzAYoIZk4rlRbNouNnvT0laEhV012tSD1uAfNUxAlZjSbSMTp5bPNp7PoutMr5q6zPYfAC1PTKnVdkD1CDNqZnhB838WDeISfVzXsf7dsZ0+SkNPtx2kMUYCOYsxNJxyzza3lmaCuvxfnDT3g5F41/p/zX1tXYy6emVfdOWSkJNm1z0FJB/ZIUES0WAA5UEM3kejND++vvIQr38ar72HdFzRvP2V29CsaE5PMRRRZIE5ru9Zwgdb5lfMdwDi4sZkQdNRGHiOfRCT9D92mFVps6s6kv7HKojx05R9WKMDG8bEmSgMYSYQlQzLm93Ardw/hpDoB1/DfNRxbc/GVNZEVOoRVMye8/vICZtxvVeKmu4QawWKSBtrXelWUT8AHTG6v/c88pZjtJWDzy6YIIXLDQ2eJPu30mt3gLfS2ukIV4Tl5Oqu3T1IIghmNgek8vwWNeuG/JGeKrfUp6X6mMH9hdmj5+naOIr8V5rUKCjXnlWLAsrGdOvV8vuYYbx2IFQScZQJD/sTKj3gs6yeYpOwQ2iEs9asA=",
+  "token_type":"Bearer",
+  "expires_in":3600
 }}
 </pre>
 			<p>
@@ -379,9 +380,9 @@ Authorization: Basic NWI2MGExNTUtYmFkYS00NDk5LWJjNmYtMjZiNGQzN2JjMWVmOjQwZTE4ZDc
 				header as shown in the following example:
 			</p>
 
-<aside class="example" title="HTTPS access">
-<br>Authorization: <b><code>Bearer eyJhb....PEbjj65g</code></b>
-</aside>
+<pre class="example" title="HTTPS access">
+Authorization: Bearer xabtQWoH8RJJk1FyKJ78J8h8i2PcWmAugfJ4J6nMd+1jVSoiipV4Pcv8bH+8wJLJ2yRaVage8/TzdZJiz2jdRP8bhkuNzFhGx6N1/1mgmvfKihLheMmcU0pLj5uKOYWFb+TB98n1IpNO4G69lia2YoR15LScBzibBPpmKWF+XAr5TeDDHDZQK4N3VBS/e3tFL/yOhkfC9Mw45s3mz83oyeoFFePUX8MQIuqd3TIcjOhoPgYWd0E+L/EN5wItL5/n78pX/8mVZcpxdyNNqr3bVvrCi0I84mIAefwQ0GyPxFhUHu9PtVNQnXchZuFgppX/YDtOesZSxfIoffUpHFPBY3u4FRIYwpSZX96Knnp0J22RQm+0l8yobik3z6jftw0jbF5+/YC6PnfZT3Wzb6PRJPuVkDzpo+BTC9eKx87GEj8VjtfXjbYRTeZNumD+59wL5kV/OrntNqNQD+IzAYoIZk4rlRbNouNnvT0laEhV012tSD1uAfNUxAlZjSbSMTp5bPNp7PoutMr5q6zPYfAC1PTKnVdkD1CDNqZnhB838WDeISfVzXsf7dsZ0+SkNPtx2kMUYCOYsxNJxyzza3lmaCuvxfnDT3g5F41/p/zX1tXYy6emVfdOWSkJNm1z0FJB/ZIUES0WAA5UEM3kejND++vvIQr38ar72HdFzRvP2V29CsaE5PMRRRZIE5ru9Zwgdb5lfMdwDi4sZkQdNRGHiOfRCT9D92mFVps6s6kv7HKojx05R9WKMDG8bEmSgMYSYQlQzLm93Ardw/hpDoB1/DfNRxbc/GVNZEVOoRVMye8/vICZtxvVeKmu4QawWKSBtrXelWUT8AHTG6v/c88pZjtJWDzy6YIIXLDQ2eJPu30mt3gLfS2ukIV4Tl5Oqu3T1IIghmNgek8vwWNeuG/JGeKrfUp6X6mMH9hdmj5+naOIr8V5rUKCjXnlWLAsrGdOvV8vuYYbx2IFQScZQJD/sTKj3gs6yeYpOwQ2iEs9asA=
+</pre>
 			<p>
 				WSS requests (e.g., wss://mml.arces.unibo.it:9443/secure/subscribe)
 				MUST include the
@@ -402,8 +403,8 @@ Authorization: Basic NWI2MGExNTUtYmFkYS00NDk5LWJjNmYtMjZiNGQzN2JjMWVmOjQwZTE4ZDc
 
 <pre class="example" title="Error response">
  {
-   "error":"unauthorized_client",
-   "error_description" (optional): "Client is not authorized",
+   "error" : "unauthorized_client",
+   "error_description" : "Client is not authorized",
    "status_code" : 401
  }
  </pre>
