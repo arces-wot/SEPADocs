@@ -210,9 +210,15 @@ INSERT DATA {GRAPH &lt;http://wot.arces.unibo.it/graph&gt; {wot:Subject wot:Pred
 	
 Body
 <pre>{ "response" : {
-    "isJsonBody": <code>true</code> or <code>false</code>,
-    "body": {JSON Object} or "A string response message"
+    "isJsonBody": <code>true</code>,
+    "body": {"ACustomJSONObject":"WithACustomSetOfMembers"}
 }}</pre>
+<br>or<br>
+<pre>{ "response" : {
+    "isJsonBody": <code>false</code>,
+    "body": "A response string"
+}}</pre>
+
 </aside>
 
 	</section>

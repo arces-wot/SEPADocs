@@ -125,8 +125,8 @@
 			
 <pre class="example" title="Subscribe request">
 {"subscribe" : {
-   "sparql" : "select * where {?s ?p ?o}",
-   "authorization" : "Bearer eyJhbGciO....ZgeFONFh7HgQ",
+   "sparql" : "select * where {?vaimee ?deda ?didi}",
+   "authorization" : "Bearer xabtQWoH8RJJk1FyKJ78J8h8i2PcWmAugfJ4J6nMd+1jVSoiipV4Pcv8bH+8wJLJ2yRaVage8/TzdZJiz2jdRP8bhkuNzFhGx6N1/1mgmvfKihLheMmcU0pLj5uKOYWFb+TB98n1IpNO4G69lia2YoR15LScBzibBPpmKWF+XAr5TeDDHDZQK4N3VBS/e3tFL/yOhkfC9Mw45s3mz83oyeoFFePUX8MQIuqd3TIcjOhoPgYWd0E+L/EN5wItL5/n78pX/8mVZcpxdyNNqr3bVvrCi0I84mIAefwQ0GyPxFhUHu9PtVNQnXchZuFgppX/YDtOesZSxfIoffUpHFPBY3u4FRIYwpSZX96Knnp0J22RQm+0l8yobik3z6jftw0jbF5+/YC6PnfZT3Wzb6PRJPuVkDzpo+BTC9eKx87GEj8VjtfXjbYRTeZNumD+59wL5kV/OrntNqNQD+IzAYoIZk4rlRbNouNnvT0laEhV012tSD1uAfNUxAlZjSbSMTp5bPNp7PoutMr5q6zPYfAC1PTKnVdkD1CDNqZnhB838WDeISfVzXsf7dsZ0+SkNPtx2kMUYCOYsxNJxyzza3lmaCuvxfnDT3g5F41/p/zX1tXYy6emVfdOWSkJNm1z0FJB/ZIUES0WAA5UEM3kejND++vvIQr38ar72HdFzRvP2V29CsaE5PMRRRZIE5ru9Zwgdb5lfMdwDi4sZkQdNRGHiOfRCT9D92mFVps6s6kv7HKojx05R9WKMDG8bEmSgMYSYQlQzLm93Ardw/hpDoB1/DfNRxbc/GVNZEVOoRVMye8/vICZtxvVeKmu4QawWKSBtrXelWUT8AHTG6v/c88pZjtJWDzy6YIIXLDQ2eJPu30mt3gLfS2ukIV4Tl5Oqu3T1IIghmNgek8vwWNeuG/JGeKrfUp6X6mMH9hdmj5+naOIr8V5rUKCjXnlWLAsrGdOvV8vuYYbx2IFQScZQJD/sTKj3gs6yeYpOwQ2iEs9asA=",
    "alias" : "All",
    "default-graph-uri" : "http://example/uri_of_the_default_graph",
    "named-graph-uri" : "http://example/uri_of_a_named_graph"
@@ -182,7 +182,13 @@
    "spuid" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6",
    "sequence" : 0,
    "alias" : "All",
-   "addedResults" : "SPARQL 1.1 Query Results JSON format",
+   "addedResults" :{ 
+     "head": { "vars": ["vaimee","deda","didi"] },
+     "results": {
+       "bindings": [{ 
+        "vaimee": {"type": "uri", "value" : "http://wot.arces.unibo.it/example#Subject"}, 
+        "deda": {"type": "uri", "value": "http://wot.arces.unibo.it/example#Predicate"}, 
+        "didi": {"type": "literal","value": "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"} }]}},
    "removedResults":{}}}
 </pre>
 
@@ -269,10 +275,19 @@
 
 <pre class="example" title="Notification">
 {"notification":{
-   "spuid" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6", 		
-   "sequence" : 0, 
-   "addedResults" : "SPARQL 1.1 Query Results JSON format",
-   "removedResults" : "SPARQL 1.1 Query Results JSON format"}}
+   "spuid" : "sepa://subscription/0d057ca5-cc10-4e8a-a5d9-59d7b36f71d6",
+   "sequence" : 1,
+   "alias" : "All",
+   "addedResults" :{ 
+     "head": { "vars": ["vaimee","deda","didi"] },
+     "results": {
+       "bindings": [{  
+        "didi": {"type": "literal","value": "&#x10D6;&#x10D1;&#x10D9;&#x10DA;&#x10D5;&#x10D5;"} }]}},
+   "removedResults":{ 
+     "head": { "vars": ["vaimee","deda","didi"] },
+     "results": {
+       "bindings": [{ 
+        "didi": {"type": "literal","value": "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"} }]}}}
 </pre>
 		<p>
 			The value of
