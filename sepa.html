@@ -54,11 +54,15 @@
 		with reference to <b>dynamic contexts</b> where detecting and reacting
 		to events is critical. In such contexts, the use of SPARQL queries
 		[[sparql11-query]] MAY be inefficient and MAY not guarantee to detect
-		all the events because of their asynchronous nature. Furthermore, the
-		publish-subscribe mechanism offered by SEPA MAY support <b>semantic
-			driven coordination and discovery</b>. Eventually, SEPA is built around a
-		<b>security layer</b> (e.g.,TLS [[!RFC5246]]) and it allows <b>clients
-			authentication</b> by means of JSON Web Tokens [[!RFC7519]].
+		all the events because of their asynchronous nature. Furthermore, SEPA
+		is built around a <b>security layer</b> (e.g.,TLS [[!RFC5246]]) and it
+		allows <b>clients authentication</b> by means of JSON Web Tokens
+		[[!RFC7519]]. Eventually, the publish-subscribe mechanism offered by
+		SEPA MAY support <b>semantic driven coordination and discovery</b>. To
+		increase software reuse and interoperability, SEPA also proposes an <b><a
+			href="http://mml.arces.unibo.it/TR/jsap.html">application design
+				pattern</a></b> where each client can be categorized as producer, consumer
+		or aggregator.
 	</section>
 
 	<!-- STATUS OF THIS DOCUMENT -->
@@ -68,30 +72,44 @@
 	<section id="intro">
 		<h2>Introduction</h2>
 
+		<p>In the Web of Data, a SPARQL protocol client can update and
+			query a SPARQL endpoint using respectively the SPARQL 1.1 Update
+			Language [[sparql11-update]] and the SPARQL 1.1 Query Language
+			[[sparql11-query]]. Updates and queries can be conveyed through the
+			SPARQL 1.1 protocol [[sparql11-protocol]].</p>
+
+		<p>The development of applications over the Web of Data requires
+			synchronization mechanisms that can be provided by SEPA. Thanks to
+			the publish-subscribe mechanism implemented by a SEPA broker, clients
+			can react to changes in the Web of Data and use such events to
+			synchronize with other clients. The Web of Data becomes a Web of
+			Dynamic Data. The default push based notification mechanism provided
+			by a SEPA broker can also be complemented by a pull based one like
+			for example the Linked Data Notifications [[ldn]] protocol.</p>
 		<p>
-			The proposed architecture implementing a <b>content based
-				publish-subscribe</b> mechanism over SPARQL is named SEPA (SPARQL Event
-			Processing Architecture). The core component of SEPA is the SPARQL SE
-			Protocol Service (also know as <b>SEPA broker or engine</b>). The
-			SEPA broker implements the subscription mechanisms and algorithms.
-			SEPA is framed within W3C Recommendations as shown in the following
-			figure.
+
+			<img src="media/DLD.jpg"
+				title="SEPA enables the development of Dymanic Linked Data applications"><br>
+		<p>Fig. 1 - SEPA enables the development of Dymanic Linked Data
+			applications</p>
+
+		<p>
+			Furthermore, SEPA promotes the use of the <a
+				href="http://mml.arces.unibo.it/TR/jsap.html">JSON SPARQL
+				Application Profile</a> to improve extesibility and interoperability of
+			Dynamic Linked Data applications and services.
 		</p>
 
-		<img src="media/sparql11seprotocol.jpg">
-		<p>Fig. 1 - The SPARQL Event Processing Architecture (SEPA)</p>
-
 		<p>
-			A SPARQL SE Protocol Service MUST implement the <a
+			A SEPA broker MUST implement the <a
 				href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
 				1.1 Secure Event (SE) Protocol</a> that is proposed as an extension of
-			the SPARQL 1.1 Protocol [[sparql11-protocol]] and, as shown in Fig.
-			1, it wraps the SPARQL 1.1 Protocol [[sparql11-protocol]] to support
-			the subscribe primitives (i.e., <b>subscribe</b>, <b>unsubscribe</b>).
-			The SPARQL 1.1 SE protocol is built around a <b>security layer</b>
-			(e.g.,TLS [[!RFC5246]]) and it allows <b>client authentication</b> by
-			means of JSON Web Tokens [[!RFC7519]]. The SEPA broker is built on
-			top of a SPARQL Protocol Service [[sparql11-protocol]].
+			the SPARQL 1.1 Protocol [[sparql11-protocol]] to support subscribe
+			primitives (i.e., <b>Subscribe</b>, <b>Unsubscribe</b>) and notifications (i.e., <b>Notify</b>). The SPARQL
+			1.1 SE protocol is built around a <b>security layer</b> (e.g.,TLS
+			[[!RFC5246]]) and it allows <b>client authentication</b> by means of
+			JSON Web Tokens [[!RFC7519]]. The SEPA broker is built on top of a
+			SPARQL Protocol Service [[sparql11-protocol]].
 		</p>
 		<p>
 			The definition of the <a
@@ -223,38 +241,6 @@
 
 	</section>
 
-	<section id="JSAP">
-		<h2>Dynamic Linked Data applications</h2>
-
-		<p>In the Web of Data, a SPARQL protocol client can update and
-			query a SPARQL endpoint using respectively the SPARQL 1.1 Update
-			Language [[sparql11-update]] and the SPARQL 1.1 Query Language
-			[[sparql11-query]]. Updates and queries can be conveyed through the
-			SPARQL 1.1 protocol [[sparql11-protocol]].</p>
-
-		<p>Fig. 3 shows the novelty introduced by SEPA on the Web of Data.</p>
-
-		<img src="media/DLD.jpg"
-			title="SEPA enables the development of Dymanic Linked Data applications"><br>
-		<p>Fig. 3 - SEPA enables the development of Dymanic Linked Data
-			applications</p>
-
-		<p>The development of applications over the Web of Data requires
-			synchronization mechanisms that can be provided by SEPA. Thanks to
-			the publish-subscribe mechanism implemented by a SEPA broker, clients
-			can react to changes in the Web of Data and use such events to
-			synchronize with other clients. The Web of Data becomes a Web of
-			Dynamic Data. The default push based notification mechanism provided
-			by a SEPA broker can also be complemented by a pull based one like
-			for example the Linked Data Notifications [[ldn]] protocol.</p>
-		<p>
-			Furthermore, SEPA promotes the use of the <a
-				href="http://mml.arces.unibo.it/TR/jsap.html">JSON SPARQL
-				Application Profile</a> to improve extesibility and interoperability of
-			Dynamic Linked Data applications and services.
-
-		</p>
-	</section>
 	<!-- APPENDIX -->
 	<section class="appendix">
 
