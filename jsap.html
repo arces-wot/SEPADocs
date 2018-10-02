@@ -31,7 +31,7 @@
 		} ],
 		// WG
 		wg : "Linked Data and Web of Things working group @ ARCES University of Bologna",
-		wgURI : "http://mml.arces.unibo.it/",
+		wgURI : "https://site.unibo.it/wot/en",
 	};
 </script>
 
@@ -81,7 +81,7 @@
 			<!--Instead, the Authors suggest the use of more than one JSAP file or, of course, the review of the SPARQL code.-->
 		</p>
 
-		<section id="conventions">
+		<section id='conventions'>
 			<h3>Document conventions</h3>
 			When this document uses the words MUST, MUST NOT, SHOULD, SHOULD NOT,
 			MAY and RECOMMENDED, and the words appear as emphasized text, they
@@ -144,9 +144,9 @@
 	</section>
 
 	<!-- CORE OF THE DOCUMENT -->
-	<section id="pac-pattern">
+	<section>
 
-		<h2>PAC design pattern</h2>
+		<h2>Producer-Aggregator-Consumer design pattern</h2>
 		<p>The following figure gives an overview of the RECOMMENDED
 			application design pattern to be followed by SEPA applications
 			developers.</p>
@@ -216,9 +216,9 @@
 		<p>
 	</section>
 
-	<section id="JSAPcontent">
-		<h2>JSAP content</h2>
-		<p>A JSAP is structured as follows.
+	<section>
+		<h2>JSAP structure</h2>
+		<p>A JSAP is structured as follows. 
 		<pre class="example" title="JASP structure" id="JSAPMainStructure">
 {
   "host":"...",
@@ -244,7 +244,7 @@
     "QUERY_IDENTIFIER_N":{}
   }
 }
-</pre>
+		</pre>
 
 		The
 		<code>host</code>
@@ -279,26 +279,26 @@
 		<code>extended</code>
 		member is optional and it MAY be used to store application specific
 		data.
-	</section>
-	<section id="protocolParameters">
 
-		<h3>Protocol parameters</h3>
-		<p>
-			A semantic application profile, in order to fully describe an
-			application, MUST contain the protocol parameters needed by an
-			application to interact with a SEPA broker instance through the <a
-				href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
-				1.1 SE Protocol</a>, like the HTTPS interface (used by secure SPARQL
-			updates and SPARQL queries) and the Websocket interface (needed by
-			(secure) SPARQL subscriptions). In JSAP, such parameters are
-			described by two mandatory JSON objects named
-			<code>sparql11protocol</code>
-			and
-			<code>sparql11seprotocol</code>
-			.
-		<pre class="example"
-			title="SPARQL 1.1 protocol parameters (not secure)"
-			id="sparql11protocol">
+		<section>
+
+			<h3>Protocol parameters</h3>
+			<p>
+				A semantic application profile, in order to fully describe an
+				application, MUST contain the protocol parameters needed by an
+				application to interact with a SEPA broker instance through the <a
+					href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+					1.1 SE Protocol</a>, like the HTTPS interface (used by secure SPARQL
+				updates and SPARQL queries) and the Websocket interface (needed by
+				(secure) SPARQL subscriptions). In JSAP, such parameters are
+				described by two mandatory JSON objects named
+				<code>sparql11protocol</code>
+				and
+				<code>sparql11seprotocol</code>
+				.
+			<pre class="example"
+				title="SPARQL 1.1 protocol parameters (not secure)"
+				id="sparql11protocol">
 {
   "sparql11protocol":{
     "protocol":"http",
@@ -316,50 +316,50 @@
   }
 }</pre>
 
-		<p>
-			The value of the
-			<code>host</code>
-			member specifies the host where the SEPA broker is running (e.g.,
-			mml.arces.unibo.it).
-		</p>
-		<p>
-			The
-			<code>port</code>
-			member specifies the port where the SEPA broker is listening for
-			SPARQL 1.1 primitives (updates and queries).
-		</p>
-		<p>
-			The
-			<code>protocol</code>
-			member specifies the protocol used and it can assume the values:
-			<code>http</code>
-			or
-			<code>https</code>
-			.
-		</p>
-		<p>
-			The
-			<code>update</code>
-			and
-			<code>query</code>
-			members contain the following members:
-			<code>path</code>
-			(i.e., the path part of the URL),
-			<code>method</code>
-			(i.e., the HTTP method used) and
-			<code>format</code>
-			(i.e., the format of the response). According to the SPARQL 1.1
-			protocol [[sparql11-protocol]], for queries the
-			<code>format</code>
-			can be POST, GET, URL_ENCODED_POST, while for updates it can be POST
-			or URL_ENCODED_POST. All the SEPA implementations MUST support JSON
-			as return format, while other formats like XML, CSV or HTML MAY be
-			supported.
-		</p>
+			<p>
+				The value of the
+				<code>host</code>
+				member specifies the host where the SEPA broker is running (e.g.,
+				mml.arces.unibo.it).
+			</p>
+			<p>
+				The
+				<code>port</code>
+				member specifies the port where the SEPA broker is listening for
+				SPARQL 1.1 primitives (updates and queries).
+			</p>
+			<p>
+				The
+				<code>protocol</code>
+				member specifies the protocol used and it can assume the values:
+				<code>http</code>
+				or
+				<code>https</code>
+				.
+			</p>
+			<p>
+				The
+				<code>update</code>
+				and
+				<code>query</code>
+				members contain the following members:
+				<code>path</code>
+				(i.e., the path part of the URL),
+				<code>method</code>
+				(i.e., the HTTP method used) and
+				<code>format</code>
+				(i.e., the format of the response). According to the SPARQL 1.1
+				protocol [[sparql11-protocol]], for queries the
+				<code>format</code>
+				can be POST, GET, URL_ENCODED_POST, while for updates it can be POST
+				or URL_ENCODED_POST. All the SEPA implementations MUST support JSON
+				as return format, while other formats like XML, CSV or HTML MAY be
+				supported.
+			</p>
 
-		<pre class="example"
-			title="SPARQL 1.1 SE protocol parameters (not secure)"
-			id="sparql11seprotocol">
+			<pre class="example"
+				title="SPARQL 1.1 SE protocol parameters (not secure)"
+				id="sparql11seprotocol">
 {
   "sparql11seprotocol":{
     "protocol":"ws",
@@ -377,15 +377,17 @@
 }
  </pre>
 
-		The URLs corresponding to the above protocol configuration (not
-		secure) follow:
-		<pre class="example" title="URLs used by SEPA primitives (not secure)">
+			The URLs corresponding to the above protocol configuration (not
+			secure) follow:
+			<pre class="example"
+				title="URLs used by SEPA primitives (not secure)">
 
 - Query: http://mml.arces.unibo.it:8000/query
 
 - Update: http://mml.arces.unibo.it:8000/update
 
 - Subscribe: ws://mml.arces.unibo.it:9000/subscribe</pre>
+		</section>
 
 		<section>
 			<h3>Security</h3>
@@ -468,22 +470,21 @@
 }
 </pre>
 		</section>
-	</section>
-	<section>
-		<h3>Namespaces</h3>
+		<section>
+			<h3>Namespaces</h3>
 
-		<p>
-			JSAP MAY include a set of namespaces used by SPARQL updates and
-			queries. Client-side APIs SHOULD take the namespaces and prepend them
-			to a SPARQL update/subscribe. This allows to simplify the SPARQL text
-			by using qualified names for URIs [[xml-names]]. Namespaces are
-			specified as a JSON object assigned to the key
-			<code>namespaces</code>
-			. In this object, every key represents a prefix, while the value is
-			the relative namespace.
-		</p>
+			<p>
+				JSAP MAY include a set of namespaces used by SPARQL updates and
+				queries. Client-side APIs SHOULD take the namespaces and prepend
+				them to a SPARQL update/subscribe. This allows to simplify the
+				SPARQL text by using qualified names for URIs [[xml-names]].
+				Namespaces are specified as a JSON object assigned to the key
+				<code>namespaces</code>
+				. In this object, every key represents a prefix, while the value is
+				the relative namespace.
+			</p>
 
-		<pre class="example" title="Namespaces">
+			<pre class="example" title="Namespaces">
 {
   "namespaces":{
     "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -498,28 +499,28 @@
 }
 </pre>
 
-	</section>
+		</section>
 
-	<section>
-		<h3>Updates, queries and forced bindings</h3>
-		<p>
-			The main benefit of JSAP consists in the ability of creating
-			templates for applications. Those templates act as an <i>identity
-				card</i> of an application. JSAP MAY include two JSON objects named
-			<code>updates</code>
-			and
-			<code>queries</code>
-			listing all the SPARQL 1.1 updates [[sparql11-update]] and <a
-				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
-				1.1 subscribes</a> used by the application.The
-			<code>updates</code>
-			and
-			<code>queries</code>
-			members, if present, contain a list of objects sharing the structure
-			here reported:
-		</p>
+		<section>
+			<h3>Updates, queries and forced bindings</h3>
+			<p>
+				The main benefit of JSAP consists in the ability of creating
+				templates for applications. Those templates act as an <i>identity
+					card</i> of an application. JSAP MAY include two JSON objects named
+				<code>updates</code>
+				and
+				<code>queries</code>
+				listing all the SPARQL 1.1 updates [[sparql11-update]] and <a
+					href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+					1.1 subscribes</a> used by the application.The
+				<code>updates</code>
+				and
+				<code>queries</code>
+				members, if present, contain a list of objects sharing the structure
+				here reported:
+			</p>
 
-		<pre class="example" title="Update and query template">
+			<pre class="example" title="Update and query template">
 {
   "QUERY_OR_UPDATE_IDENTIFIER":{
     "sparql":"SPARQL Update or Query",
@@ -531,48 +532,48 @@
 }
 </pre>
 
-		<p>
-			The value of the mandatory
-			<code>sparql</code>
-			member is the SPARQL query [[sparql11-query]] or update
-			[[sparql11-update]]. The
-			<code>sparql11protocol</code>
-			,
-			<code>sparql11seprotocol</code>
-			and
-			<code>graphs</code>
-			members MAY be used to overwrite some protocol parameters.
-		</p>
-		<p>
-			SPARQL updates and subscribes can be fetched by the application and
-			modified at run-time to fit the application needs. For example, a
-			producer that updates the value of a temperature sensor will only
-			need to fill a field in the template (i.e., the current value). Here
-			is where the definition of <i>forced bindings</i> comes in help. A
-			forced binding enables the developer to substitute at run-time a
-			variable in a template with a custom value. To define forced
-			bindings, the key
-			<code>forcedBindings</code>
-			MUST be used. The value is a JSON object. The variable of a forced
-			binding is a key in that JSON object. Its value is again a JSON
-			object containing the keys
-			<code>type</code>
-			and
-			<code>value</code>
-			.
-			<code>type</code>
-			is mandatory and MUST be one of
-			<code>"uri"</code>
-			,
-			<code>"bnode"</code>
-			,
-			<code>"literal"</code>
-			. The
-			<code>value</code>
-			key is optional and SHOULD be used to specify a <i>default</i> value
-			for that variable.
-		</p>
-		<pre class="example" title="Forced bindings">
+			<p>
+				The value of the mandatory
+				<code>sparql</code>
+				member is the SPARQL query [[sparql11-query]] or update
+				[[sparql11-update]]. The
+				<code>sparql11protocol</code>
+				,
+				<code>sparql11seprotocol</code>
+				and
+				<code>graphs</code>
+				members MAY be used to overwrite some protocol parameters.
+			</p>
+			<p>
+				SPARQL updates and subscribes can be fetched by the application and
+				modified at run-time to fit the application needs. For example, a
+				producer that updates the value of a temperature sensor will only
+				need to fill a field in the template (i.e., the current value). Here
+				is where the definition of <i>forced bindings</i> comes in help. A
+				forced binding enables the developer to substitute at run-time a
+				variable in a template with a custom value. To define forced
+				bindings, the key
+				<code>forcedBindings</code>
+				MUST be used. The value is a JSON object. The variable of a forced
+				binding is a key in that JSON object. Its value is again a JSON
+				object containing the keys
+				<code>type</code>
+				and
+				<code>value</code>
+				.
+				<code>type</code>
+				is mandatory and MUST be one of
+				<code>"uri"</code>
+				,
+				<code>"bnode"</code>
+				,
+				<code>"literal"</code>
+				. The
+				<code>value</code>
+				key is optional and SHOULD be used to specify a <i>default</i> value
+				for that variable.
+			</p>
+			<pre class="example" id="forcedBindings" title="Forced bindings">
 {
   "forcedBindings":{
     "variable-X-uri":{
@@ -588,20 +589,20 @@
       "type":"bnode",
       "value":"..."
     }
-  },
+  }
 }
 </pre>
-		<p>
-			The role of the
-			<code>forcedBindings</code>
-			member is to define which variables will be replaced at run-time by
-			their actual values. The use of forced bindings can be appreciated by
-			considering the following example. The updates listed within the
-			<code>updates</code>
-			member share a common template but with different forced bindings.
-		</p>
+			<p>
+				The role of the
+				<code>forcedBindings</code>
+				member is to define which variables will be replaced at run-time by
+				their actual values. The use of forced bindings can be appreciated
+				by considering the following example. The updates listed within the
+				<code>updates</code>
+				member share a common template but with different forced bindings.
+			</p>
 
-<pre class="example" title="The role of forced bindings">
+			<pre class="example" title="The role of forced bindings">
 {
   "namespaces":{
     "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -635,118 +636,132 @@
   }
 }
 </pre>
-		<p>
-			The <b>UPDATE_ALL_TO_100</b> do not have any forced binding. The
-			update will be issued as it is to the SEPA broker and the effect will
-			be to update all the sensor data values (e.g., <i>wot:hasValue</i>)
-			to
-			<code>"100"</code>
-			.
-		</p>
-		<p>
-			In the update "UPDATE_ALL_TO_X", the fixed value
-			<code>"100"</code>
-			has been replaced by the variable
-			<code>?x</code>
-			, that is also a literal forced binding. At run-time, the a SEPA
-			agent would replace the variable
-			<code>?x</code>
-			with a literal value, like for example "46". The actual update issued
-			to the SEPA broker follows and the effect will be to update all the
-			sensor data values (e.g., <i>wot:hasValue</i>) to
-			<code>"46"</code>
-			.
-		</p>
-		<aside class="example"
-			title="Actual SPARQL update after replacing the ?x forced binding">
-<br>DELETE {?sensor wot:hasValue ?oldValue}
-<br>INSERT {?sensor wot:hasValue <code>"46"</code>} 
-<br>WHERE {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue ?oldValue}
-</aside>
+			<p>
+				The <b>UPDATE_ALL_TO_100</b> do not have any forced binding. The
+				update will be issued as it is to the SEPA broker and the effect
+				will be to update all the sensor data values (e.g., <i>wot:hasValue</i>)
+				to
+				<code>"100"</code>
+				.
+			</p>
+			<p>
+				In the update "UPDATE_ALL_TO_X", the fixed value
+				<code>"100"</code>
+				has been replaced by the variable
+				<code>?x</code>
+				, that is also a literal forced binding. At run-time, the a SEPA
+				agent would replace the variable
+				<code>?x</code>
+				with a literal value, like for example "46". The actual update
+				issued to the SEPA broker follows and the effect will be to update
+				all the sensor data values (e.g., <i>wot:hasValue</i>) to
+				<code>"46"</code>
+				.
+			</p>
+			<aside class="example"
+				title="Actual SPARQL update after replacing the ?x forced binding">
+				<br>DELETE {?sensor wot:hasValue ?oldValue} <br>INSERT
+				{?sensor wot:hasValue
+				<code>"46"</code>
+				} <br>WHERE {?sensor rdf:type wot:SENSOR . ?sensor wot:hasValue
+				?oldValue}
+			</aside>
 
-		<p>
-			The update "UPDATE_SENSOR_TO_X", is the same as the previous update,
-			but the
-			<code>?sensor</code>
-			variable is to be considered a forced binding. A SEPA agent is
-			supposed to replace both the forced bindings (i.e,
-			<code>?x</code>
-			and
-			<code>?sensor</code>
-			) before sending the update to the SEPA broker (e.g., ?x =
-			<code>"69"</code>
-			and ?sensor =
-			<code>wot:SENSOR_XYZ_URI</code>
-			). The actual update issued to the SEPA broker follows and the effect
-			will be to update the data value (e.g., <i>wot:hasValue</i>) of the
-			sensor identified by the URI
-			<code>wot:SENSOR_XYZ_URI</code>
-			to
-			<code>"69"</code>
-			.
-		</p>
-<aside class="example"
-			title="Actual SPARQL update after replacing the ?x and ?sensor forced bindings">
-<br>DELETE {<code>wot:SENSOR_XYZ_URI</code> wot:hasValue ?oldValue}
-<br>INSERT {<code>wot:SENSOR_XYZ_URI</code> wot:hasValue <code>"69"</code>} 
-<br>WHERE {<code>wot:SENSOR_XYZ_URI</code> rdf:type wot:SENSOR . <code>wot:SENSOR_XYZ_URI</code> wot:hasValue ?oldValue}
-</aside>
-		<p>Eventually, from the application point of view, JSAP hides
-			SPARQL complexity and allow the use of a simple portable interface to
-			create Dynamic Linked Data applications.</p>
-	</section>
-	<section>
-		<h3>A minimum working example: a SEPA based chat</h3>
-		<p>In order to provide the reader with a better understanding of
-			the SEPA application design pattern using the proposed JASP, this
-			section presents a simple and at the same time meaningful example.</p>
-		<p>The example is a chat application where users exchange
-			messages. A user should be able to send a message to an other user
-			and be notified when the message has been received. In the following
-			is described how this behaviour can be implemented thanks to the
-			publish-subscribe mechanism provided by SEPA. According to the
-			producer-aggregator-consumer design pattern proposed in this
-			document, a chat client can be implemented by the following agents:
-		<ul>
-			<li>A <b>producer</b>(Sender) who produces the message
-			</li>
-			<li>An <b>aggregator</b>(Receiver) who receives the notification
-				and then notify about the arrival
-			</li>
-			<li>An <b>aggregator</b>(Remover) who waits for the notification
-				sent by the Receiver and delete the message from the knowledge base
-			</li>
-		</ul>
-		These entities can be mapped to the following interface of functions:
-		<ul>
-			<li>Updates:
-				<ul>
-					<li>Sender <i>calls</i> SEND(sender,receiver,text) where the
-						sender and receiver parameters are URIs, while the text is a
-						literal
-					</li>
-					<li>Remover <i>calls</i> REMOVE(message) where message
-						parameter is the message URI
-					</li>
-					<li>Receiver <i>calls</i> SET_RECEIVED(message) where message
-						parameter is the message URI
-					</li>
-				</ul>
-			</li>
-			<li>Queries:
-				<ul>
-					<li>Receiver <i>subscribes to</i> SENT
-					</li>
-					<li>Remover <i>subscribes to</i> REMOVED
-					</li>
-				</ul>
-			</li>
-		</ul>
-		These information define the semantic application and can be written
-		in a first draft of the JSAP:
+			<p>
+				The update "UPDATE_SENSOR_TO_X", is the same as the previous update,
+				but the
+				<code>?sensor</code>
+				variable is to be considered a forced binding. A SEPA agent is
+				supposed to replace both the forced bindings (i.e,
+				<code>?x</code>
+				and
+				<code>?sensor</code>
+				) before sending the update to the SEPA broker (e.g., ?x =
+				<code>"69"</code>
+				and ?sensor =
+				<code>wot:SENSOR_XYZ_URI</code>
+				). The actual update issued to the SEPA broker follows and the
+				effect will be to update the data value (e.g., <i>wot:hasValue</i>)
+				of the sensor identified by the URI
+				<code>wot:SENSOR_XYZ_URI</code>
+				to
+				<code>"69"</code>
+				.
+			</p>
+			<aside class="example"
+				title="Actual SPARQL update after replacing the ?x and ?sensor forced bindings">
+				<br>DELETE {
+				<code>wot:SENSOR_XYZ_URI</code>
+				wot:hasValue ?oldValue} <br>INSERT {
+				<code>wot:SENSOR_XYZ_URI</code>
+				wot:hasValue
+				<code>"69"</code>
+				} <br>WHERE {
+				<code>wot:SENSOR_XYZ_URI</code>
+				rdf:type wot:SENSOR .
+				<code>wot:SENSOR_XYZ_URI</code>
+				wot:hasValue ?oldValue}
+			</aside>
+			<p>Eventually, from the application point of view, JSAP hides
+				SPARQL complexity and allow the use of a simple portable interface
+				to create Dynamic Linked Data applications.</p>
+		</section>
+		</section>
+		<section>
+			<h3>A minimum working example: a SEPA based chat</h3>
+			<p>In order to provide the reader with a better understanding of
+				the SEPA application design pattern using the proposed JASP, this
+				section presents a simple and at the same time meaningful example.</p>
+			<p>The example is a chat application where users exchange
+				messages. A user should be able to send a message to an other user
+				and be notified when the message has been received. In the following
+				is described how this behaviour can be implemented thanks to the
+				publish-subscribe mechanism provided by SEPA. According to the
+				producer-aggregator-consumer design pattern proposed in this
+				document, a chat client can be implemented by the following agents:
 
-<pre class="example"
-			title="Draft of the chat's JSAP. The JSAP includes all the primitives used by the application. For some primitives (e.g., SET_RECEIVED), the forced bindings are specified (e.g., message)">
+			
+			<ul>
+				<li>A <b>producer</b>(Sender) who produces the message
+				</li>
+				<li>An <b>aggregator</b>(Receiver) who receives the
+					notification and then notify about the arrival
+				</li>
+				<li>An <b>aggregator</b>(Remover) who waits for the
+					notification sent by the Receiver and delete the message from the
+					knowledge base
+				</li>
+			</ul>
+			These entities can be mapped to the following interface of functions:
+			<ul>
+				<li>Updates:
+					<ul>
+						<li>Sender <i>calls</i> SEND(sender,receiver,text) where the
+							sender and receiver parameters are URIs, while the text is a
+							literal
+						</li>
+						<li>Remover <i>calls</i> REMOVE(message) where message
+							parameter is the message URI
+						</li>
+						<li>Receiver <i>calls</i> SET_RECEIVED(message) where message
+							parameter is the message URI
+						</li>
+					</ul>
+				</li>
+				<li>Queries:
+					<ul>
+						<li>Receiver <i>subscribes to</i> SENT
+						</li>
+						<li>Remover <i>subscribes to</i> REMOVED
+						</li>
+					</ul>
+				</li>
+			</ul>
+			These information define the semantic application and can be written
+			in a first draft of the JSAP:
+
+			<pre class="example"
+				title="Draft of the chat's JSAP. The JSAP includes all the primitives used by the application. For some primitives (e.g., SET_RECEIVED), the forced bindings are specified (e.g., message)">
 {
   "updates":{
     "SEND":{
@@ -786,15 +801,15 @@
   }
 }
 </pre>
-		<p>After defining the message format (i.e. how it is encoded in
-			RDF triples) the structure of the chat application obtained by this
-			design step is depicted in the following figure.</p>
-		<img src="media/chat.jpg">
-		<p>Fig. 2 - The SEPA Chat example: each client is composed by
-			three SEPA agents (sender, receiver and remover)</p>
-		<p>Finally the primitives are implemented with SPARQL
-			queries/updates and the JASP is filled with this information:</p>
-<pre class="example" title="Chat's JSAP: updates and queries">
+			<p>After defining the message format (i.e. how it is encoded in
+				RDF triples) the structure of the chat application obtained by this
+				design step is depicted in the following figure.</p>
+			<img src="media/chat.jpg">
+			<p>Fig. 2 - The SEPA Chat example: each client is composed by
+				three SEPA agents (sender, receiver and remover)</p>
+			<p>Finally the primitives are implemented with SPARQL
+				queries/updates and the JASP is filled with this information:</p>
+			<pre class="example" title="Chat's JSAP: updates and queries">
 {
   "namespaces":{
     "schema":"http://schema.org/",
@@ -855,39 +870,39 @@
   }
 }
           </pre>
-		At runtime when the two clients join the chat, their Receiver and
-		Remover agents subscribe to the SEPA broker by replacing respectively
-		the receiver forcedbinding in the SENT query and the sender
-		forcedbinding in the RECEIVED query with the client identifier (e.g.,
-		schema:PersonURI1 for client #1 and schema:PersonURI2 for client #2).
-		When client #1 sends a new message to client #2, it invokes the SEND
-		update, first replacing the sender and receiver forced bindings with
-		the current one (i.e., respectively schema:PersonURI1 and
-		schema:PersonURI2) and the text binding with the message to be sent.
-		The effect of the update is to create the bold graph shown in Fig. 2.
-		This update triggers a notification for client #2: its Receiver agent
-		inserts the dotted part of the graph to specify the receiving time.
-		This is done by invoking the SET_RECEIVED update, replacing the
-		message forced binding with the corresponding one included in the
-		notification. This update triggers a notification on client #1: client
-		#1 knows at this time that client #2 has received the message(i.e.,the
-		clients are synchronized)and can delete the corresponding graph from
-		the RDF store. This is done invoking the REMOVE update, replacing the
-		message forced binding with the effective551 URI of the message to be
-		removed. The effect of this update is two folds: the RDF store is
-		cleaned by all messages that have been received (i.e., the store
-		contains only the messages that have been sent but not yet received)
-		and the Receiver agent is notified of the removed bindings (i.e.,
-		client #2 is aware that client #1 has been notified by the
-		SET_RECEIVED update).
-	
-		<p>To formalize, the full flow of the previous example is
-			described in the following UML sequence diagram:</p>
-		<img src="media/SEPAChat.png">
-		<p>Fig. 3 - Send message; UML sequence diagram</p>
-		<p>Finally the following snippet show the full JSAP of the chat
-			application with the configuration parameters</p>
-		<pre class="example" title="Chat JSAP">
+			At runtime when the two clients join the chat, their Receiver and
+			Remover agents subscribe to the SEPA broker by replacing respectively
+			the receiver forcedbinding in the SENT query and the sender
+			forcedbinding in the RECEIVED query with the client identifier (e.g.,
+			schema:PersonURI1 for client #1 and schema:PersonURI2 for client #2).
+			When client #1 sends a new message to client #2, it invokes the SEND
+			update, first replacing the sender and receiver forced bindings with
+			the current one (i.e., respectively schema:PersonURI1 and
+			schema:PersonURI2) and the text binding with the message to be sent.
+			The effect of the update is to create the bold graph shown in Fig. 2.
+			This update triggers a notification for client #2: its Receiver agent
+			inserts the dotted part of the graph to specify the receiving time.
+			This is done by invoking the SET_RECEIVED update, replacing the
+			message forced binding with the corresponding one included in the
+			notification. This update triggers a notification on client #1:
+			client #1 knows at this time that client #2 has received the
+			message(i.e.,the clients are synchronized)and can delete the
+			corresponding graph from the RDF store. This is done invoking the
+			REMOVE update, replacing the message forced binding with the
+			effective551 URI of the message to be removed. The effect of this
+			update is two folds: the RDF store is cleaned by all messages that
+			have been received (i.e., the store contains only the messages that
+			have been sent but not yet received) and the Receiver agent is
+			notified of the removed bindings (i.e., client #2 is aware that
+			client #1 has been notified by the SET_RECEIVED update).
+
+			<p>The flow of messages exchanged by the clients in the previous
+				example is described by following UML sequence diagram:</p>
+			<img src="media/SEPAChat.png">
+			<p>Fig. 3 - Send message; UML sequence diagram</p>
+			<p>Finally the following snippet show the full JSAP of the chat
+				application with the configuration parameters</p>
+			<pre class="example" title="Chat JSAP">
 {
   "host":"localhost",
   "oauth":{
@@ -1079,9 +1094,9 @@
 }
 </pre>
 
-	</section>
+		</section>
 
-	<!--
+		<!--
       <p>
         A single update is specified by a JSON object where the key is the
         friendly name of the update, while the value is a JSON object with a
@@ -1277,25 +1292,25 @@ WHERE  {<b><code>wot:A_SENSOR_URI</code></b> rdf:type wot:SENSOR . <b><code>wot:
 
   </section>
 -->
-	<!-- APPENDIX -->
-	<section class="appendix">
+		<!-- APPENDIX -->
+		<section class="appendix">
 
-		<!-- ACKNOWLEDGEMENTS -->
-		<h2>Acknowledgements</h2>
+			<!-- ACKNOWLEDGEMENTS -->
+			<h2>Acknowledgements</h2>
 
-		<p>
-			Editors would like to thanks the <a
-				href="http://www.arces.unibo.it/en">Advanced Research Center on
-				Electronic Systems "Ercole De Castro" (ARCES)</a> and the <a
-				href="http://www.cse.unibo.it/en/index.html">Computer Science
-				and Engineering Department (DISI)</a> of the <a
-				href="http://http://www.unibo.it/en/homepage">University of
-				Bologna</a>, the <a href="https://ec.europa.eu/commission/index_en">European
-				Commission</a> and all the partners of the <a
-				href="https://artemis-ia.eu/">ARTEMIS</a> projects who inspired the
-			SPARQL Event Processing Architecture (SEPA).
-		</p>
-	</section>
+			<p>
+				Editors would like to thanks the <a
+					href="http://www.arces.unibo.it/en">Advanced Research Center on
+					Electronic Systems "Ercole De Castro" (ARCES)</a> and the <a
+					href="http://www.cse.unibo.it/en/index.html">Computer Science
+					and Engineering Department (DISI)</a> of the <a
+					href="http://http://www.unibo.it/en/homepage">University of
+					Bologna</a>, the <a href="https://ec.europa.eu/commission/index_en">European
+					Commission</a> and all the partners of the <a
+					href="https://artemis-ia.eu/">ARTEMIS</a> projects who inspired the
+				SPARQL Event Processing Architecture (SEPA).
+			</p>
+		</section>
 </body>
 
 </html>
