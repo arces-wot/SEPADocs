@@ -19,6 +19,7 @@ This repository is maintained by:
 
 Name | Email | On Github
 ---- | ----- | ---------
+Cristiano Aguzzi | cristiano DOT aguzzi AT unibo.it | @relu91
 Fabio Viola | fabio DOT viola AT unibo DOT it | @desmovalvo
 Francesco Antoniazzi | francesco DOT antoniazzi AT unibo DOT it | @fr4ncidir
 Luca Roffia | luca DOT roffia AT unibo DOT it | @lroffia
