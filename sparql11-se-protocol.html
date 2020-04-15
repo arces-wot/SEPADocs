@@ -159,6 +159,14 @@ Body
 <pre>SELECT * WHERE {?vaimee ?deda ?didi}</pre>
 </aside>
 
+		<p>Test the example with</p>
+<aside class="example" title='Query example on Bash'>
+  <p>Test the query example with the following
+  <pre>
+curl -X POST -d "select * where {?vaimee ?deda ?didi}" -H "Content-Type: application/sparql-query" -H "Accept: application/sparql-results+json" http://localhost:8000/query
+  </pre>
+</aside>
+
 		<aside class="example" title="Query response">
 <br>Headers 
 <pre>Content-Type: application/json</pre>
@@ -203,6 +211,14 @@ Body
 <pre>PREFIX wot:&lt;http://wot.arces.unibo.it/example#&gt;
 INSERT DATA {GRAPH &lt;http://wot.arces.unibo.it/graph&gt; {wot:Subject wot:Predicate "&#x10D5;&#x10D0;&#x10D8;&#x10DB;&#x10D4;&#x10D4;"}}
 </pre>
+</aside>
+
+		<p>Test the example with</p>
+<aside class="example" title='Update example on Bash'>
+  <p>Test the update example with the following
+  <pre>
+curl -X POST -d "PREFIX wot: &lt;http://wot.arces.unibo.it/example#&gt; INSERT DATA {GRAPH &lt;http://wot.arces.unibo.it/graph&gt; {wot:Subject wot:Predicate \"vaimee\"}}" -H "Content-Type: application/sparql-update" -H "Accept: application/sparql-results+json" http://localhost:8000/update
+  </pre>
 </aside>
 
 <aside class="example" title="Update response">
