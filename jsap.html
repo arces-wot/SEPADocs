@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
@@ -50,7 +50,7 @@
 	<section id="abstract">
 		This document describes the JSON SPARQL Application Profile (JSAP).
 		JSAP is used to describe an application based on the <a
-			href="http://mml.arces.unibo.it/TR/sepa.html">SPARQL Event
+			href="http://vaimee.org/TR/sepa.html">SPARQL Event
 			Processing Architecture</a> (SEPA) and following the application design
 		pattern named <b>PAC</b> (<b>P</b>roducer-<b>A</b>ggregator-<b>C</b>onsumer)
 		described in this document. JSAP uses JSON as default format
@@ -72,7 +72,7 @@
 			application is composed by a set of producers, consumers and
 			aggregators). The role of JSAP is to collect the <b>SPARQL
 				updates</b> [[sparql11-update]], <b><a
-				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
 					subscribes</a></b> and the <b>protocol parameters</b> used by a SEPA
 			application. JSAP MAY contain a list of SPARQL prefixes. In such a
 			way, JSAP acts as an <i>identity card</i> of a SEPA application.
@@ -101,7 +101,7 @@
 				<dt>JSAP</dt>
 				<dd>
 					JSON SPARQL Application Profile (as defined by this <a
-						href="http://mml.arces.unibo.it/TR/jsap.html">document</a>)
+						href="http://vaimee.org/TR/jsap.html">document</a>)
 				</dd>
 				<dt>SPARQL</dt>
 				<dd>SPARQL Protocol and RDF Query Language (as defined by
@@ -115,27 +115,27 @@
 
 				<dt>SPARQL 1.1 Subscribe Language</dt>
 				<dd>
-					The <a href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">subscription
+					The <a href="http://vaimee.org/TR/sparql11-subscribe.html">subscription
 						language</a> introduced by the SEPA
 				</dd>
 
 				<dt>SPARQL 1.1 SE Protocol</dt>
 				<dd>
 					The <a
-						href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">protocol</a>
+						href="http://vaimee.org/TR/sparql11-se-protocol.html">protocol</a>
 					implemented by a SEPA broker
 				</dd>
 
 				<dt>SEPA</dt>
 				<dd>
-					<a href="http://mml.arces.unibo.it/TR/sepa.html">SPARQL Event
+					<a href="http://vaimee.org/TR/sepa.html">SPARQL Event
 						Processing Architecture</a>
 				</dd>
 
 				<dt>SEPA application</dt>
 				<dd>
 					a collection of producers, consumers and aggregators (as defined by
-					this <a href="http://mml.arces.unibo.it/TR/jsap.html">document</a>)
+					this <a href="http://vaimee.org/TR/jsap.html">document</a>)
 				</dd>
 
 				<dt>SEPA broker</dt>
@@ -143,7 +143,7 @@
 					The server component of the SEPA. It implements the
 					publish-subscribe mechanisms and algorithms. Clients interact with
 					a SEPA broker with the <a
-						href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+						href="http://vaimee.org/TR/sparql11-se-protocol.html">SPARQL
 						1.1 SE Protocol</a>
 				</dd>
 			</dl>
@@ -158,7 +158,7 @@
 			application design pattern to be followed by SEPA applications
 			developers.</p>
 
-		<img src="media/pac-pattern.jpg">
+		<img src="media/pac-pattern.jpg" alt="PAC pattern">
 		<p>
 			Fig. 1 - The SEPA application design pattern also know as
 			"PAC-Pattern" (<b>P</b>roducer-<b>A</b>ggregator-<b>C</b>onsumer)
@@ -167,16 +167,16 @@
 			The design pattern assumes that a client SHOULD interact with a SEPA
 			broker using two primitives: <b>update</b> and <b>subscribe</b>. The
 			protocol used by a client to interact with a SEPA broker is described
-			in <a href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+			in <a href="http://vaimee.org/TR/sparql11-se-protocol.html">SPARQL
 				1.1 Secure Event Protocol</a>. While an update corresponds to a SPARQL
 			1.1 Update [[sparql11-update]], a subscribe is described in <a
-				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe Language</a>. A subscribe acts as a persistent SPARQL 1.1
 			Query [[sparql11-query]] and the content of a notification contains
 			the <i>delta</i> of the results since the previous notification
 			(i.e., when a subscribe is invoked the current query results are
 			returned to the client) as described in <a
-				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe Language</a>. A client assumes a different role depending
 			on how it interacts with a SEPA broker.
 		</p>
@@ -189,11 +189,11 @@
 		</p>
 		<p>
 			A <i>consumer</i> invokes a <a
-				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe</a>. Like the update of a producer, a consumer MUST invoke
 			one and only one subscribe. When a consumer subscribes, it MAY
 			replace some variables within the <a
-				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe</a> with actual values (i.e., see <b><a
 				href="#forcedBindings">forced bindings</a></b>). An actuator subscribed
 			to events (or commands) is an example.
@@ -264,7 +264,7 @@
 		member contains the host name or IP of the SEPA broker. The other two
 		members allow to configure respectively the SPARQL 1.1 protocol
 		[[sparql11-protocol]] and <a
-			href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+			href="http://vaimee.org/TR/sparql11-se-protocol.html">SPARQL
 			1.1 Secure Event Protocol</a>. With reference to the SPARQL 1.1 protocol
 		[[sparql11-protocol]], the
 		<code>graphs</code>
@@ -294,7 +294,7 @@
 				A semantic application profile, in order to fully describe an
 				application, MUST contain the protocol parameters needed by an
 				application to interact with a SEPA broker instance through the <a
-					href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+					href="http://vaimee.org/TR/sparql11-se-protocol.html">SPARQL
 					1.1 SE Protocol</a>, like the HTTPS interface (used by secure SPARQL
 				updates and SPARQL queries) and the Websocket interface (needed by
 				(secure) SPARQL subscriptions). In JSAP, such parameters are
@@ -305,7 +305,7 @@
 				.
 			<pre class="example"
 				title="SPARQL 1.1 protocol parameters (not secure)"
-				id="sparql11protocol">
+				id="sparql11protocol-notsecure">
 {
   "sparql11protocol":{
     "protocol":"http",
@@ -327,7 +327,7 @@
 				The value of the
 				<code>host</code>
 				member specifies the host where the SEPA broker is running (e.g.,
-				mml.arces.unibo.it).
+				vaimee.org).
 			</p>
 			<p>
 				The
@@ -389,11 +389,11 @@
 			<pre class="example"
 				title="URLs used by SEPA primitives (not secure)">
 
-- Query: http://mml.arces.unibo.it:8000/query
+- Query: http://vaimee.org:8000/query
 
-- Update: http://mml.arces.unibo.it:8000/update
+- Update: http://vaimee.org:8000/update
 
-- Subscribe: ws://mml.arces.unibo.it:9000/subscribe</pre>
+- Subscribe: ws://vaimee.org:9000/subscribe</pre>
 		</section>
 
 		<section>
@@ -438,7 +438,7 @@
 
 			<pre class="example"
 				title="SPARQL 1.1 SE protocol parameters (secure)"
-				id="sparql11seprotocol">
+				id="sparql11seprotocol-secure">
 {
   "sparql11seprotocol":{
     "protocol":"wss"
@@ -448,15 +448,15 @@
 			The corresponding URLs would be as follows:
 			<pre class="example" title="URLs used by SEPA primitives (secure)">
 
-- SECURE Query: https://mml.arces.unibo.it:8443/secure/query
+- SECURE Query: https://vaimee.org:8443/secure/query
 
-- SECURE Update: https://mml.arces.unibo.it:8443/secure/update
+- SECURE Update: https://vaimee.org:8443/secure/update
 
-- SECURE Subscribe: wss://mml.arces.unibo.it:9443/secure/subscribe
+- SECURE Subscribe: wss://vaimee.org:9443/secure/subscribe
 
-- Registration: https://mml.arces.unibo.it:8443/oauth/register
+- Registration: https://vaimee.org:8443/oauth/register
 
-- Token request: https://mml.arces.unibo.it:8443/oauth/token
+- Token request: https://vaimee.org:8443/oauth/token
 </pre>
 			<p>
 				JSAP MAY also be used by clients to store credentials (i.e., <i>clientId</i>
@@ -518,7 +518,7 @@
 				and
 				<code>queries</code>
 				listing all the SPARQL 1.1 updates [[sparql11-update]] and <a
-					href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+					href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
 					1.1 subscribes</a> used by the application.The
 				<code>updates</code>
 				and
@@ -811,7 +811,7 @@
 			<p>After defining the message format (i.e. how it is encoded in
 				RDF triples) the structure of the chat application obtained by this
 				design step is depicted in the following figure.</p>
-			<img src="media/chat.jpg">
+			<img src="media/chat.jpg" alt="chat">
 			<p>Fig. 2 - The SEPA Chat example: each client is composed by
 				three SEPA agents (sender, receiver and remover)</p>
 			<p>Finally the primitives are implemented with SPARQL
@@ -905,7 +905,7 @@
 
 			<p>The flow of messages exchanged by the clients in the previous
 				example is described by following UML sequence diagram:</p>
-			<img src="media/SEPAChat.png">
+			<img src="media/SEPAChat.png" alt="SEPA chat">
 			<p>Fig. 3 - Send message; UML sequence diagram</p>
 			<p>Finally the following snippet show the full JSAP of the chat
 				application with the configuration parameters</p>
@@ -1142,9 +1142,9 @@
 
       <p>
         A subscribe, MUST be defined according to the <a
-          href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+          href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
           1.1 Subscribe Language</a>. As described by <a
-          href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+          href="http://vaimee.org/TR/sparql11-se-protocol.html">SPARQL
           1.1 SE Protocol</a>, a SPARQL 1.1 Subscribe is RECOMMENDED to be sent
         over a Websocket (secure or unsecure).
       </p>
@@ -1244,7 +1244,7 @@ WHERE  {<b><code>wot:A_SENSOR_URI</code></b> rdf:type wot:SENSOR . <b><code>wot:
 
     <pre class="example">
 {"parameters": {
-  "host": "mml.arces.unibo.it",
+  "host": "vaimee.org",
   "path": "/sparql",
   "scheme": "http",
   "port": 8000,
