@@ -51,7 +51,7 @@
 	<section id="abstract">
 		This document describes the SPARQL 1.1 Secure Event (SE) Protocol that
 		MUST be implemented by a generic <a
-			href="https://mml.arces.unibo.it/TR/sepa.html">SPARQL SE Service</a>.
+			href="https://vaimee.org/TR/sepa.html">SPARQL SE Service</a>.
 	</section>
 	<!-- STATUS OF THIS DOCUMENT -->
 	<section id="sotd">This is a first draft.</section>
@@ -98,7 +98,7 @@
 			<dl>
 				<dt>SEPA</dt>
 				<dd>
-					<a href="http://mml.arces.unibo.it/TR/sepa.html">SPARQL Event
+					<a href="http://vaimee.org/TR/sepa.html">SPARQL Event
 						Processing Architecture</a>
 				</dd>
 
@@ -107,20 +107,20 @@
 					The server component of the SEPA. It implements the
 					publish-subscribe mechanisms and algorithms. Clients interact with
 					a SEPA broker with the <a
-						href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">SPARQL
+						href="http://vaimee.org/TR/sparql11-se-protocol.html">SPARQL
 						1.1 SE Protocol</a>
 				</dd>
 
 				<dt>SPARQL 1.1 Subscribe Language</dt>
 				<dd>
-					The <a href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">subscription
+					The <a href="http://vaimee.org/TR/sparql11-subscribe.html">subscription
 						language</a> introduced by the SEPA
 				</dd>
 
 				<dt>SPARQL 1.1 SE Protocol</dt>
 				<dd>
 					The <a
-						href="http://mml.arces.unibo.it/TR/sparql11-se-protocol.html">protocol</a>
+						href="http://vaimee.org/TR/sparql11-se-protocol.html">protocol</a>
 					implemented by a SEPA broker and defined in this document
 				</dd>
 
@@ -154,7 +154,7 @@
 
 <aside class="example" title="Query request (via POST)">
 <br>Request 
-<pre>POST http://mml.arces.unibo.it:8000/query</pre>
+<pre>POST http://vaimee.org:8000/query</pre>
 
 Headers
 <pre>Content-Type: application/sparql-query
@@ -206,7 +206,7 @@ Body
 		<p>An example of a query request and response follows:</p>
 <aside class="example" title="Update request (via POST)">
 <br>Request
-<pre>POST http://mml.arces.unibo.it:8000/update</pre>
+<pre>POST http://vaimee.org:8000/update</pre>
 
 Headers
 <pre>Content-Type: application/sparql-update
@@ -252,7 +252,7 @@ Body
 			[[!RFC6455]] as protocol for the subscription mechanism.
 			Subscribe/unsubscribe requests and notification are expressed
 			according to the <a
-				href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+				href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
 				1.1 Subscribe language</a>.
 	</section>
 
@@ -303,7 +303,7 @@ Body
 
 <aside class="example" title="Registration request">
 <br>Request 
-<pre>POST https://mml.arces.unibo.it:8443/oauth/register</pre>
+<pre>POST https://vaimee.org:8443/oauth/register</pre>
 
 Headers
 <pre>Content-Type: application/json 
@@ -353,7 +353,7 @@ Body
 
 <aside class="example" title="Token request">
 <br>Request
-<pre>POST https://mml.arces.unibo.it:8443/oauth/token</pre>
+<pre>POST https://vaimee.org:8443/oauth/token</pre>
 
 Headers
 <pre>Content-Type: application/json
@@ -402,7 +402,7 @@ Authorization: Basic NWI2MGExNTUtYmFkYS00NDk5LWJjNmYtMjZiNGQzN2JjMWVmOjQwZTE4ZDc
 		<section id="Access">
 			<h4>Secure access</h4>
 			<p>
-				HTTPS requests (e.g., https://mml.arces.unibo.it:8443/secure/update)
+				HTTPS requests (e.g., https://vaimee.org:8443/secure/update)
 				MUST include the
 				<code>authorization</code>
 				header as shown in the following example:
@@ -412,11 +412,11 @@ Authorization: Basic NWI2MGExNTUtYmFkYS00NDk5LWJjNmYtMjZiNGQzN2JjMWVmOjQwZTE4ZDc
 Authorization: Bearer xabtQWoH8RJJk1FyKJ78J8h8i2PcWmAugfJ4J6nMd+1jVSoiipV4Pcv8bH+8wJLJ2yRaVage8/TzdZJiz2jdRP8bhkuNzFhGx6N1/1mgmvfKihLheMmcU0pLj5uKOYWFb+TB98n1IpNO4G69lia2YoR15LScBzibBPpmKWF+XAr5TeDDHDZQK4N3VBS/e3tFL/yOhkfC9Mw45s3mz83oyeoFFePUX8MQIuqd3TIcjOhoPgYWd0E+L/EN5wItL5/n78pX/8mVZcpxdyNNqr3bVvrCi0I84mIAefwQ0GyPxFhUHu9PtVNQnXchZuFgppX/YDtOesZSxfIoffUpHFPBY3u4FRIYwpSZX96Knnp0J22RQm+0l8yobik3z6jftw0jbF5+/YC6PnfZT3Wzb6PRJPuVkDzpo+BTC9eKx87GEj8VjtfXjbYRTeZNumD+59wL5kV/OrntNqNQD+IzAYoIZk4rlRbNouNnvT0laEhV012tSD1uAfNUxAlZjSbSMTp5bPNp7PoutMr5q6zPYfAC1PTKnVdkD1CDNqZnhB838WDeISfVzXsf7dsZ0+SkNPtx2kMUYCOYsxNJxyzza3lmaCuvxfnDT3g5F41/p/zX1tXYy6emVfdOWSkJNm1z0FJB/ZIUES0WAA5UEM3kejND++vvIQr38ar72HdFzRvP2V29CsaE5PMRRRZIE5ru9Zwgdb5lfMdwDi4sZkQdNRGHiOfRCT9D92mFVps6s6kv7HKojx05R9WKMDG8bEmSgMYSYQlQzLm93Ardw/hpDoB1/DfNRxbc/GVNZEVOoRVMye8/vICZtxvVeKmu4QawWKSBtrXelWUT8AHTG6v/c88pZjtJWDzy6YIIXLDQ2eJPu30mt3gLfS2ukIV4Tl5Oqu3T1IIghmNgek8vwWNeuG/JGeKrfUp6X6mMH9hdmj5+naOIr8V5rUKCjXnlWLAsrGdOvV8vuYYbx2IFQScZQJD/sTKj3gs6yeYpOwQ2iEs9asA=
 </pre>
 			<p>
-				WSS requests (e.g., wss://mml.arces.unibo.it:9443/secure/subscribe)
+				WSS requests (e.g., wss://vaimee.org:9443/secure/subscribe)
 				MUST include the
 				<code>authorization</code>
 				member as described in the <a
-					href="http://mml.arces.unibo.it/TR/sparql11-subscribe.html">SPARQL
+					href="http://vaimee.org/TR/sparql11-subscribe.html">SPARQL
 					1.1 Subscribe</a> document.
 			<p>
 				In case of error, it is RECOMMENDED to reply as shown <a
